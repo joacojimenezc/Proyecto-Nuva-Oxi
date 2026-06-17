@@ -1,4 +1,3 @@
-<!-- prueba de deploy: Joaco 2026-06-17 -->
 <html lang="es">
 <head>
 <meta charset="utf-8"/>
@@ -1309,6 +1308,37 @@ body{
 #evaluacion .ev-evalcard .meta{font-size:12.5px;color:var(--muted);margin-bottom:6px}
 #evaluacion .ev-evalcard .cmt{font-size:13.5px;color:var(--body);margin-top:8px;
   border-left:3px solid var(--a1);padding-left:10px}
+/* --- Rúbrica ponderada (8 criterios, escala 1–4) --- */
+#evaluacion .ev-q-head{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;justify-content:space-between}
+#evaluacion .ev-q-tags{display:flex;gap:6px;flex-wrap:wrap}
+#evaluacion .ev-dim{display:inline-block;background:#eef3f6;border:1px solid var(--line);color:var(--n3);
+  font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;text-transform:uppercase;letter-spacing:.4px}
+#evaluacion .ev-weight{display:inline-block;background:var(--n4);color:#fff;font-size:11px;font-weight:700;
+  padding:3px 9px;border-radius:999px}
+#evaluacion .ev-levels{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:11px}
+@media(max-width:760px){#evaluacion .ev-levels{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:460px){#evaluacion .ev-levels{grid-template-columns:1fr}}
+#evaluacion .ev-level{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;
+  padding:10px 11px;cursor:pointer;transition:all .15s;background:#fff}
+#evaluacion .ev-level:hover{border-color:var(--n4)}
+#evaluacion .ev-level.checked{background:var(--n2);border-color:var(--n2)}
+#evaluacion .ev-level.checked .ev-lvl-name,#evaluacion .ev-level.checked .ev-lvl-desc,#evaluacion .ev-level.checked .ev-num{color:#fff}
+#evaluacion .ev-level input{display:none}
+#evaluacion .ev-level .ev-num{font-family:var(--dp);font-weight:700;font-size:18px;color:var(--n4);line-height:1}
+#evaluacion .ev-level .ev-lvl-name{font-size:11.5px;font-weight:700;color:var(--n2);margin:3px 0 5px;
+  text-transform:uppercase;letter-spacing:.3px}
+#evaluacion .ev-level .ev-lvl-desc{font-size:12px;color:var(--body);line-height:1.45}
+#evaluacion .ev-evfield{margin-top:12px;margin-bottom:0}
+#evaluacion .ev-evfield textarea{min-height:54px}
+#evaluacion .ev-state{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;
+  text-transform:uppercase;letter-spacing:.4px;vertical-align:middle}
+#evaluacion .ev-state.ok{background:#eef7f0;color:var(--g1);border:1px solid var(--g3)}
+#evaluacion .ev-state.warn{background:#fff6e8;color:#9a6a16;border:1px solid #f0d9a8}
+#evaluacion .ev-state.bad{background:#fceeee;color:#9a2a2a;border:1px solid #f0bcbc}
+#evaluacion .ev-bar i.st-ok{background:linear-gradient(90deg,var(--g1),var(--g2))}
+#evaluacion .ev-bar i.st-warn{background:linear-gradient(90deg,#d79a2b,#e9b85a)}
+#evaluacion .ev-bar i.st-bad{background:linear-gradient(90deg,#c0504d,#d97b78)}
+#evaluacion .ev-minwarn{display:inline-block;font-size:11.5px;color:#9a6a16;margin-top:4px}
 </style>
 <style>
 /* === Historia de cada piloto (narrativa por mentoría) === */
@@ -1667,7 +1697,7 @@ html[lang="en"] span.i18n-en{display:inline}
 <div class="ev-card">
 <span class="ev-step">Paso 2</span>
 <h3>Aplica la rúbrica</h3>
-<p>Completa la rúbrica de 7 criterios para evaluar un piloto. Tu identificación queda registrada para trazabilidad y tus respuestas alimentan los resultados consolidados.</p>
+<p>Completa la rúbrica ponderada de 8 criterios (escala 1–4) para evaluar un piloto. Tu identificación queda registrada para trazabilidad y tus respuestas alimentan los resultados consolidados.</p>
 <button class="link-btn" onclick="evGo('rubrica')" type="button">Aplicar rúbrica</button>
 </div>
 <div class="ev-card">
@@ -1678,7 +1708,12 @@ html[lang="en"] span.i18n-en{display:inline}
 </div>
 </div>
 <div class="ev-alert info" style="margin-top:24px">
-<strong>Sobre el cross-assessment:</strong> es uno de los instrumentos de validación previstos en el WP3. Su objetivo es enriquecer cada piloto con la mirada experta de los demás socios del consorcio antes del cierre. La rúbrica acompaña a las mentorías y al testeo con usuarios. Los registros se guardan en este navegador y pueden exportarse en JSON o CSV.
+<span class="i18n-es"><strong>Sobre el cross-assessment:</strong> es uno de los instrumentos de validación del WP3 (Tarea T3.3). Su objetivo es enriquecer cada piloto con la mirada experta de los demás socios del consorcio antes del cierre. Los registros se guardan en este navegador y pueden exportarse en JSON o CSV.</span>
+<span class="i18n-en"><strong>About the cross-assessment:</strong> it is one of the WP3 validation instruments (Task T3.3). Its goal is to enrich each pilot with the expert view of the other consortium partners before closing. Records are stored in this browser and can be exported as JSON or CSV.</span>
+    </div>
+<div class="ev-alert info" style="margin-top:14px">
+<span class="i18n-es"><strong>Reglas de la evaluación cruzada:</strong> <b>sin autoevaluación</b> —cada piloto lo evalúan <b>≥ 2 instituciones distintas</b> a la responsable (ideal 3). Escala de <b>4 niveles ponderada</b> por criterio; cada criterio cubre la dimensión <b>curricular y/o extracurricular</b>. <b>% de logro = puntaje / 4</b>, con <b>umbral de aprobación del 80%</b> (coherente con el corte de microcredenciales). Cada puntaje se respalda con <b>evidencia observable</b> y el resultado final del piloto es el <b>promedio de los evaluadores</b>.</span>
+<span class="i18n-en"><strong>Cross-assessment rules:</strong> <b>no self-assessment</b> —each pilot is assessed by <b>≥ 2 institutions different</b> from the one responsible (ideally 3). A <b>weighted 4-level scale</b> per criterion; each criterion covers the <b>curricular and/or extracurricular</b> dimension. <b>Achievement % = score / 4</b>, with an <b>80% approval threshold</b> (consistent with the micro-credential cut-off). Each score is backed by <b>observable evidence</b> and the pilot's final result is the <b>average of the assessors</b>.</span>
     </div>
 </div>
 <!-- PILOTOS CHILE -->
@@ -1715,7 +1750,7 @@ html[lang="en"] span.i18n-en{display:inline}
 </div>
 <!-- APLICAR RUBRICA -->
 <div class="ev-panel" id="ev-rubrica">
-<p class="lead">Identifícate, elige el piloto a evaluar y responde los siete criterios con la escala de 1 a 5. Los comentarios cualitativos son lo más valioso para el equipo evaluado.</p>
+<p class="lead"><span class="i18n-es">Identifícate, elige el piloto a evaluar y responde los <b>8 criterios ponderados</b> con la escala <b>1–4</b>. Cada puntaje se respalda con <b>evidencia observable</b>. Recuerda: <b>sin autoevaluación</b> —un piloto debe ser evaluado por otra institución del consorcio.</span><span class="i18n-en">Identify yourself, choose the pilot to assess and answer the <b>8 weighted criteria</b> on the <b>1–4</b> scale. Each score is backed by <b>observable evidence</b>. Note: <b>no self-assessment</b> —a pilot must be assessed by another consortium institution.</span></p>
 <div id="evFormMsg"></div>
 <div class="ev-card" style="margin-bottom:18px">
 <h3 style="margin-top:0">Identificación del evaluador</h3>
@@ -1742,8 +1777,17 @@ html[lang="en"] span.i18n-en{display:inline}
 </div>
 </div>
 <div class="ev-card" style="margin-bottom:18px">
-<h3 style="margin-top:0">Rúbrica · 7 criterios</h3>
-<p style="font-size:13px;color:var(--muted);margin-bottom:6px">Escala: <strong>1</strong> Muy débil · <strong>2</strong> Débil · <strong>3</strong> Aceptable · <strong>4</strong> Bueno · <strong>5</strong> Excelente</p>
+<h3 style="margin-top:0"><span class="i18n-es">Rúbrica · 8 criterios ponderados</span><span class="i18n-en">Rubric · 8 weighted criteria</span></h3>
+<p style="font-size:13px;color:var(--muted);margin-bottom:10px"><span class="i18n-es">Escala de 4 niveles: <strong>1</strong> Inicial · <strong>2</strong> En desarrollo · <strong>3</strong> Adecuado · <strong>4</strong> Sólido / transferible. El puntaje es <strong>ponderado</strong> (cada criterio tiene un peso) y el <strong>% de logro = puntaje / 4</strong>. Umbral de aprobación: <strong>≥ 80%</strong>.</span><span class="i18n-en">4-level scale: <strong>1</strong> Initial · <strong>2</strong> Developing · <strong>3</strong> Adequate · <strong>4</strong> Solid / transferable. Score is <strong>weighted</strong> (each criterion has a weight) and <strong>achievement % = score / 4</strong>. Approval threshold: <strong>≥ 80%</strong>.</span></p>
+<table class="ev-table" style="margin-bottom:14px"><thead><tr>
+<th><span class="i18n-es">% de logro</span><span class="i18n-en">Achievement %</span></th>
+<th><span class="i18n-es">Estado</span><span class="i18n-en">Status</span></th>
+<th><span class="i18n-es">Interpretación (orientación EQF)</span><span class="i18n-en">Interpretation (EQF guidance)</span></th>
+</tr></thead><tbody>
+<tr><td>≥ 80%</td><td><span class="ev-state ok"><span class="i18n-es">Aprobado</span><span class="i18n-en">Approved</span></span></td><td><span class="i18n-es">Resultados de aprendizaje logrados de forma autónoma y transferible. Apto para microcredencial.</span><span class="i18n-en">Learning outcomes achieved autonomously and transferably. Eligible for micro-credential.</span></td></tr>
+<tr><td>60% – 79%</td><td><span class="ev-state warn"><span class="i18n-es">En desarrollo</span><span class="i18n-en">In progress</span></span></td><td><span class="i18n-es">Logro parcial; requiere mejoras antes de certificar.</span><span class="i18n-en">Partial achievement; needs improvement before certifying.</span></td></tr>
+<tr><td>&lt; 60%</td><td><span class="ev-state bad"><span class="i18n-es">Inicial</span><span class="i18n-en">Initial</span></span></td><td><span class="i18n-es">Logro insuficiente; rediseño o nueva iteración del piloto.</span><span class="i18n-en">Insufficient achievement; redesign or new pilot iteration.</span></td></tr>
+</tbody></table>
 <div id="evRubric"></div>
 <div class="ev-field" style="margin-top:14px">
 <label>Comentarios generales y sugerencias para el equipo del piloto</label>
@@ -1775,12 +1819,12 @@ html[lang="en"] span.i18n-en{display:inline}
 </div>
 <!-- RESULTADOS -->
 <div class="ev-panel" id="ev-resultados">
-<p class="lead">Promedios consolidados por piloto. El detalle cualitativo acompaña cada evaluación individual.</p>
-<div class="ev-alert info" style="margin-bottom:18px">Exporta los datos en JSON o CSV para alimentar el <strong>caso de estudio</strong> del proyecto: cada evaluación queda con su autor, organización, país, puntajes por criterio y comentarios cualitativos.</div>
+<p class="lead"><span class="i18n-es"><b>% de logro</b> consolidado por piloto (promedio de evaluadores), con su <b>estado</b> según el umbral del 80%. El detalle cualitativo acompaña cada evaluación individual.</span><span class="i18n-en">Consolidated <b>achievement %</b> per pilot (average of assessors), with its <b>status</b> against the 80% threshold. Qualitative detail accompanies each individual assessment.</span></p>
+<div class="ev-alert info" style="margin-bottom:18px"><span class="i18n-es">Exporta los datos en JSON o CSV para alimentar el <strong>caso de estudio</strong> del proyecto: cada evaluación queda con su autor, organización, país, nivel por criterio, puntaje ponderado, % de logro, estado, evidencia y comentarios.</span><span class="i18n-en">Export the data as JSON or CSV to feed the project's <strong>case study</strong>: each assessment keeps its author, organization, country, level per criterion, weighted score, achievement %, status, evidence and comments.</span></div>
 <div class="ev-grid" id="evTopStats"></div>
-<h3 style="font-family:var(--dp);color:var(--n1);margin:28px 0 10px">Promedio global por piloto</h3>
+<h3 style="font-family:var(--dp);color:var(--n1);margin:28px 0 10px"><span class="i18n-es">% de logro por piloto</span><span class="i18n-en">Achievement % per pilot</span></h3>
 <div id="evPilotAverages"></div>
-<h3 style="font-family:var(--dp);color:var(--n1);margin:28px 0 10px">Evaluaciones recibidas</h3>
+<h3 style="font-family:var(--dp);color:var(--n1);margin:28px 0 10px"><span class="i18n-es">Evaluaciones recibidas</span><span class="i18n-en">Assessments received</span></h3>
 <div id="evEvaluationsList"></div>
 <div class="btn-row" style="margin-top:24px">
 <button class="link-btn secondary" id="evExportJson" type="button">Exportar todo en JSON</button>
@@ -1955,19 +1999,77 @@ if(heroBg)addEventListener('scroll',()=>{heroBg.style.transform='scale(1.05) tra
   if(!sec) return;
 
   var PILOTS_CL = { 'mes-azul':'Mes Azul IDMA', 'diplomado':'Diplomado en Economía Azul', 'guardianes':'Guardianes del Agua' };
+  /* Institución responsable de cada piloto chileno (para bloquear autoevaluación) */
+  var PILOT_OWNER_CL = { 'mes-azul':'IDMA', 'diplomado':'IDMA', 'guardianes':'IDMA' };
+
+  /* Rúbrica oficial WP3 T3.3 — 8 criterios ponderados, escala 1–4 con descriptor por nivel.
+     Fuente: WP3_T3.3_CrossAssessment_Framework_v1_BORRADOR.xlsx (hoja "Rubrica"). */
   var RUBRIC = [
-    { id:'q1', text:'Claridad del problema abordado', hint:'¿Define un problema concreto, validado con evidencia y con un porqué claro?' },
-    { id:'q2', text:'Pertinencia del segmento de usuario', hint:'¿El arquetipo está bien definido y es el adecuado para el contexto y la temática del piloto?' },
-    { id:'q3', text:'Calce problema – solución', hint:'¿La solución responde de forma convincente al problema y a las necesidades del usuario?' },
-    { id:'q4', text:'Rigor metodológico (MicroVET / canvas)', hint:'¿Se aplican consistentemente los canvas y la metodología del proyecto a lo largo del proceso?' },
-    { id:'q5', text:'Viabilidad de implementación', hint:'¿Es realista llevarlo a la práctica con los recursos, plazos y actores disponibles?' },
-    { id:'q6', text:'Potencial de replicabilidad y escalabilidad', hint:'¿Puede replicarse en otros territorios o instituciones del consorcio?' },
-    { id:'q7', text:'Transferibilidad al consorcio y aprendizaje cruzado', hint:'¿Qué tan útiles son sus aprendizajes para los demás pilotos del consorcio?' }
+    { id:'q1', weight:0.15,
+      es:{ text:'Alineación con economía azul y sostenibilidad', dim:'Curricular',
+        levels:['Vínculo difuso o anecdótico.','Presente, poco explícito en objetivos.','Integrada en objetivos y actividades.','Integración profunda, transferible, alineada a marcos.'] },
+      en:{ text:'Alignment with blue economy and sustainability', dim:'Curricular',
+        levels:['Diffuse or anecdotal link.','Present, not explicit in objectives.','Integrated into objectives and activities.','Deep, transferable integration aligned with frameworks.'] } },
+    { id:'q2', weight:0.15,
+      es:{ text:'Claridad de resultados de aprendizaje', dim:'Curricular',
+        levels:['Ausentes o vagos.','Enunciados, no observables.','Claros, observables y evaluables.','Alineados a EQF/CEDEFOP, con evidencia de logro.'] },
+      en:{ text:'Clarity of learning outcomes', dim:'Curricular',
+        levels:['Absent or vague.','Stated but not observable.','Clear, observable and assessable.','Aligned to EQF/CEDEFOP, with evidence of achievement.'] } },
+    { id:'q3', weight:0.10,
+      es:{ text:'Pertinencia territorial y participación comunitaria', dim:'Extracurricular',
+        levels:['Sin anclaje ni actores externos.','Anclaje territorial incipiente.','Actores territoriales involucrados.','Co-diseño territorial sostenido y validado.'] },
+      en:{ text:'Territorial relevance and community participation', dim:'Extracurricular',
+        levels:['No grounding or external actors.','Emerging territorial grounding.','Territorial actors involved.','Sustained, validated territorial co-design.'] } },
+    { id:'q4', weight:0.15,
+      es:{ text:'Calidad metodológica del piloto', dim:'Ambas',
+        levels:['Improvisada o inconsistente.','Básica, sin justificación.','Coherente y justificada (MicroVET/ABP).','Robusta, replicable y bien documentada.'] },
+      en:{ text:'Methodological quality of the pilot', dim:'Both',
+        levels:['Improvised or inconsistent.','Basic, unjustified.','Coherent and justified (MicroVET/PBL).','Robust, replicable and well documented.'] } },
+    { id:'q5', weight:0.20,
+      es:{ text:'Evidencia de implementación real', dim:'Ambas',
+        levels:['Sin evidencia verificable.','Parcial o desordenada.','Completa por mentoría.','Trazable, validada, lista para caso de estudio.'] },
+      en:{ text:'Evidence of real implementation', dim:'Both',
+        levels:['No verifiable evidence.','Partial or disorganized.','Complete per mentoring session.','Traceable, validated, ready for case study.'] } },
+    { id:'q6', weight:0.10,
+      es:{ text:'Potencial de escalabilidad / replicabilidad', dim:'Extracurricular',
+        levels:['No escalable en su forma actual.','Escalabilidad teórica sin ruta.','Ruta de réplica identificada.','Modelo replicable con recursos y socios.'] },
+      en:{ text:'Scalability / replicability potential', dim:'Extracurricular',
+        levels:['Not scalable in its current form.','Theoretical scalability without a roadmap.','Replication path identified.','Replicable model with resources and partners.'] } },
+    { id:'q7', weight:0.10,
+      es:{ text:'Viabilidad institucional y continuidad', dim:'Extracurricular',
+        levels:['Sin respaldo ni continuidad.','Interés sin compromiso.','Respaldo y plan de continuidad.','Continuidad asegurada (presupuesto/curricular).'] },
+      en:{ text:'Institutional viability and continuity', dim:'Extracurricular',
+        levels:['No support or continuity.','Interest without commitment.','Support and continuity plan.','Continuity secured (budget/curricular).'] } },
+    { id:'q8', weight:0.05,
+      es:{ text:'Inclusión, accesibilidad y enfoque ecosocial', dim:'Ambas',
+        levels:['No considera inclusión.','Consideración mínima.','Criterios de inclusión aplicados.','Enfoque ecosocial transversal y evidenciado.'] },
+      en:{ text:'Inclusion, accessibility and eco-social approach', dim:'Both',
+        levels:['Does not consider inclusion.','Minimal consideration.','Inclusion criteria applied.','Cross-cutting, evidenced eco-social approach.'] } }
   ];
-  var SCALE = ['Muy débil','Débil','Aceptable','Bueno','Excelente'];
+  var SCALE = {
+    es:['Inicial','En desarrollo','Adecuado','Sólido / transferible'],
+    en:['Initial','Developing','Adequate','Solid / transferable']
+  };
+  /* Idioma activo del documento (se sincroniza con setLang más abajo) */
+  function lang(){ return document.documentElement.getAttribute('lang') === 'en' ? 'en' : 'es'; }
+  function T(esTxt, enTxt){ return lang()==='en' ? enTxt : esTxt; }
+
+  /* Cálculo ponderado y estado según umbral (hoja "Reglas" y "Ref EQF") */
+  function weighted(scores){ var s=0; RUBRIC.forEach(function(q){ s += q.weight * (Number(scores[q.id])||0); }); return s; }
+  function pctOf(w){ return w/4*100; }
+  function stateFor(p){
+    if(p>=80) return { key:'ok',   es:'APROBADO',     en:'APPROVED' };
+    if(p>=60) return { key:'warn', es:'EN DESARROLLO', en:'IN PROGRESS' };
+    return       { key:'bad',  es:'INICIAL',       en:'INITIAL' };
+  }
+  function ownerOf(pilotId){
+    if(PILOT_OWNER_CL[pilotId]) return PILOT_OWNER_CL[pilotId];
+    var ext=DATA.consortiumPilots.filter(function(p){ return 'ext-'+p.id===pilotId; })[0];
+    return ext ? ext.org : '';
+  }
 
   /* ---- Persistencia: localStorage con respaldo en memoria ---- */
-  var KEY = 'wp3_cross_assessment_v1';
+  var KEY = 'wp3_cross_assessment_v2';
   var mem = null;
   function load(){
     try{ return JSON.parse(localStorage.getItem(KEY)) || {evaluations:[],consortiumPilots:[]}; }
@@ -1998,15 +2100,41 @@ if(heroBg)addEventListener('scroll',()=>{heroBg.style.transform='scale(1.05) tra
   sec.querySelectorAll('.ev-tab').forEach(function(b){ b.addEventListener('click', function(){ evGo(b.dataset.ev); }); });
 
   /* ---- Rúbrica ---- */
+  function dimLabel(dim){
+    var map={ 'Curricular':T('Curricular','Curricular'), 'Extracurricular':T('Extracurricular','Extracurricular'), 'Ambas':T('Ambas','Both'), 'Both':T('Ambas','Both') };
+    return map[dim]||dim;
+  }
   function renderRubric(){
     var c = document.getElementById('evRubric');
+    if(!c) return;
+    var L = lang();
+    /* Conservar respuestas y evidencia ya escritas al re-renderizar (p.ej. cambio de idioma) */
+    var prev={}, prevEv={};
+    RUBRIC.forEach(function(q){
+      var sel=sec.querySelector('input[name="'+q.id+'"]:checked'); if(sel) prev[q.id]=sel.value;
+      var ev=document.getElementById('evev-'+q.id); if(ev) prevEv[q.id]=ev.value;
+    });
     c.innerHTML = RUBRIC.map(function(q){
-      var labels = [1,2,3,4,5].map(function(n){
-        return '<label data-q="'+q.id+'"><input type="radio" name="'+q.id+'" value="'+n+'"><span class="ev-num">'+n+'</span><span class="ev-lbl">'+SCALE[n-1]+'</span></label>';
+      var d=q[L];
+      var levels = [1,2,3,4].map(function(n){
+        var checked = prev[q.id]==String(n);
+        return '<label class="ev-level'+(checked?' checked':'')+'" data-q="'+q.id+'">'+
+          '<input type="radio" name="'+q.id+'" value="'+n+'"'+(checked?' checked':'')+'>'+
+          '<span class="ev-num">'+n+'</span>'+
+          '<span class="ev-lvl-name">'+esc(SCALE[L][n-1])+'</span>'+
+          '<span class="ev-lvl-desc">'+esc(d.levels[n-1])+'</span></label>';
       }).join('');
-      return '<div class="ev-q"><div class="ev-q-text">'+esc(q.text)+'</div><div class="ev-q-hint">'+esc(q.hint)+'</div><div class="ev-scale">'+labels+'</div></div>';
+      var pct = Math.round(q.weight*100);
+      return '<div class="ev-q">'+
+        '<div class="ev-q-head"><div class="ev-q-text">'+q.n_+'. '+esc(d.text)+'</div>'+
+        '<div class="ev-q-tags"><span class="ev-dim">'+esc(dimLabel(d.dim))+'</span>'+
+        '<span class="ev-weight">'+T('Peso','Weight')+' '+pct+'%</span></div></div>'+
+        '<div class="ev-levels">'+levels+'</div>'+
+        '<div class="ev-field ev-evfield"><label>'+T('Evidencia observada (opcional)','Observed evidence (optional)')+'</label>'+
+        '<textarea id="evev-'+q.id+'" placeholder="'+escAttr(T('Documento, registro, carpeta 05_CrossAssessment, enlace…','Document, record, 05_CrossAssessment folder, link…'))+'">'+esc(prevEv[q.id]||'')+'</textarea></div>'+
+        '</div>';
     }).join('');
-    c.querySelectorAll('.ev-scale label').forEach(function(l){
+    c.querySelectorAll('.ev-levels label').forEach(function(l){
       l.addEventListener('click', function(){
         l.parentElement.querySelectorAll('label').forEach(function(x){ x.classList.remove('checked'); });
         l.classList.add('checked');
@@ -2014,35 +2142,49 @@ if(heroBg)addEventListener('scroll',()=>{heroBg.style.transform='scale(1.05) tra
       });
     });
   }
+  /* índice legible (1..8) para el título de cada criterio */
+  RUBRIC.forEach(function(q,i){ q.n_ = i+1; });
   renderRubric();
 
+  function norm(s){ return String(s==null?'':s).toLowerCase().replace(/\s+/g,' ').trim(); }
   document.getElementById('evSubmit').addEventListener('click', function(){
     var name=val('evName'), org=val('evOrg'), country=val('evCountry'), pilot=val('evPilot');
-    if(!name||!org||!country){ msg('Completa nombre, organización y país.', false); return; }
-    if(!pilot){ msg('Selecciona el piloto a evaluar.', false); return; }
-    var scores={}, missing=false;
+    if(!name||!org||!country){ msg(T('Completa nombre, organización y país.','Fill in name, organization and country.'), false); return; }
+    if(!pilot){ msg(T('Selecciona el piloto a evaluar.','Select the pilot to assess.'), false); return; }
+    /* Regla del Excel: sin autoevaluación — la institución del evaluador debe diferir de la responsable del piloto */
+    var owner=ownerOf(pilot);
+    if(owner && norm(owner)===norm(org)){
+      msg(T('No se permite autoevaluación: tu organización es responsable de este piloto. Debe evaluarlo otra institución del consorcio.',
+            'Self-assessment is not allowed: your organization is responsible for this pilot. It must be assessed by another consortium institution.'), false); return;
+    }
+    var scores={}, evidence={}, missing=false;
     RUBRIC.forEach(function(q){
       var sel = sec.querySelector('input[name="'+q.id+'"]:checked');
       if(!sel){ missing=true; } else { scores[q.id]=Number(sel.value); }
+      var ev=document.getElementById('evev-'+q.id); evidence[q.id]= ev? ev.value.trim() : '';
     });
-    if(missing){ msg('Responde los 7 criterios de la rúbrica.', false); return; }
+    if(missing){ msg(T('Responde los 8 criterios de la rúbrica.','Answer all 8 rubric criteria.'), false); return; }
+    var w=weighted(scores), p=pctOf(w), st=stateFor(p);
     DATA.evaluations.push({
       id:Date.now(), timestamp:new Date().toISOString(),
       evaluator:{name:name,org:org,country:country,email:val('evEmail')},
-      pilotId:pilot, scores:scores, comments:val('evComments')
+      pilotId:pilot, scores:scores, evidence:evidence,
+      weighted:Number(w.toFixed(3)), pct:Number(p.toFixed(1)), state:st.key,
+      comments:val('evComments')
     });
     save(DATA);
     ['evName','evOrg','evCountry','evEmail','evComments'].forEach(function(id){ document.getElementById(id).value=''; });
     document.getElementById('evPilot').value='';
-    sec.querySelectorAll('.ev-scale label').forEach(function(l){ l.classList.remove('checked'); });
-    sec.querySelectorAll('.ev-scale input').forEach(function(i){ i.checked=false; });
-    msg('✓ Evaluación enviada. Gracias por tu aporte al cross-assessment. ', true);
+    sec.querySelectorAll('.ev-levels label').forEach(function(l){ l.classList.remove('checked'); });
+    sec.querySelectorAll('.ev-levels input').forEach(function(i){ i.checked=false; });
+    sec.querySelectorAll('[id^="evev-"]').forEach(function(t){ t.value=''; });
+    msg(T('✓ Evaluación enviada. Gracias por tu aporte al cross-assessment. ','✓ Assessment submitted. Thank you for contributing to the cross-assessment. '), true);
     window.scrollTo({top: sec.querySelector('.ev-subnav').getBoundingClientRect().top+window.scrollY-96, behavior:'smooth'});
   });
   function val(id){ var e=document.getElementById(id); return e? e.value.trim() : ''; }
   function msg(t, ok){
     var box=document.getElementById('evFormMsg');
-    box.innerHTML='<div class="ev-alert '+(ok?'ok':'info')+'" style="margin-bottom:16px">'+esc(t)+(ok?'<a href="#" onclick="evGo(\'resultados\');return false;" style="color:var(--n4);font-weight:700"> Ver resultados</a>':'')+'</div>';
+    box.innerHTML='<div class="ev-alert '+(ok?'ok':'info')+'" style="margin-bottom:16px">'+esc(t)+(ok?'<a href="#" onclick="evGo(\'resultados\');return false;" style="color:var(--n4);font-weight:700"> '+T('Ver resultados','View results')+'</a>':'')+'</div>';
   }
 
   /* ---- Pilotos del consorcio ---- */
@@ -2083,30 +2225,40 @@ if(heroBg)addEventListener('scroll',()=>{heroBg.style.transform='scale(1.05) tra
     var ext=DATA.consortiumPilots.filter(function(p){ return 'ext-'+p.id===id; })[0];
     return ext ? (ext.name+' ('+ext.org+')') : id;
   }
+  /* % de logro de una evaluación (usa lo guardado; recalcula como respaldo) */
+  function evPct(e){ return (typeof e.pct==='number') ? e.pct : pctOf(weighted(e.scores||{})); }
+  function stateBadge(p){ var s=stateFor(p); return '<span class="ev-state '+s.key+'">'+T(s.es,s.en)+'</span>'; }
+  var empty = function(){ return '<div class="ev-empty">'+T('Todavía no hay evaluaciones registradas.','No assessments recorded yet.')+'</div>'; };
+
   function renderResults(){
     var evs=DATA.evaluations, total=evs.length;
     var orgs={}; evs.forEach(function(e){ orgs[e.evaluator.org]=1; });
-    var allScores=[]; evs.forEach(function(e){ Object.keys(e.scores).forEach(function(k){ allScores.push(e.scores[k]); }); });
+    var globalPct = total ? avg(evs.map(evPct)) : null;
     document.getElementById('evTopStats').innerHTML =
-      stat(total,'evaluaciones recibidas') + stat(Object.keys(orgs).length,'organizaciones evaluadoras') + stat(allScores.length?avg(allScores).toFixed(2):'—','promedio global (1–5)');
+      stat(total, T('evaluaciones recibidas','assessments received')) +
+      stat(Object.keys(orgs).length, T('organizaciones evaluadoras','assessing organizations')) +
+      stat(globalPct==null?'—':(Math.round(globalPct)+'%'), T('% de logro promedio','average achievement %'));
 
     var byPilot={};
-    evs.forEach(function(e){ (byPilot[e.pilotId]=byPilot[e.pilotId]||[]).push(avg(Object.keys(e.scores).map(function(k){return e.scores[k];}))); });
+    evs.forEach(function(e){ (byPilot[e.pilotId]=byPilot[e.pilotId]||[]).push(evPct(e)); });
     var pa=document.getElementById('evPilotAverages');
     var keys=Object.keys(byPilot);
     pa.innerHTML = keys.length ? keys.map(function(id){
-      var m=avg(byPilot[id]);
-      return '<div class="ev-bar-row"><div class="top"><span>'+esc(pilotName(id))+'</span><span>'+m.toFixed(2)+' / 5 · '+byPilot[id].length+' eval.</span></div><div class="ev-bar"><i style="width:'+(m/5*100)+'%"></i></div></div>';
-    }).join('') : '<div class="ev-empty">Todavía no hay evaluaciones registradas.</div>';
+      var arr=byPilot[id], m=avg(arr), n=arr.length;
+      var warn = n<2 ? ' <span class="ev-minwarn">'+T('Requiere ≥2 evaluadores de instituciones distintas','Requires ≥2 assessors from different institutions')+'</span>' : '';
+      return '<div class="ev-bar-row"><div class="top"><span>'+esc(pilotName(id))+'</span>'+
+        '<span>'+m.toFixed(1)+'% · '+n+' '+T('eval.','rev.')+' '+stateBadge(m)+'</span></div>'+
+        '<div class="ev-bar"><i class="st-'+stateFor(m).key+'" style="width:'+Math.min(m,100)+'%"></i></div>'+warn+'</div>';
+    }).join('') : empty();
 
     var list=document.getElementById('evEvaluationsList');
     list.innerHTML = total ? evs.slice().reverse().map(function(e){
-      var m=avg(Object.keys(e.scores).map(function(k){return e.scores[k];})).toFixed(2);
-      var when=new Date(e.timestamp).toLocaleString('es-CL');
+      var p=evPct(e), w=(typeof e.weighted==='number'?e.weighted:weighted(e.scores||{}));
+      var when=new Date(e.timestamp).toLocaleString(lang()==='en'?'en-GB':'es-CL');
       return '<div class="ev-evalcard"><div class="meta">'+esc(e.evaluator.name)+' · '+esc(e.evaluator.org)+' ('+esc(e.evaluator.country)+') · '+when+'</div>'+
-        '<strong>'+esc(pilotName(e.pilotId))+'</strong> — promedio '+m+' / 5'+
+        '<strong>'+esc(pilotName(e.pilotId))+'</strong> — '+w.toFixed(2)+' / 4 · '+p.toFixed(1)+'% '+stateBadge(p)+
         (e.comments?'<div class="cmt">'+esc(e.comments)+'</div>':'')+'</div>';
-    }).join('') : '<div class="ev-empty">Todavía no hay evaluaciones registradas.</div>';
+    }).join('') : empty();
   }
   function stat(n,l){ return '<div class="ev-stat"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>'; }
 
@@ -2115,12 +2267,21 @@ if(heroBg)addEventListener('scroll',()=>{heroBg.style.transform='scale(1.05) tra
     dl(new Blob([JSON.stringify(DATA,null,2)],{type:'application/json'}),'cross-assessment-wp3.json');
   });
   document.getElementById('evExportCsv').addEventListener('click', function(){
-    if(!DATA.evaluations.length){ alert('No hay evaluaciones para exportar.'); return; }
-    var head=['Fecha','Evaluador','Organización','País','Email','Piloto'].concat(RUBRIC.map(function(q,i){return 'Q'+(i+1)+'_'+q.text;})).concat(['Promedio','Comentarios']);
+    if(!DATA.evaluations.length){ alert(T('No hay evaluaciones para exportar.','No assessments to export.')); return; }
+    /* Cabecera: por criterio Nivel(1-4) con su peso; luego Ponderado/4, %Logro, Estado, evidencias y comentarios */
+    var head=['Fecha','Evaluador','Organización','País','Email','Piloto']
+      .concat(RUBRIC.map(function(q){return 'N'+q.n_+'_nivel('+Math.round(q.weight*100)+'%)';}))
+      .concat(['Ponderado(/4)','%Logro','Estado'])
+      .concat(RUBRIC.map(function(q){return 'Evidencia_'+q.n_;}))
+      .concat(['Comentarios']);
     var rows=DATA.evaluations.map(function(e){
-      var overall=avg(RUBRIC.map(function(q){return e.scores[q.id];})).toFixed(2);
+      var w=(typeof e.weighted==='number'?e.weighted:weighted(e.scores||{}));
+      var p=evPct(e), st=stateFor(p), ev=e.evidence||{};
       return [e.timestamp,e.evaluator.name,e.evaluator.org,e.evaluator.country,e.evaluator.email||'',pilotName(e.pilotId)]
-        .concat(RUBRIC.map(function(q){return e.scores[q.id];})).concat([overall,(e.comments||'').replace(/\n/g,' ')]);
+        .concat(RUBRIC.map(function(q){return e.scores[q.id];}))
+        .concat([w.toFixed(2), p.toFixed(1), st.es])
+        .concat(RUBRIC.map(function(q){return (ev[q.id]||'').replace(/\n/g,' ');}))
+        .concat([(e.comments||'').replace(/\n/g,' ')]);
     });
     var csv=[head].concat(rows).map(function(r){ return r.map(function(c){ return '"'+String(c==null?'':c).replace(/"/g,'""')+'"'; }).join(','); }).join('\n');
     dl(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'}),'cross-assessment-evaluaciones.csv');
@@ -2128,6 +2289,14 @@ if(heroBg)addEventListener('scroll',()=>{heroBg.style.transform='scale(1.05) tra
 
   refreshPilotSelect();
   renderConsortium();
+
+  /* Re-render dependiente del idioma (lo invoca setLang del bloque i18n) */
+  window.evOnLang = function(){
+    renderRubric();
+    var active = sec.querySelector('.ev-panel.active');
+    if(active && active.id==='ev-resultados') renderResults();
+    if(active && active.id==='ev-consorcio') renderConsortium();
+  };
 })();
 </script>
 
@@ -2176,6 +2345,7 @@ if(heroBg)addEventListener('scroll',()=>{heroBg.style.transform='scale(1.05) tra
     document.querySelectorAll('.i18n-es').forEach(function(el){ el.style.display = (lang==='es') ? '' : 'none'; });
     document.querySelectorAll('.i18n-en').forEach(function(el){ el.style.display = (lang==='en') ? '' : 'none'; });
     applyText(document, lang);
+    if(typeof window.evOnLang === 'function') window.evOnLang();
   }
   window.setLang = setLang;
 
