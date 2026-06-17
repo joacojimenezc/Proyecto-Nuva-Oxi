@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(git clone https://github.com/sebastiancerda-IA/wp3-deploy.git \"C:\\\\Users\\\\jimen\\\\OneDrive\\\\Escritorio\\\\wp3-deploy\")"
+    ]
+  }
+}
