@@ -2372,7 +2372,7 @@ if(heroBg)addEventListener('scroll',()=>{heroBg.style.transform='scale(1.05) tra
   /* ====== Integración con Google Sheet (base de datos compartida) ======
      Pega la URL /exec del Apps Script en EVAL_API (ver apps-script/README_DESPLIEGUE.md).
      Mientras EVAL_API esté vacío, la web usa respaldo local (localStorage) y nada se rompe. */
-  var EVAL_API = '';
+  var EVAL_API = 'https://script.google.com/macros/s/AKfycbxU64AhIDL90bmFNyR5y2b36gHKY0dvi0RsKBClQt2vc6F3iA6NctWX0K-77T9b-HUF/exec';
   var EVAL_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1WCnjvygXah8H2eutZYdvVcZJ7IKcsdi4UknXz0ZNxBU/edit';
   function syncFromServer(cb){
     if(!EVAL_API){ if(cb)cb(); return; }
