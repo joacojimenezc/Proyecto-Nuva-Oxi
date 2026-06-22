@@ -1468,6 +1468,201 @@ h1,h2,h3{letter-spacing:-.5px}
 ::selection{background:var(--a1);color:var(--n1)}
 @media print{.nav,.pilot-nav,.lang-toggle{display:none!important}}
 </style>
+<style id="revista-skin">
+/* ============================================================================
+   REVISTA SKIN · jun 2026 — Rediseño inmersivo oscuro estilo Revista WP3
+   Remapea la paleta a teal/navy, oscurece todas las superficies, integra las
+   fotos y añade detalles editoriales. NO toca el HTML ni el JS.
+   ========================================================================== */
+:root{
+  --n1:#06131f; --n2:#0b2032; --n3:#12324a; --n4:#15b8c9; --n5:#3fcdd8;
+  --g1:#0e93a4; --g2:#15b8c9; --g3:#62d3df;
+  --a1:#34c6d4; --a2:#9fe7ef;
+  --ink:#eaf4f6; --body:#bcd2da; --muted:#85a3af; --light:#cfe3e8;
+  --paper:#0b2032; --soft:#102a40; --soft2:#16344f; --line:rgba(255,255,255,.13);
+  --teal:#15b8c9; --coral:#e85b4d; --lime:#8cc63f; --blu:#2f6fb0; --gold:#d8a657;
+  --navy:#06131f; --navy2:#0a1f33;
+}
+/* ---- fondos base oscuros (anula los blancos) ---- */
+html:not(.embed) body{background:var(--navy)!important}
+#home.app-section,#mes-azul,#diplomado,#guardianes,#microvet,#evaluacion,#repositorio{background:transparent!important}
+.pilot-page,.panel-page{background:linear-gradient(180deg,#06131f 0%,#0a1f33 100%)!important;color:var(--body)}
+#programa{background:linear-gradient(180deg,#06131f 0%,#0a2033 60%,#06131f 100%)!important;position:relative;z-index:3}
+/* halo decorativo sobre las secciones oscuras */
+.pilot-page::before,.panel-page::before,#programa::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(900px 420px at 88% -8%,rgba(21,184,201,.10),transparent 60%);z-index:0}
+.pilot-page .wrap,.panel-page .wrap,#programa .wrap{position:relative;z-index:2}
+
+/* ---- HERO inmersivo con foto (solo standalone, no embed) ---- */
+html:not(.embed) #home #hero{
+  position:relative!important;min-height:90vh!important;height:auto!important;max-height:none!important;
+  display:flex!important;align-items:center!important;background:#06131f!important;overflow:hidden!important}
+html:not(.embed) #home #hero .hero-bg{
+  display:block!important;visibility:visible!important;opacity:1!important;position:absolute!important;inset:0!important;
+  background:url('assets/hero.jpg') center/cover no-repeat!important;transform:scale(1.04);z-index:0!important;filter:saturate(1.05)}
+html:not(.embed) #home #hero .hero-veil{
+  display:block!important;visibility:visible!important;opacity:1!important;position:absolute!important;inset:0!important;z-index:1!important;
+  background:linear-gradient(90deg,rgba(4,15,25,.94) 0%,rgba(5,18,30,.78) 42%,rgba(5,18,30,.45) 100%),
+             linear-gradient(0deg,rgba(4,15,25,.85),transparent 38%)!important}
+html:not(.embed) #home #hero::before{display:none!important}
+html:not(.embed) #home #hero .wrap.hero-grid{position:relative!important;z-index:3!important;align-items:center!important}
+html:not(.embed) #home #hero .hero-waves{display:none!important}
+#home #hero h1.hero-title{color:#fff!important}
+#home #hero h1.hero-title em,h1.hero-title em{font-style:italic!important;color:var(--teal)!important}
+#home #hero .hero-pills .pill,#home #hero .pill{
+  background:rgba(21,184,201,.12)!important;color:#bdeef3!important;border:1px solid rgba(21,184,201,.40)!important;
+  backdrop-filter:blur(6px)!important;font-weight:700!important}
+
+/* ---- NAV (ya oscuro): acento teal ---- */
+.brand-mark{background:linear-gradient(135deg,#15b8c9,#0e8fa0)!important}
+.nav.solid,.nav{background:rgba(6,19,31,.92)!important}
+.nav-links .tab-btn.active{background:rgba(21,184,201,.16)!important;color:#fff!important}
+
+/* ---- TIPOGRAFÍA editorial: kickers y títulos ---- */
+.eyebrow,.pc-kicker,.pcs-kicker,.ev-step,.partners-title,.timeline-title,.resource-card h4,.dl-card-tag{
+  color:var(--teal)!important;letter-spacing:3px!important}
+.section-title,.panel-card h2,.microvet-hero-card h2,.mentor-heading h2,.pilot-page .p-hero h2,.pilot-page .sec-head{color:#fff!important}
+.section-title{position:relative}
+.section-title::after{content:"";display:block;width:118px;height:3px;border-radius:3px;margin-top:20px;
+  background:var(--teal);box-shadow:14px 0 0 -1px var(--teal)}
+.section-lead,.prog-text p,.lead,.sec-sub{color:var(--body)!important}
+.prog-text p b{color:#fff!important}
+
+/* ---- TARJETAS / superficies: de blanco a navy translúcido ---- */
+.panel-card,.microvet-card,.ev-card,.resource-card,.canvas-download-card,.drive-resources,
+.hist-card,.phase,.mbloc,.kpi,.timeline,.partners-panel,.partner-card,.entrev,.canvas-block,
+.m1-fig,.stat,.pc-header,.pc-sect,.note,.microvet-note,.dl-block,.mentor-heading,.mentor-subnav,
+.diplomado-workshop .workshop-header,.diplomado-workshop .editable-box,.diplomado-workshop .saved-section,
+#evaluacion .ev-stat,#evaluacion .ev-evalcard,#evaluacion .ev-empty,.hist-pending,.canvas-panel{
+  background:rgba(255,255,255,.045)!important;border:1px solid var(--line)!important;color:var(--body)!important;
+  box-shadow:0 22px 60px -38px rgba(0,0,0,.8)!important}
+.mbloc.hl,.pilot-page .mbloc.hl{background:linear-gradient(135deg,rgba(21,184,201,.16),rgba(255,255,255,.04))!important;border-color:rgba(21,184,201,.4)!important}
+.stat-n,.kpi strong,.ev-stat .n,.microvet-hero-card h2{color:var(--teal)!important}
+.stat-l,.kpi span,.tl-body p,.m-body span,.phase p,.mbloc span,.hist-card p,.resource-link small,.dl-link small{color:var(--muted)!important}
+.tl-body h4,.m-body b,.phase h4,.mbloc b.t,.partner-card h4,.entrev-title,.canvas-block b,.pcs-title{color:#fff!important}
+.partner-card p{color:var(--muted)!important}
+/* logos de socios: chip claro para verse sobre navy */
+.partner-logo-wrap{background:#fff!important;border-radius:9px!important;padding:8px 10px!important;align-self:flex-start}
+.footer-logos{background:#fff!important}
+
+/* ---- listas y viñetas teal ---- */
+.section-list li::before,.hist-list li::before,.pilot-page .hist-list li::before{background:var(--teal)!important}
+.entrev-qs li::before{color:var(--teal)!important}
+.section-list li b,.hist-list li b,.pilot-page .hist-list li b{color:#fff!important}
+
+/* ---- chips / pills ---- */
+.tag,.pill,.p-pill,.microvet-pill,.ev-pill,.hist-card .pill{
+  background:rgba(21,184,201,.10)!important;border:1px solid rgba(21,184,201,.28)!important;color:#bdeef3!important}
+.pilot-page .p-pill.go,.p-pill.go{background:var(--teal)!important;border-color:var(--teal)!important;color:#06131f!important;font-weight:800!important}
+
+/* ---- tablas ---- */
+table,#evaluacion table.ev-table{background:rgba(255,255,255,.03)!important;border-color:var(--line)!important}
+th,#evaluacion table.ev-table th,.canvas-table th{background:#0e2a40!important;color:#dff3f6!important;border-color:var(--line)!important}
+td,.canvas-table td{color:var(--body)!important;border-color:var(--line)!important}
+tr:nth-child(even) td,.canvas-table tr:nth-child(even) td{background:rgba(255,255,255,.025)!important}
+.canvas-table td:first-child{color:#bdeef3!important}
+
+/* ---- formularios (evaluación / diplomado) ---- */
+input[type=text],input,select,textarea,
+#evaluacion .ev-field input,#evaluacion .ev-field select,#evaluacion .ev-field textarea,
+.diplomado-workshop input[type=text],.diplomado-workshop textarea{
+  background:rgba(255,255,255,.05)!important;border:1px solid var(--line)!important;color:#eaf4f6!important}
+#evaluacion .ev-scale label,#evaluacion .ev-level{background:rgba(255,255,255,.04)!important;border-color:var(--line)!important;color:var(--body)!important}
+#evaluacion .ev-scale label.checked,#evaluacion .ev-level.checked{background:var(--teal)!important;border-color:var(--teal)!important;color:#06131f!important}
+#evaluacion .ev-scale label.checked .ev-num,#evaluacion .ev-level.checked .ev-num,
+#evaluacion .ev-scale label.checked .ev-lbl,#evaluacion .ev-level.checked .ev-lvl-name,#evaluacion .ev-level.checked .ev-lvl-desc{color:#06131f!important}
+#evaluacion .ev-tab{background:rgba(255,255,255,.05)!important;border-color:var(--line)!important;color:var(--light)!important}
+#evaluacion .ev-tab.active{background:var(--teal)!important;border-color:var(--teal)!important;color:#06131f!important}
+#evaluacion .ev-num,#evaluacion .ev-level .ev-num{color:var(--teal)!important}
+#evaluacion .ev-bar{background:rgba(255,255,255,.10)!important}
+#evaluacion .ev-bar i{background:linear-gradient(90deg,var(--teal),#0e8fa0)!important}
+.note,.microvet-note,#evaluacion .ev-alert.info,.diplomado-workshop .editable-note,.dl-note,.empty-state,.upload{
+  background:rgba(255,255,255,.04)!important;border-color:var(--line)!important;color:var(--muted)!important}
+
+/* ---- enlaces de descarga ---- */
+.dl-link,.resource-link,.dl-file{background:rgba(255,255,255,.05)!important;border-color:var(--line)!important;color:#dff3f6!important}
+.dl-link:hover,.resource-link:hover,.dl-file:hover{border-color:var(--teal)!important;color:#fff!important;background:rgba(21,184,201,.14)!important}
+
+/* ---- subnav / tabs internos ---- */
+.mentor-tab,.ptab{background:rgba(255,255,255,.05)!important;border-color:var(--line)!important;color:var(--light)!important}
+.mentor-tab.active,.ptab.active{background:var(--teal)!important;border-color:var(--teal)!important;color:#06131f!important}
+
+/* ---- HEROES de piloto con foto + velo ---- */
+.pilot-page .p-hero{position:relative;border:1px solid rgba(255,255,255,.14)!important}
+.pilot-page .p-hero::after{background:rgba(21,184,201,.20)!important}
+#mes-azul .p-hero{background:linear-gradient(110deg,rgba(6,19,31,.92),rgba(6,19,31,.55)),url('assets/piloto-mesazul.jpg') center/cover!important}
+#diplomado .p-hero{background:linear-gradient(110deg,rgba(6,19,31,.92),rgba(6,19,31,.55)),url('assets/piloto-diplomado.jpg') center/cover!important}
+#guardianes .p-hero{background:linear-gradient(110deg,rgba(6,19,31,.92),rgba(6,19,31,.55)),url('assets/piloto-guardianes.jpg') center/cover!important}
+.pilot-page .p-hero h2,.pilot-page .p-hero p{color:#fff!important}
+.pilot-page .p-hero .eyebrow{color:#9fe7ef!important}
+.pilot-page .hist-solution{background:linear-gradient(135deg,rgba(21,184,201,.22),rgba(11,32,50,.6))!important;border:1px solid rgba(21,184,201,.35)!important}
+.pilot-page .hist-solution h5{color:#9fe7ef!important}
+.pilot-page .hist-solution p{color:#eaf4f6!important}
+.pilot-page .sec-head::before{background:linear-gradient(90deg,var(--teal),#9fe7ef)!important}
+.pilot-page .phase::before,.mbloc .num,.canvas-block .num,.pilot-page .mbloc .num{background:linear-gradient(135deg,var(--teal),#0e8fa0)!important}
+.pilot-page .phase .ph-ph,.canvas-panel h4,.m1-figs>h4,.resource-card h4{color:var(--teal)!important}
+
+/* ---- MicroVET hero con foto ---- */
+.microvet-hero-card{background:linear-gradient(120deg,rgba(6,19,31,.93),rgba(10,31,51,.7)),url('assets/microvet.jpg') center/cover!important;border:1px solid rgba(255,255,255,.14)!important}
+.microvet-hero-card p{color:rgba(255,255,255,.86)!important}
+.microvet-step{background:rgba(255,255,255,.05)!important;border-color:var(--line)!important}
+.microvet-step b{color:#bdeef3!important}.microvet-step span{color:var(--muted)!important}
+.microvet-pill{background:rgba(21,184,201,.14)!important;border-color:rgba(21,184,201,.3)!important}
+
+/* ---- programa: imagen y stats ---- */
+#programa .prog-img{box-shadow:0 30px 70px -30px rgba(0,0,0,.8)!important;border:1px solid var(--line)}
+#programa .prog-img-tag{background:rgba(6,19,31,.8)!important;border:1px solid rgba(21,184,201,.3)}
+
+/* ---- botones ---- */
+.btn-primary,.btn-nav,.link-btn.secondary,.diplomado-workshop .submit-response{background:var(--teal)!important;color:#06131f!important;box-shadow:0 14px 32px -10px rgba(21,184,201,.5)!important}
+.btn-primary:hover,.btn-nav:hover{background:#0e8fa0!important}
+.btn-canvas-dl{background:linear-gradient(135deg,var(--teal),#0e8fa0)!important;color:#06131f!important}
+.btn-canvas-print{background:rgba(255,255,255,.06)!important;color:#dff3f6!important;border:1.5px solid var(--line)!important}
+.btn-dl-ppt,.m-tag,#evaluacion .ev-badge,#evaluacion .ev-weight{background:#0e2a40!important;color:#dff3f6!important}
+.link-btn{background:rgba(21,184,201,.16)!important;color:#bdeef3!important}
+
+/* ---- footer ---- */
+footer{background:#040d16!important;border-top:1px solid var(--line)}
+.footer-desc,.footer-col a,.footer-col p{color:var(--muted)!important}
+.footer-col a:hover{color:var(--teal)!important}
+.footer-col h5{color:rgba(255,255,255,.5)!important}
+
+/* ---- varios ---- */
+::selection{background:var(--teal);color:#06131f}
+.iframe-wrap,.sheet-frame-wrap{border-color:var(--line)!important}
+
+/* ===== AJUSTES v2: contraste de texto + compactar espacios vacíos ===== */
+/* contraste: títulos/labels que quedaban en navy oscuro sobre fondo oscuro */
+.hist-block h4,.microvet-card h3,.canvas-download-card h4,#evaluacion .ev-card h3,
+#evaluacion .ev-q-text,.hist-pending h3,.drive-resources .res-head h3,.canvas-mini b,
+.panel-card h2,.panel-card h3,.resource-card h4,.m1-fig figcaption b,.dl-card-title,
+.diplomado-workshop .workshop-title,.diplomado-workshop .editable-box h4,.diplomado-workshop .saved-head h3{
+  color:#eaf6f8!important}
+.pilot-page .phase .ph-meta{color:#94b1bb!important}
+.pilot-page .phase .ph-meta b{color:#d4ebef!important}
+.diplomado-workshop .workshop-lead,.diplomado-workshop .editable-box .instruction,
+.diplomado-workshop .empty-state,.diplomado-workshop .saved-table td,.m1-fig figcaption span{color:#bcd2da!important}
+.diplomado-workshop .saved-table th{background:#0e2a40!important;color:#dff3f6!important}
+.diplomado-workshop label{color:#62d3df!important}
+.diplomado-workshop .small-btn{background:rgba(255,255,255,.06)!important;border-color:var(--line)!important;color:#dff3f6!important}
+.canvas-mini span,.canvas-block span,.entrev-obj,.vid-caption,.m1-figs>.cap{color:#bcd2da!important}
+.hist-pending p,.hist-pending .tag{color:#9fb9c2!important}
+/* títulos con color inline navy (var--n1/n2/n3) → claros */
+[style*="color:var(--n1)"],[style*="color: var(--n1)"],[style*="color:var(--n2)"],[style*="color: var(--n2)"],[style*="color:var(--n3)"]{color:#eaf6f8!important}
+#evaluacion h2,#evaluacion h3,#evaluacion .panel-card-title{color:#eaf6f8!important}
+
+/* compactar: hero a la altura del contenido (sin foto vacía abajo) */
+html:not(.embed) #home #hero{min-height:0!important;height:auto!important;max-height:none!important;
+  padding:96px 0 56px!important;align-items:center!important}
+html:not(.embed) #home #hero .hero-content{padding-top:6px!important;padding-bottom:30px!important}
+/* compactar: piloto y paneles (la barra superior es relativa → no necesitan tanto top) */
+.pilot-page,.panel-page{padding:38px 0 70px!important}
+.pilot-page .wrap,.panel-page .wrap{padding-top:16px!important;padding-bottom:38px!important}
+#programa{padding:46px 0 70px!important}
+.pilot-page .sec-head{margin-top:30px!important}
+.hist-grid{margin-top:18px!important}
+@media(max-width:900px){html:not(.embed) #home #hero{padding:104px 0 48px!important}}
+</style>
 </head>
 <body><header class="nav" id="mainNav">
 <div class="nav-inner">
@@ -1485,7 +1680,7 @@ h1,h2,h3{letter-spacing:-.5px}
 <button data-tab="guardianes" type="button">Guardianes del Agua</button>
 </div>
 </div>
-<button class="tab-btn" data-tab="microvet" type="button">MicroVET</button><button class="tab-btn" data-tab="evaluacion" type="button">Evaluación</button><button class="tab-btn" data-tab="repositorio" type="button">Repositorio</button>
+<button class="tab-btn" data-tab="microvet" type="button">MicroVET</button><button class="tab-btn" data-tab="evaluacion" type="button">Evaluación</button><button class="tab-btn" data-tab="repositorio" type="button">Entregables WP3</button>
 </nav>
 <div class="lang-toggle" id="langToggle"><button class="lang-btn active" data-lang="es" type="button">ES</button><button class="lang-btn" data-lang="en" type="button">EN</button></div>
 </div>
@@ -1628,12 +1823,7 @@ a.btn-canvas-dl{text-decoration:none}
 <div class="hist-side">
 <div class="hist-card"><h5>Equipo y red</h5><span class="pill">Paola Cerda</span><span class="pill">Víctor Bravo</span><span class="pill">Javiera Núñez</span><span class="pill">Aldo Poblete</span><span class="pill">Jessica Morales · Uniminuto</span><span class="pill">Sebastián Gallardo · UA</span></div>
 <div class="hist-solution"><h5>Estado y próximo paso</h5><p>Solución validada; en fase de implementación. Falta cerrar cronograma, presupuesto, red de auspicios/becas y métricas, y formalizar el convenio con la U. de Antofagasta.</p></div>
-<div class="dl-block"><h5>Descargas del piloto</h5><div class="dl-list">
-<a class="dl-link" href="https://docs.google.com/document/d/1jG_aTS4WxxDyuRa3CU7R3X0Yba6S8uLQlEj8L0fJaA8/edit" rel="noopener" target="_blank"><span>Documento de solución v0.8 · con M4</span><small>Abrir</small></a>
-<a class="dl-link" href="https://docs.google.com/presentation/d/1aj0ndxh7oUBkU5sd_j4m0Xog4XLL1dvZKj2PlVhdAJQ/edit" rel="noopener" target="_blank"><span>Presentación M4 (con mentor)</span><small>Abrir</small></a>
-<a class="dl-link" href="https://docs.google.com/presentation/d/1nKXGZxHzRA0Q-rZNUib9htjNW4-iGTTq-MUN09endEA/edit" rel="noopener" target="_blank"><span>Presentación M1</span><small>Abrir</small></a>
-<a class="dl-link" href="https://drive.google.com/drive/folders/1Yf2sA5_KffChUNp_cQkxFnxWsuJOgs3g" rel="noopener" target="_blank"><span>Carpeta del piloto (Drive)</span><small>Abrir</small></a>
-</div></div>
+<!-- Descargas del piloto removidas: en cada piloto solo quedan los canvas (ver "Descargar canvas MicroVET"). Los documentos están en Entregables WP3. -->
 </div>
 </div>
 
@@ -1699,12 +1889,7 @@ a.btn-canvas-dl{text-decoration:none}
 <div class="hist-side">
 <div class="hist-card"><h5>Equipo y red</h5><span class="pill">Juan Otero</span><span class="pill">Estefanía Campos</span><span class="pill">Sebastián Cerda</span><span class="pill">Aldo Poblete</span><span class="pill">Subpesca · IFOP · Sernapesca</span><span class="pill">Caletas y gremios</span></div>
 <div class="hist-solution"><h5>Estado y próximo paso</h5><p>Solución validada en empleabilidad; en fase de implementación. Falta presentarlo a coordinación académica (Hilda Zúñiga) y rectoría, fijar equipo docente, costos y financiamiento SENCE.</p></div>
-<div class="dl-block"><h5>Descargas del piloto</h5><div class="dl-list">
-<a class="dl-link" href="https://docs.google.com/document/d/1LKr-fZTmoM6O6KOOL1GQnUjfjuhMIddlCC0yxdUt4LE/edit" rel="noopener" target="_blank"><span>Propuesta v0.5 · con M3</span><small>Abrir</small></a>
-<a class="dl-link" href="https://docs.google.com/presentation/d/1bJx4brgys112NYXSCLyEB2I8P7ddHpsxIL1PdxF4DrA/edit" rel="noopener" target="_blank"><span>Presentación M3y4</span><small>Abrir</small></a>
-<a class="dl-link" href="https://docs.google.com/presentation/d/1SRcOpNBWkZi-SYJ9TSYqqCzZK74QCNi9I_I1BnOV0Sg/edit" rel="noopener" target="_blank"><span>Presentación M1</span><small>Abrir</small></a>
-<a class="dl-link" href="https://drive.google.com/drive/folders/130L_6uOs6_1aIbjSi1q8akLapX1duci5" rel="noopener" target="_blank"><span>Carpeta del piloto (Drive)</span><small>Abrir</small></a>
-</div></div>
+<!-- Descargas del piloto removidas: en cada piloto solo quedan los canvas (ver "Descargar canvas MicroVET"). Los documentos están en Entregables WP3. -->
 </div>
 </div>
 
@@ -1771,12 +1956,7 @@ a.btn-canvas-dl{text-decoration:none}
 <div class="hist-side">
 <div class="hist-card"><h5>Equipo y red</h5><span class="pill">Ada Calderón</span><span class="pill">Tania Melín</span><span class="pill">Eimilyn Alquinta</span><span class="pill">Javiera Núñez</span><span class="pill">Sebastián Gallardo · UA</span><span class="pill">Liceo La Chimba · Escuela MAEB</span></div>
 <div class="hist-solution"><h5>Estado y próximo paso</h5><p>Testeo validado con cartas de colaboración firmadas. Falta cerrar el convenio de continuidad, el sitio web del programa y la fuente de financiamiento (SENCE / RSE).</p></div>
-<div class="dl-block"><h5>Descargas del piloto</h5><div class="dl-list">
-<a class="dl-link" href="https://docs.google.com/document/d/16SahVLWlue2jBduE7bY9Exd_4fHfeAC_7mXhdKSiwUE/edit" rel="noopener" target="_blank"><span>Instructivo escolar v7 · con M3</span><small>Abrir</small></a>
-<a class="dl-link" href="https://docs.google.com/presentation/d/1wrp4C6FmrJzubC1LuSY0WNFi1J8stveE1bbNJehi6rg/edit" rel="noopener" target="_blank"><span>Presentación M3y4</span><small>Abrir</small></a>
-<a class="dl-link" href="https://docs.google.com/presentation/d/1GRlxEWkQvHn4Kj6Tx8JNQKKqvgutN4lniix-hHcshAk/edit" rel="noopener" target="_blank"><span>Presentación M1</span><small>Abrir</small></a>
-<a class="dl-link" href="https://drive.google.com/drive/folders/1R9FqnQM-2DqRx2J1DP9TvGOppE3UXAwd" rel="noopener" target="_blank"><span>Carpeta del piloto (Drive)</span><small>Abrir</small></a>
-</div></div>
+<!-- Descargas del piloto removidas: en cada piloto solo quedan los canvas (ver "Descargar canvas MicroVET"). Los documentos están en Entregables WP3. -->
 </div>
 </div>
 
@@ -1954,13 +2134,12 @@ function descargarCanvas(pilotId, titulo, subt){
 </div>
 </div>
 <div class="app-section panel-page" id="repositorio"><div class="wrap">
-<div class="panel-card"><div class="eyebrow">Repositorio Drive actualizado</div><h2>Descargas por piloto y mentoría</h2><p class="lead">Acceso directo a carpetas, PPT, reportes y documentos de solución de los tres pilotos. Los archivos se abren o descargan desde Google Drive según permisos del usuario.</p>
+<div class="panel-card"><div class="eyebrow">Entregables WP3 · Erasmus+</div><h2>Entregables del proyecto</h2><p class="lead">Documentos finales del paquete de trabajo WP3 en formato revista (A4): los tres casos de estudio por piloto y los informes del proyecto. Se abren o descargan desde Google Drive (carpeta «Entregables WP3» del respaldo ordenado).</p>
 <div class="resource-grid">
-<div class="resource-card"><h4>Mes Azul IDMA</h4><div class="resource-links"><a class="resource-link" href="https://drive.google.com/drive/folders/1Yf2sA5_KffChUNp_cQkxFnxWsuJOgs3g" rel="noopener" target="_blank"><span>Carpeta piloto</span><small>Abrir</small></a><a class="resource-link" href="https://docs.google.com/document/d/1jG_aTS4WxxDyuRa3CU7R3X0Yba6S8uLQlEj8L0fJaA8/edit" rel="noopener" target="_blank"><span>Documento solución v0.8</span><small>Abrir</small></a></div></div>
-<div class="resource-card"><h4>Diplomado Economía Azul</h4><div class="resource-links"><a class="resource-link" href="https://drive.google.com/drive/folders/130L_6uOs6_1aIbjSi1q8akLapX1duci5" rel="noopener" target="_blank"><span>Carpeta piloto</span><small>Abrir</small></a><a class="resource-link" href="https://docs.google.com/document/d/1LKr-fZTmoM6O6KOOL1GQnUjfjuhMIddlCC0yxdUt4LE/edit" rel="noopener" target="_blank"><span>Documento solución v0.5</span><small>Abrir</small></a></div></div>
-<div class="resource-card"><h4>Guardianes del Agua</h4><div class="resource-links"><a class="resource-link" href="https://drive.google.com/drive/folders/1R9FqnQM-2DqRx2J1DP9TvGOppE3UXAwd" rel="noopener" target="_blank"><span>Carpeta piloto</span><small>Abrir</small></a><a class="resource-link" href="https://docs.google.com/document/d/16SahVLWlue2jBduE7bY9Exd_4fHfeAC_7mXhdKSiwUE/edit" rel="noopener" target="_blank"><span>Instructivo escolar v7</span><small>Abrir</small></a></div></div>
+<div class="resource-card"><h4>Casos de estudio</h4><div class="resource-links"><a class="resource-link" href="https://drive.google.com/file/d/1l2PsC4kUCnbcooLhhOXHHQ4yHfABi9Xx/view" rel="noopener" target="_blank"><span>Diplomado en Economía Azul</span><small>PDF</small></a><a class="resource-link" href="https://drive.google.com/file/d/1HDXORDKXxzTo9Jjk4gEcq43w6EykTCKy/view" rel="noopener" target="_blank"><span>Mes Azul IDMA</span><small>PDF</small></a><a class="resource-link" href="https://drive.google.com/file/d/1G9EAtATWD77eKR9jwSaHb33XXbWWZVjs/view" rel="noopener" target="_blank"><span>Guardianes del Agua</span><small>PDF</small></a></div></div>
+<div class="resource-card"><h4>Informes del proyecto</h4><div class="resource-links"><a class="resource-link" href="https://drive.google.com/file/d/1MP3HPDrF_I-87rxwdaJHVO0eZTqBz7nJ/view" rel="noopener" target="_blank"><span>Informe de Casos de Estudio (Compilation Report)</span><small>PDF</small></a><a class="resource-link" href="https://drive.google.com/file/d/1GYD_fHJ4V2DGmgnLwi7CX3Ckajv1D7TT/view" rel="noopener" target="_blank"><span>Informe Final Consolidado WP3</span><small>PDF</small></a></div></div>
+<div class="resource-card"><h4>Carpetas en Drive</h4><div class="resource-links"><a class="resource-link" href="https://drive.google.com/drive/folders/168rJkcueUXOFB50bx0WuFW3Gkv-wZMhx" rel="noopener" target="_blank"><span>Carpeta «Entregables WP3»</span><small>Abrir</small></a><a class="resource-link" href="https://drive.google.com/drive/folders/16zxMKDhhdRpYRWRpOcT1MUZ-BgK10g7Q" rel="noopener" target="_blank"><span>Respaldo ordenado completo</span><small>Abrir</small></a></div></div>
 </div>
-<div class="btn-row"><a class="link-btn" href="https://drive.google.com/drive/folders/16zxMKDhhdRpYRWRpOcT1MUZ-BgK10g7Q" rel="noopener" target="_blank">Abrir respaldo ordenado completo</a><a class="link-btn secondary" href="https://docs.google.com/spreadsheets/d/1SoJaNI3UPk_5_0aBSzF71LTDdlzAyVSlg5b6N3MYBM4" rel="noopener" target="_blank">Abrir coordinación mentorías</a></div>
 </div></div></div><div class="app-section panel-page" id="evaluacion"><div class="wrap">
 <div class="ev-head">
 <div class="eyebrow"><span class="i18n-es">Cross-assessment del consorcio</span><span class="i18n-en">Consortium cross-assessment</span></div>
@@ -2116,7 +2295,8 @@ function descargarCanvas(pilotId, titulo, subt){
 <h3 style="font-family:var(--dp);color:var(--n1);margin:28px 0 10px"><span class="i18n-es">Evaluaciones recibidas</span><span class="i18n-en">Assessments received</span></h3>
 <div id="evEvaluationsList"></div>
 <div class="btn-row" style="margin-top:24px">
-<button class="link-btn secondary" id="evExportXlsx" type="button"><span class="i18n-es">Abrir base de datos de evaluaciones (Excel/Sheet)</span><span class="i18n-en">Open assessments database (Excel/Sheet)</span></button>
+<button class="link-btn" id="evExportXlsx" type="button"><span class="i18n-es">Descargar como Excel (.xlsx)</span><span class="i18n-en">Download as Excel (.xlsx)</span></button>
+<button class="link-btn secondary" id="evOpenSheet" type="button"><span class="i18n-es">Abrir base de datos (Google Sheet)</span><span class="i18n-en">Open database (Google Sheet)</span></button>
 </div>
 </div>
 </div></div>
@@ -2619,8 +2799,9 @@ if(heroBg)addEventListener('scroll',()=>{heroBg.style.transform='scale(1.05) tra
     setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 1500);
   }
 
+  var _evOpenSheet = document.getElementById('evOpenSheet');
+  if(_evOpenSheet){ _evOpenSheet.addEventListener('click', function(){ if(EVAL_SHEET_URL) window.open(EVAL_SHEET_URL,'_blank','noopener'); }); }
   document.getElementById('evExportXlsx').addEventListener('click', function(){
-    if(EVAL_SHEET_URL){ window.open(EVAL_SHEET_URL,'_blank','noopener'); return; }
     if(!DATA.evaluations.length){ alert(T('No hay evaluaciones para exportar.','No assessments to export.')); return; }
     if(typeof JSZip === 'undefined'){ alert(T('No se pudo cargar la librería de Excel. Revisa tu conexión.','The Excel library could not be loaded. Check your connection.')); return; }
     var btn = this; btn.disabled = true;
