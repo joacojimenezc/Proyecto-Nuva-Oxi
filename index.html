@@ -1775,6 +1775,72 @@ html,body,.app-section,.pilot-page,.panel-page,#home,#hero{background-color:#0C2
 #repositorio.panel-page{padding-top:0!important}
 #repositorio>.wrap{padding-top:0!important}
 #repositorio .wp3-fullwidth-deliverables{margin-top:0!important}
+
+/* === Ajustes (B): Cross-Assessment #evaluacion en fondo BLANCO === */
+#evaluacion .ev-card,#evaluacion .ev-stat,#evaluacion .ev-evalcard,#evaluacion .ev-empty{background:#fff!important;border:1px solid #d8e2e6!important;color:#2D4452!important;box-shadow:0 14px 44px -32px rgba(7,30,46,.4)!important}
+#evaluacion .ev-empty{border-style:dashed!important;color:#5A7280!important}
+#evaluacion .ev-card h3,#evaluacion .ev-card h2,#evaluacion .panel-card-title,#evaluacion .ev-q-text{color:#0C2A43!important}
+#evaluacion .ev-card p,#evaluacion .lead,#evaluacion .ev-evalcard .cmt{color:#2D4452!important}
+#evaluacion .ev-card p strong,#evaluacion .ev-card p b{color:#16242F!important}
+#evaluacion .ev-q-hint,#evaluacion .ev-evalcard .meta,#evaluacion .ev-stat .l{color:#5A7280!important}
+#evaluacion .ev-stat .n{color:#1C6E82!important}
+#evaluacion .ev-step{color:#1C6E82!important}
+#evaluacion .ev-field label{color:#16242F!important}
+#evaluacion .ev-field input,#evaluacion .ev-field select,#evaluacion .ev-field textarea,#evaluacion input,#evaluacion select,#evaluacion textarea{background:#fff!important;border:1px solid #d8e2e6!important;color:#16242F!important}
+#evaluacion .ev-field input::placeholder,#evaluacion .ev-field textarea::placeholder,#evaluacion input::placeholder,#evaluacion textarea::placeholder{color:#7B8C99!important;opacity:1!important}
+#evaluacion .ev-field input:focus,#evaluacion .ev-field select:focus,#evaluacion .ev-field textarea:focus{border-color:#1C6E82!important;box-shadow:0 0 0 3px rgba(28,110,130,.14)!important}
+#evaluacion select option,#evaluacion optgroup{background:#fff!important;color:#16242F!important}
+#evaluacion .ev-scale label,#evaluacion .ev-level{background:#fff!important;border:1px solid #d8e2e6!important;color:#2D4452!important}
+#evaluacion .ev-scale label .ev-num,#evaluacion .ev-level .ev-num{color:#1C6E82!important}
+#evaluacion .ev-level .ev-lvl-name{color:#0C2A43!important}
+#evaluacion .ev-level .ev-lvl-desc{color:#2D4452!important}
+#evaluacion .ev-scale label.checked,#evaluacion .ev-level.checked{background:var(--teal,#15b8c9)!important;border-color:var(--teal,#15b8c9)!important;color:#06131f!important}
+#evaluacion .ev-scale label.checked .ev-num,#evaluacion .ev-scale label.checked .ev-lbl,#evaluacion .ev-level.checked .ev-num,#evaluacion .ev-level.checked .ev-lvl-name,#evaluacion .ev-level.checked .ev-lvl-desc{color:#06131f!important}
+#evaluacion .ev-dim{background:#eef3f6!important;border:1px solid #d8e2e6!important;color:#16242F!important}
+#evaluacion .ev-weight,#evaluacion .ev-badge{background:#1C6E82!important;color:#fff!important}
+#evaluacion .ev-pill{background:rgba(28,110,130,.10)!important;border:1px solid rgba(28,110,130,.28)!important;color:#1C6E82!important}
+#evaluacion .ev-alert{color:#16242F!important}
+#evaluacion .ev-alert.info{background:#f0f7f9!important;border:1px solid #d8e2e6!important;color:#16242F!important}
+#evaluacion .ev-alert.ok{background:#eef7f0!important;border:1px solid #8DCBA0!important;color:#1f6b3f!important}
+#evaluacion .ev-alert strong,#evaluacion .ev-alert b,#evaluacion .ev-alert a{color:#0C2A43!important}
+#evaluacion .ev-state.ok{background:#eef7f0!important;color:#1f6b3f!important;border:1px solid #8DCBA0!important}
+#evaluacion .ev-state.warn{background:#fff6e8!important;color:#9a6a16!important;border:1px solid #f0d9a8!important}
+#evaluacion .ev-state.bad{background:#fceeee!important;color:#9a2a2a!important;border:1px solid #f0bcbc!important}
+#evaluacion table.ev-table{background:#fff!important;border:1px solid #d8e2e6!important}
+#evaluacion table.ev-table th{background:#E3EDEF!important;color:#0C2A43!important;border-color:#d8e2e6!important}
+#evaluacion table.ev-table td{color:#2D4452!important;border-color:#d8e2e6!important}
+#evaluacion table.ev-table tr:nth-child(even) td{background:#f7fafb!important}
+#evaluacion .ev-bar{background:#E3EDEF!important}
+#evaluacion .ev-bar-row .top{color:#0C2A43!important}
+#evaluacion .ev-tab{background:#fff!important;border:1px solid #d8e2e6!important;color:#133B57!important}
+#evaluacion .ev-tab:hover{border-color:#1C6E82!important;color:#1C6E82!important}
+#evaluacion .ev-tab.active{background:#1C6E82!important;border-color:#1C6E82!important;color:#fff!important}
+
+/* === Ajustes (b): Entregables con los mismos márgenes laterales que el resto === */
+#repositorio.panel-page{padding-left:0!important;padding-right:0!important}
+#repositorio>.wrap{max-width:var(--maxw)!important;width:auto!important;margin-left:auto!important;margin-right:auto!important;padding-left:32px!important;padding-right:32px!important;padding-top:0!important}
+.wp3-fullwidth-deliverables,#repositorio .wp3-fullwidth-deliverables{width:auto!important;max-width:none!important;margin:0 0 38px!important}
+.wp3-doc-frame{width:100%!important;max-width:100%!important}
+.wp3-doc-head{padding-left:clamp(22px,3vw,40px)!important;padding-right:clamp(22px,3vw,40px)!important}
+.wp3-doc-toolbar{padding:12px 16px!important}
+@media(max-width:768px){#repositorio>.wrap{padding-left:20px!important;padding-right:20px!important}}
+@media(max-width:900px){.wp3-doc-head{padding-left:20px!important;padding-right:20px!important}}
+
+/* === Ajustes: Centrar menú principal (nav-links) === */
+@media(min-width:901px){
+  .nav-inner{display:grid !important;grid-template-columns:1fr auto 1fr !important;align-items:center !important;justify-content:initial !important;position:relative}
+  .nav-inner > .brand{justify-self:start}
+  .nav-inner > .nav-links{justify-self:center}
+  .nav-inner > #langToggle{justify-self:end;margin-left:0 !important}
+}
+
+/* === Ajustes (B2): Cross-Assessment — intro de sección (sobre navy) claro + botones primarios legibles === */
+#evaluacion .ev-head .panel-card-title,#evaluacion .ev-head h2,#evaluacion .ev-head .eyebrow,#evaluacion .ev-head .eyebrow span{color:#eaf6f8!important}
+#evaluacion .lead,#evaluacion .ev-head p,#evaluacion .ev-panel>p,#evaluacion .lead span,#evaluacion .ev-panel>p span{color:#cfe0e6!important}
+#evaluacion .lead b,#evaluacion .lead strong,#evaluacion .ev-head p strong,#evaluacion .ev-panel>p b,#evaluacion .ev-panel>p strong{color:#fff!important}
+#evaluacion .link-btn{background:#1C6E82!important;border:1px solid #1C6E82!important;color:#fff!important}
+#evaluacion .link-btn:hover{background:#0F6E82!important;border-color:#0F6E82!important;color:#fff!important}
+#evaluacion .link-btn.secondary{background:var(--teal,#15b8c9)!important;border-color:var(--teal,#15b8c9)!important;color:#06131f!important}
 </style>
 </head>
 <body><header class="nav" id="mainNav">
@@ -2297,503 +2363,23 @@ function descargarCanvas(pilotId, titulo, subt){
 
 <div class="wp3-fullwidth-deliverables" id="wp3-entregables-html-unico">
   <div class="wp3-doc-head">
-    <div class="wp3-doc-eyebrow">Entregables WP3 · HTML integrado</div>
+    <div class="wp3-doc-eyebrow">Entregables WP3 · Reportes del proyecto</div>
     <h3>Documentos del proyecto</h3>
-    <p>Selecciona un documento desde el submenú. Cada entregable se despliega aquí mismo, integrado en este único <b>index.html</b> y estirado a todo el ancho de la ventana.</p>
+    <p>Selecciona un informe del submenú. Cada reporte se despliega aquí mismo y puede imprimirse o guardarse como PDF.</p>
     <nav class="wp3-doc-tabs" aria-label="Submenú de entregables WP3">
-      <button class="wp3-doc-tab active" data-wp3-doc="diplomado" type="button"><strong>Diplomado Economía Azul</strong><small>Caso de estudio · Piloto 1</small></button><button class="wp3-doc-tab" data-wp3-doc="mesazul" type="button"><strong>Mes Azul IDMA</strong><small>Caso de estudio · Piloto 2</small></button><button class="wp3-doc-tab" data-wp3-doc="guardianes" type="button"><strong>Guardianes del Agua</strong><small>Caso de estudio · Piloto 3</small></button><button class="wp3-doc-tab" data-wp3-doc="compilado" type="button"><strong>Informe de Casos / D3.3</strong><small>Compilation Report</small></button><button class="wp3-doc-tab" data-wp3-doc="consolidado" type="button"><strong>Informe Consolidado WP3</strong><small>Reporte final</small></button>
+      <button class="wp3-doc-tab active" data-wp3-doc="pilotos" type="button"><strong>Informe de Pilotos</strong><small>Sistematización · ~15 páginas</small></button><button class="wp3-doc-tab" data-wp3-doc="final" type="button"><strong>Informe Final Consolidado</strong><small>WP3 · ~50 páginas</small></button>
     </nav>
   </div>
   <div class="wp3-doc-viewer">
-    <section class="wp3-doc-panel active" id="wp3-doc-panel-diplomado">
-  <div class="wp3-doc-toolbar">
-    <div><h3>Diplomado Economía Azul</h3><p>Caso de estudio · Piloto 1 · HTML integrado a ancho total</p></div>
-    <div class="wp3-doc-actions"><button type="button" data-wp3-print="diplomado">Imprimir / guardar PDF</button></div>
-  </div>
-  <iframe class="wp3-doc-frame" title="Diplomado Economía Azul" data-wp3-frame="diplomado"></iframe>
-</section><section class="wp3-doc-panel" id="wp3-doc-panel-mesazul">
-  <div class="wp3-doc-toolbar">
-    <div><h3>Mes Azul IDMA</h3><p>Caso de estudio · Piloto 2 · HTML integrado a ancho total</p></div>
-    <div class="wp3-doc-actions"><button type="button" data-wp3-print="mesazul">Imprimir / guardar PDF</button></div>
-  </div>
-  <iframe class="wp3-doc-frame" title="Mes Azul IDMA" data-wp3-frame="mesazul"></iframe>
-</section><section class="wp3-doc-panel" id="wp3-doc-panel-guardianes">
-  <div class="wp3-doc-toolbar">
-    <div><h3>Guardianes del Agua</h3><p>Caso de estudio · Piloto 3 · HTML integrado a ancho total</p></div>
-    <div class="wp3-doc-actions"><button type="button" data-wp3-print="guardianes">Imprimir / guardar PDF</button></div>
-  </div>
-  <iframe class="wp3-doc-frame" title="Guardianes del Agua" data-wp3-frame="guardianes"></iframe>
-</section><section class="wp3-doc-panel" id="wp3-doc-panel-compilado">
-  <div class="wp3-doc-toolbar">
-    <div><h3>Informe de Casos / D3.3</h3><p>Compilation Report · HTML integrado a ancho total</p></div>
-    <div class="wp3-doc-actions"><button type="button" data-wp3-print="compilado">Imprimir / guardar PDF</button></div>
-  </div>
-  <iframe class="wp3-doc-frame" title="Informe de Casos / D3.3" data-wp3-frame="compilado"></iframe>
-</section><section class="wp3-doc-panel" id="wp3-doc-panel-consolidado">
-  <div class="wp3-doc-toolbar">
-    <div><h3>Informe Consolidado WP3</h3><p>Reporte final · HTML integrado a ancho total</p></div>
-    <div class="wp3-doc-actions"><button type="button" data-wp3-print="consolidado">Imprimir / guardar PDF</button></div>
-  </div>
-  <iframe class="wp3-doc-frame" title="Informe Consolidado WP3" data-wp3-frame="consolidado"></iframe>
-</section>
+    <section class="wp3-doc-panel active" id="wp3-doc-panel-pilotos">
+      <div class="wp3-doc-toolbar"><div><h3>Informe de Pilotos</h3><p>Sistematización de los 3 pilotos · ~15 páginas</p></div><div class="wp3-doc-actions"><button type="button" data-wp3-print="pilotos">Imprimir / guardar PDF</button></div></div>
+      <iframe class="wp3-doc-frame" title="Informe de Pilotos WP3" data-wp3-frame="pilotos" src="entregables/informe-pilotos.html"></iframe>
+    </section><section class="wp3-doc-panel" id="wp3-doc-panel-final">
+      <div class="wp3-doc-toolbar"><div><h3>Informe Final Consolidado</h3><p>WP3 · ~50 páginas</p></div><div class="wp3-doc-actions"><button type="button" data-wp3-print="final">Imprimir / guardar PDF</button></div></div>
+      <iframe class="wp3-doc-frame" title="Informe Final Consolidado WP3" data-wp3-frame="final" src="entregables/informe-final.html"></iframe>
+    </section>
   </div>
 </div>
-<template id="wp3-template-diplomado">
-<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Caso de Estudio · Diplomado en Economía Azul</title><style>
-:root{--navy:#0C2A43;--deep:#071E2E;--teal:#15B8C9;--ink:#16242F;--mute:#5A7280;
-      --soft:#F4F8F9;--line:#D8E2E6;--head:#0F3B52}
-*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-@page{size:A4;margin:18mm 16mm}
-@page:first{margin:0}
-html,body{margin:0;padding:0}
-body{font-family:"Segoe UI",Arial,Helvetica,sans-serif;color:var(--ink);font-size:10.6pt;line-height:1.5}
-h1,h2,h3{font-family:Georgia,"Times New Roman",serif;color:var(--ink);margin:0}
-h1{font-size:16pt;color:var(--head);margin:20px 0 8px;padding-left:12px;border-left:4px solid var(--teal);break-after:avoid}
-h2{font-size:12.5pt;margin:16px 0 6px;break-after:avoid}
-h3{font-size:11pt;color:var(--mute);margin:12px 0 4px;break-after:avoid}
-p{margin:0 0 7px}
-.lead{font-size:11pt;color:#23323d}
-ul,ol{margin:0 0 8px;padding-left:20px}
-li{margin:0 0 4px}
-small,.note{font-size:8.6pt;color:var(--mute)}
-.note{font-style:italic;margin-top:4px}
-/* portada a sangre */
-.cover{height:297mm;background:linear-gradient(135deg,var(--deep),var(--navy) 55%,var(--head));
-       color:#fff;display:flex;align-items:flex-end;padding:0;break-after:page;position:relative}
-.cover::after{content:"";position:absolute;right:-60mm;top:-60mm;width:160mm;height:160mm;border-radius:50%;
-       background:radial-gradient(circle,rgba(21,184,201,.35),transparent 70%)}
-.cover-inner{padding:26mm 22mm;position:relative;z-index:1;width:100%}
-.kicker{font-size:9pt;letter-spacing:3px;text-transform:uppercase;font-weight:800;color:#8FE3EC}
-.cover-title{font-size:30pt;line-height:1.06;color:#fff;margin:8px 0 6px;border:none;padding:0}
-.cover-sub{font-size:13pt;font-style:italic;color:rgba(255,255,255,.86)}
-.cover-rule{width:70mm;height:3px;background:var(--teal);margin:16px 0}
-.cover-meta{font-size:9.5pt;color:rgba(255,255,255,.9);line-height:1.7}
-.cover-note{font-size:8.6pt;color:rgba(255,255,255,.7);font-style:italic;margin-top:14px;max-width:140mm}
-/* tablas */
-table{width:100%;border-collapse:collapse;margin:6px 0 10px;font-size:9.6pt;break-inside:avoid}
-table.kv th{width:34%;text-align:left;background:var(--soft);color:var(--head);font-weight:700;
-       border:1px solid var(--line);padding:6px 9px;vertical-align:top}
-table.kv td{border:1px solid var(--line);padding:6px 9px;vertical-align:top}
-table.data th{background:var(--head);color:#fff;font-weight:700;border:1px solid var(--head);padding:6px 9px;text-align:left}
-table.data td{border:1px solid var(--line);padding:6px 9px;vertical-align:top}
-table.data tbody tr:nth-child(even){background:var(--soft)}
-/* citas */
-.voces{margin:8px 0 10px}
-blockquote{margin:0 0 9px;padding:11px 16px;background:var(--soft);border-left:3px solid var(--teal);
-       border-radius:0 8px 8px 0;break-inside:avoid}
-blockquote p{font-family:Georgia,serif;font-style:italic;font-size:10.6pt;color:#1d2e3a;margin:0 0 5px}
-blockquote cite{font-style:normal;font-weight:800;color:var(--head);font-size:9pt}
-blockquote cite span{display:block;font-weight:500;color:var(--mute);font-size:8.4pt}
-/* caja evidencia */
-.evi{border:1px solid var(--line);border-radius:10px;padding:10px 14px 6px;margin:8px 0 10px;background:#fff;break-inside:avoid}
-.evi-tag{display:inline-block;font-size:7.8pt;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
-       color:var(--teal);background:rgba(21,184,201,.10);border:1px solid rgba(21,184,201,.4);
-       border-radius:999px;padding:2px 9px;margin-bottom:6px}
-.callout{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0;break-inside:avoid}
-.callout .callout-l{display:block;font-size:8pt;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--head);margin-bottom:4px}
-.docfoot{margin-top:18px;padding-top:8px;border-top:1px solid var(--line);font-size:8pt;color:var(--mute)}
-</style>
-<style id="wp3-fullwidth-document-override">
-@media screen{
-  :root{--navy:#0C2A43;--deep:#071E2E;--teal:#15B8C9;--ink:#16242F;--mute:#5A7280;--soft:#F4F8F9;--line:#D8E2E6;--head:#0F3B52}
-  html,body{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;overflow-x:hidden!important;background:#ffffff!important;}
-  body{font-size:clamp(14px,0.95vw,18px)!important;line-height:1.55!important;}
-  body>h1,body>h2,body>h3,body>p,body>ul,body>ol,body>table,body>.voces,body>blockquote,body>.evi,body>.callout,body>.docfoot{width:100%!important;max-width:none!important;margin-left:0!important;margin-right:0!important;}
-  body>h1,body>h2,body>h3,body>p,body>ul,body>ol,body>table,body>.voces,body>blockquote,body>.evi,body>.callout{padding-left:clamp(28px,4vw,72px)!important;padding-right:clamp(28px,4vw,72px)!important;}
-  body>h1{font-size:clamp(25px,2.2vw,40px)!important;margin-top:42px!important;margin-bottom:18px!important;border-left:8px solid var(--teal)!important;padding-left:clamp(28px,4vw,72px)!important;line-height:1.08!important;}
-  body>h2{font-size:clamp(20px,1.55vw,30px)!important;margin-top:28px!important;margin-bottom:14px!important;color:var(--head)!important;}
-  body>h3{font-size:clamp(17px,1.2vw,22px)!important;color:var(--mute)!important;margin-top:22px!important;}
-  p,li,td,th{font-size:clamp(14px,0.95vw,18px)!important;}
-  table{border-spacing:0!important;width:calc(100% - clamp(56px,8vw,144px))!important;margin-left:clamp(28px,4vw,72px)!important;margin-right:clamp(28px,4vw,72px)!important;}
-  table th,table td{padding:12px 14px!important;}
-  .cover{height:min(82vh,820px)!important;min-height:560px!important;width:100%!important;break-after:auto!important;page-break-after:auto!important;background:linear-gradient(135deg,#061b2d 0%,#0C2A43 54%,#0F3B52 100%)!important;}
-  .cover::after{right:-12vw!important;top:-10vw!important;width:42vw!important;height:42vw!important;}
-  .cover-inner{padding:clamp(44px,7vw,110px)!important;}
-  .cover-title{font-size:clamp(48px,5.5vw,92px)!important;max-width:980px!important;line-height:.98!important;}
-  .cover-sub{font-size:clamp(22px,1.7vw,34px)!important;max-width:900px!important;}
-  .cover-meta{font-size:clamp(14px,1vw,18px)!important;}
-  .cover-note{font-size:clamp(13px,.9vw,16px)!important;max-width:880px!important;}
-  .evi,.callout,blockquote{width:calc(100% - clamp(56px,8vw,144px))!important;margin-left:clamp(28px,4vw,72px)!important;margin-right:clamp(28px,4vw,72px)!important;padding:20px 24px!important;border-radius:18px!important;}
-  .docfoot{padding:22px clamp(28px,4vw,72px)!important;margin-top:44px!important;}
-}
-</style>
-</head><body>
-<section class="cover"><div class="cover-inner">
-  <div class="kicker">Caso de Estudio · WP3 / Academia</div>
-  <div class="cover-title">Diplomado en Economía Azul y Sostenibilidad Costera</div>
-  <div class="cover-sub">Piloto 1 · Formación técnico-profesional para la empleabilidad costera</div>
-  <div class="cover-rule"></div>
-  <div class="cover-meta">
-    <div><b>Blue Economy Lab</b> · WP3 · IDMA · Proyecto Erasmus+ N.º 101183250</div>
-    <div>Versión 2 · actualizada — 22 de junio de 2026</div>
-  </div>
-  <p class="cover-note">Versión 2: incorpora los resultados de las Mentorías 3 y 4, la evidencia de implementación verificada y el estado del proyecto al 22-jun-2026. Los datos entre [corchetes] siguen pendientes de confirmar por el equipo.</p>
-</div></section><h2>Metadatos</h2><table class="kv"><tr><th>Título</th><td>Diplomado en Economía Azul y Sostenibilidad Costera</td></tr><tr><th>País / Institución</th><td>Chile · IDMA — Academia de Medioambiente (OTEC) / Dirección de Educación Continua</td></tr><tr><th>Contacto</th><td>Sebastián Cerda (Educación Continua) · equipo mentee: Estefanía Campos, Juan Otero</td></tr><tr><th>Año / Semestre</th><td>2026 (ciclo de mentorías junio 2026)</td></tr><tr><th>Nivel</th><td>Educación continua / superior (perfiles técnicos y profesionales)</td></tr><tr><th>Contexto</th><td>Costero, alcance nacional (100% online + instancia presencial opcional)</td></tr><tr><th>Áreas clave</th><td>Economía azul, sostenibilidad costera, blue & green skills, empleabilidad</td></tr><tr><th>ODS (≤3)</th><td>ODS 4 (Educación de calidad), ODS 8 (Trabajo decente), ODS 14 (Vida submarina)</td></tr><tr><th>Estado (jun-2026)</th><td>Mentorías M1–M4 completadas; empleabilidad validada; encuesta pre/post aplicada; en cross-assessment (evaluadores: 2811 y DomSpain).</td></tr></table><h1>1) Problema / oportunidad</h1><p>La hipótesis del piloto, validada en la Mentoría 1 con la entrevista a Víctor Bravo, es la existencia de una <b>necesidad académica no cubierta</b>: hoy no existe una oferta formativa pertinente en economía azul que dialogue con el mercado laboral costero y con las oportunidades reales del territorio.</p><p>Chile cuenta con cerca de 4.000 km de costa y con sectores productivos (pesquero, salmonero y turístico costero) que demandan capital humano especializado. El diplomado responde con un discurso de <b>“oportunidad + conservación”</b> que supera el paradigma de la conservación intocable y conecta sostenibilidad con desarrollo y empleo.</p><h1>2) Objetivos</h1><p><b>Objetivo general.</b> Formar personas capaces de identificar y aprovechar oportunidades de desarrollo sostenible asociadas al mar, las costas y los recursos hídricos, entregando especialización práctica en economía azul y mejorando su empleabilidad.</p><p>Resultados de aprendizaje (borrador, sujeto a revisión técnica de Estefanía Campos):</p><ul><li>RA1 · Explicar los fundamentos de la economía azul y circular y su aplicación a los ecosistemas marino-costeros.</li><li>RA2 · Aplicar criterios de gestión sostenible de recursos y residuos marinos a casos reales del territorio.</li><li>RA3 · Reconocer tecnologías, modelos de negocio y oportunidades de innovación de la economía azul.</li><li>RA4 · Formular una propuesta de proyecto de economía circular marina con vínculo al sector productivo y a la empleabilidad.</li></ul><h1>3) Población objetivo y actores</h1><p><b>Usuario principal — arquetipo “Amaro” (25–45 años):</b> persona con título o cursos previos, alta conciencia ecológica, que busca especialización práctica, redes con el sector y claridad sobre su continuidad formativa. Se identificaron cinco subperfiles (M1), desde el estudiante técnico medio hasta personas en reorientación o crisis vocacional.</p><p><b>Actores y roles:</b></p><ul><li>Equipo IDMA / Academia de Medioambiente (Juan Otero, Estefanía Campos) — diseño y dictado.</li><li>Sebastián Cerda (Dir. Educación Continua / OTEC AMA) — mentor M2; estructura estandarizada y revisión curricular.</li><li>Aldo Poblete (biólogo marino, docente IDMA) — voz experta M3 y M4; empleabilidad e inserción laboral.</li><li>Aliados del sector: Subpesca, IFOP, Sernapesca, Directemar/Capitanías, gremios de pescadores, ECIM-PUC, cámaras de comercio y turismo costero.</li><li>Estudiantes y docentes del perfil de Amaro — usuarios y participantes del testeo.</li></ul><h1>4) Enfoque y metodología</h1><p>El diplomado se diseña bajo el <b>enfoque de microcredenciales (MicroVET / MBMC)</b> y combina clases sincrónicas, <b>aprendizaje basado en problemas (ABP)</b> con casos reales del territorio (Puerto Viejo, Maitencillo, Caleta Chungo), análisis de casos (pesca, salmonicultura, turismo costero), aula inversa y trabajo autónomo guiado, más una instancia presencial opcional de vinculación.</p><p>Acuerdos metodológicos de la Mentoría 3: cada curso combina aproximadamente <b>60 % teoría / 40 % práctica</b>; modelo bimestral IDMA de <b>~3 h sincrónicas + 1 h asincrónica</b> por cada bloque de 4 h pedagógicas; estándar de <b>≥ 2 docentes por módulo</b> (un experto disciplinar + un docente práctico); evaluación centrada en la <b>respuesta autónoma ante la crisis</b> (“criterio operativo”).</p><h1>5) Actividades principales</h1><p>El piloto recorrió el ciclo de cuatro mentorías del proyecto:</p><ul><li><b>M1 · Segmento y problema (05/06)</b> — definición del arquetipo Amaro y validación de la necesidad con Víctor Bravo.</li><li><b>M2 · Propuesta de valor y estructura (12/06)</b> — con Sebastián Cerda: cuatro cursos de 30 h, modalidad y microcredenciales.</li><li><b>M3 · Testeo (19/06)</b> — con Aldo Poblete + Estefanía Campos y Juan Otero: validación de empleabilidad, eje de gobernanza/permisología y micro-certificación por curso.</li><li><b>M4 · Implementación (19/06)</b> — financiamiento (SENCE), equipo docente y timing de lanzamiento.</li></ul><p><b>Estructura curricular (4 cursos × 30 h = 120 h):</b></p><ol><li><b>Economía azul y sistemas marino-costeros</b> — fundamentos de economía azul/circular, ecosistemas y Corriente de Humboldt.</li><li><b>Gestión de recursos y residuos marinos</b> — manejo sostenible, residuos marinos y soluciones basadas en la naturaleza.</li><li><b>Innovación, emprendimiento y tecnologías marinas</b> — microalgas, desalinización, biotecnologías, turismo costero.</li><li><b>Normativa e institucionalidad</b> — gobernanza marino-costera, SEA/SEIA, Servicio de Biodiversidad, manejo de derrames.</li></ol><p class="note">Se prefirió 4 cursos de 30 h frente a 8 minicursos de 15 h por mayor profundidad y mejor evaluación de competencias (decisión M2).</p><h1>6) Recursos utilizados</h1><ul><li>Humanos: ≥ 2 docentes por módulo (experto disciplinar + docente práctico) y coordinación académica.</li><li>Plataforma de educación online y recursos digitales; cápsulas de microlearning.</li><li>Estructura estandarizada de la Academia de Medioambiente (OTEC) para programa y evaluación.</li><li>Micro-certificaciones que agregan valor al CV: monitoreo con GIS, ISO 14001, formulación y gestión de proyectos, valorización de residuos orgánicos de la acuicultura.</li><li>Financiamiento: franquicia tributaria SENCE (OTEC ya inscrita) y venta directa a empresas.</li><li>Horas: 120 h académicas por participante; [presupuesto y costo por participante por confirmar].</li></ul><h1>7) Competencias trabajadas</h1><ul><li>Comprensión de la economía azul y circular en sistemas marino-costeros.</li><li>Gestión sostenible de recursos y residuos marinos.</li><li>Formulación y comunicación de proyectos a públicos distintos (gremios, gerencia, evaluadores).</li><li>“Criterio operativo ante la crisis” y toma de decisiones autónoma.</li><li>Alfabetización tecnológica (GPS, multiparámetro, pH) como “lenguaje común” teoría-práctica.</li><li>Navegación de la gobernanza y la permisología del borde costero (SEA, Subpesca, Sernapesca, IFOP, Directemar, planes PRAMA).</li></ul><h1>8) Resultados y evidencias</h1><p><b>Productos:</b> propuesta de solución <b>v0.5</b> (programa del diplomado con estructura estandarizada), Canvas MicroVET del piloto, y reportes de las mentorías M1–M4.</p><p><b>Indicadores / resultados:</b></p><ul><li>Estructura definida: 4 cursos × 30 h (120 h) con micro-certificación por curso y modelo bimestral (3 h sincrónicas + 1 h asincrónica).</li><li>Nuevo eje incorporado (M3): gobernanza y permisología (SEA/SEIA, Subpesca, Sernapesca, IFOP, Directemar, planes PRAMA), con negociación y autoprotección comunitaria frente a megaproyectos.</li><li>[Resultados de la encuesta de demanda formativa — por completar con la base de contactos de Juan Otero.]</li></ul><div class="evi"><span class="evi-tag">Evidencia de implementación · T3.3 · criterio 5 (peso 20%)</span><ul><li><b>Empleabilidad validada con el sector:</b> testeo mediante entrevista a Aldo Poblete (biólogo marino con trayectoria en IFOP y en la salmonera Ventisqueros); demanda de “criterio operativo ante la crisis” y de un “lenguaje común” teoría-práctica; casos reales citados: Caleta Chungo (de lo extractivo al turismo) y valorización de residuos pesqueros.</li><li><b>Mentoría 3 (19/06) ejecutada</b> con Aldo Poblete, Estefanía Campos y Juan Otero; sus acuerdos quedaron integrados al diseño.</li><li><b>Encuesta de demanda formativa diseñada y lista (Google Form):</b> familiaridad con economía azul, interés antes/después de ver la propuesta (escala 1–5), 4×30 vs 8×15, sincrónico/asincrónico, aporte de las certificaciones a la empleabilidad.</li><li><b>Base de contactos del sector en construcción (Juan Otero):</b> caletas y gremios, cámaras de comercio y turismo costero, ONG y una entidad estatal, con registro por entidad/tipo/contacto/estado.</li></ul></div><h1>9) Voces del territorio</h1><div class="voces"><blockquote><p>Lo que tiene que primar para los estudiantes que se desarrollen en este diplomado es que tengan lo que se llama un criterio operativo ante la crisis.</p><cite>Aldo Poblete<span>Biólogo marino, docente IDMA · mentor de la Mentoría 3</span></cite></blockquote><blockquote><p>El mayor desafío es llegar a un lenguaje común, nivelar a quien tiene mucha teoría porque estudió y a quien no pudo estudiar pero tiene mucho conocimiento. De ahí se desprende un término nuevo: la alfabetización tecnológica.</p><cite>Aldo Poblete<span>Sobre la brecha entre teoría y experiencia</span></cite></blockquote></div><h1>10) Evaluación (cross-assessment T3.3)</h1><p>El piloto se evalúa con la <b>rúbrica de evaluación cruzada T3.3</b> (8 criterios ponderados, escala 1–4, % de logro = ponderado/4, umbral de aprobación 80 %). Asignación cruzada del consorcio para el Diplomado: <b>2811 y DomSpain</b> (sin autoevaluación, ≥ 2 evaluadores de otras instituciones).</p><p>Cronograma de cierre: instrumento disponible al consorcio el <b>23-jun</b>; entrega formal del reporte de cross-assessment el <b>29-jun</b> (hito M12 en diciembre). Instrumento de testeo propio: encuesta breve (Google Form) a estudiantes y docentes del perfil de Amaro, usando el documento de solución como simulación de la oferta.</p><h1>11) Lecciones aprendidas</h1><ul><li>La estructura de 4 cursos de 30 h aporta mayor profundidad y mejor evaluación de competencias que 8 minicursos de 15 h.</li><li>La modalidad online asegura cobertura nacional; lo presencial reduce a la mitad el público potencial (queda como instancia opcional de valor).</li><li>El nudo crítico es el financiamiento de los equipos humanos: conviene aprovechar instrumentos (SENCE) que reduzcan el trabajo al adaptar el “paquete” ya construido.</li><li>El nombre del diplomado debe testearse con el público objetivo (qué entiende por él) — en revisión con marketing.</li></ul><h1>12) Transferibilidad y sostenibilidad</h1><p>El diseño usa la <b>estructura estandarizada de la Academia de Medioambiente</b>, lo que facilita su réplica como oferta de educación continua. El programa es <b>modularizable</b> (cursos reconocibles como microcredenciales) y puede articularse con microcursos presenciales como vía de ingreso (cuyo paso se reconoce como módulo del diplomado, no como simple descuento).</p><p>Requisitos de réplica: equipo docente (≥ 2 por módulo), plataforma online y un instrumento de financiamiento (SENCE / venta directa). Próximo paso: presentar a la coordinación académica de IDMA (Hilda Zúñiga) y a rectoría.</p><h1>13) Riesgos y mitigaciones</h1><ul><li>Financiamiento de los equipos humanos — mitigación: franquicia SENCE y venta a empresas; postulación a instrumentos.</li><li>Demanda incierta — mitigación: encuesta de demanda antes del lanzamiento.</li><li>Revisión técnica curricular pendiente (perfil de egreso, criterios) — mitigación: trabajo asignado a Estefanía Campos.</li><li>Timing de lanzamiento — mitigación: decisión estratégica en la Mentoría 4 de implementación.</li></ul><h1>14) Referencias y créditos</h1><p>Fuentes: documento de solución “Diplomado en Economía Azul y Sostenibilidad Costera” v0.5 (IDMA, 2026); entrevistas a Víctor Bravo y Aldo Poblete; Propuesta Metodológica WP3; rúbrica T3.3.</p><p>Créditos: equipo WP3 IDMA. Licencia sugerida: CC BY 4.0. Proyecto Erasmus+ N.º 101183250.</p><footer class="docfoot">Blue Economy Lab · WP3 · IDMA · Proyecto Erasmus+ N.º 101183250 · Entregable v2 · 22 de junio de 2026</footer></body></html>
-</template><template id="wp3-template-mesazul">
-<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Caso de Estudio · Mes Azul IDMA</title><style>
-:root{--navy:#0C2A43;--deep:#071E2E;--teal:#15B8C9;--ink:#16242F;--mute:#5A7280;
-      --soft:#F4F8F9;--line:#D8E2E6;--head:#0F3B52}
-*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-@page{size:A4;margin:18mm 16mm}
-@page:first{margin:0}
-html,body{margin:0;padding:0}
-body{font-family:"Segoe UI",Arial,Helvetica,sans-serif;color:var(--ink);font-size:10.6pt;line-height:1.5}
-h1,h2,h3{font-family:Georgia,"Times New Roman",serif;color:var(--ink);margin:0}
-h1{font-size:16pt;color:var(--head);margin:20px 0 8px;padding-left:12px;border-left:4px solid var(--teal);break-after:avoid}
-h2{font-size:12.5pt;margin:16px 0 6px;break-after:avoid}
-h3{font-size:11pt;color:var(--mute);margin:12px 0 4px;break-after:avoid}
-p{margin:0 0 7px}
-.lead{font-size:11pt;color:#23323d}
-ul,ol{margin:0 0 8px;padding-left:20px}
-li{margin:0 0 4px}
-small,.note{font-size:8.6pt;color:var(--mute)}
-.note{font-style:italic;margin-top:4px}
-/* portada a sangre */
-.cover{height:297mm;background:linear-gradient(135deg,var(--deep),var(--navy) 55%,var(--head));
-       color:#fff;display:flex;align-items:flex-end;padding:0;break-after:page;position:relative}
-.cover::after{content:"";position:absolute;right:-60mm;top:-60mm;width:160mm;height:160mm;border-radius:50%;
-       background:radial-gradient(circle,rgba(21,184,201,.35),transparent 70%)}
-.cover-inner{padding:26mm 22mm;position:relative;z-index:1;width:100%}
-.kicker{font-size:9pt;letter-spacing:3px;text-transform:uppercase;font-weight:800;color:#8FE3EC}
-.cover-title{font-size:30pt;line-height:1.06;color:#fff;margin:8px 0 6px;border:none;padding:0}
-.cover-sub{font-size:13pt;font-style:italic;color:rgba(255,255,255,.86)}
-.cover-rule{width:70mm;height:3px;background:var(--teal);margin:16px 0}
-.cover-meta{font-size:9.5pt;color:rgba(255,255,255,.9);line-height:1.7}
-.cover-note{font-size:8.6pt;color:rgba(255,255,255,.7);font-style:italic;margin-top:14px;max-width:140mm}
-/* tablas */
-table{width:100%;border-collapse:collapse;margin:6px 0 10px;font-size:9.6pt;break-inside:avoid}
-table.kv th{width:34%;text-align:left;background:var(--soft);color:var(--head);font-weight:700;
-       border:1px solid var(--line);padding:6px 9px;vertical-align:top}
-table.kv td{border:1px solid var(--line);padding:6px 9px;vertical-align:top}
-table.data th{background:var(--head);color:#fff;font-weight:700;border:1px solid var(--head);padding:6px 9px;text-align:left}
-table.data td{border:1px solid var(--line);padding:6px 9px;vertical-align:top}
-table.data tbody tr:nth-child(even){background:var(--soft)}
-/* citas */
-.voces{margin:8px 0 10px}
-blockquote{margin:0 0 9px;padding:11px 16px;background:var(--soft);border-left:3px solid var(--teal);
-       border-radius:0 8px 8px 0;break-inside:avoid}
-blockquote p{font-family:Georgia,serif;font-style:italic;font-size:10.6pt;color:#1d2e3a;margin:0 0 5px}
-blockquote cite{font-style:normal;font-weight:800;color:var(--head);font-size:9pt}
-blockquote cite span{display:block;font-weight:500;color:var(--mute);font-size:8.4pt}
-/* caja evidencia */
-.evi{border:1px solid var(--line);border-radius:10px;padding:10px 14px 6px;margin:8px 0 10px;background:#fff;break-inside:avoid}
-.evi-tag{display:inline-block;font-size:7.8pt;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
-       color:var(--teal);background:rgba(21,184,201,.10);border:1px solid rgba(21,184,201,.4);
-       border-radius:999px;padding:2px 9px;margin-bottom:6px}
-.callout{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0;break-inside:avoid}
-.callout .callout-l{display:block;font-size:8pt;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--head);margin-bottom:4px}
-.docfoot{margin-top:18px;padding-top:8px;border-top:1px solid var(--line);font-size:8pt;color:var(--mute)}
-</style>
-<style id="wp3-fullwidth-document-override">
-@media screen{
-  :root{--navy:#0C2A43;--deep:#071E2E;--teal:#15B8C9;--ink:#16242F;--mute:#5A7280;--soft:#F4F8F9;--line:#D8E2E6;--head:#0F3B52}
-  html,body{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;overflow-x:hidden!important;background:#ffffff!important;}
-  body{font-size:clamp(14px,0.95vw,18px)!important;line-height:1.55!important;}
-  body>h1,body>h2,body>h3,body>p,body>ul,body>ol,body>table,body>.voces,body>blockquote,body>.evi,body>.callout,body>.docfoot{width:100%!important;max-width:none!important;margin-left:0!important;margin-right:0!important;}
-  body>h1,body>h2,body>h3,body>p,body>ul,body>ol,body>table,body>.voces,body>blockquote,body>.evi,body>.callout{padding-left:clamp(28px,4vw,72px)!important;padding-right:clamp(28px,4vw,72px)!important;}
-  body>h1{font-size:clamp(25px,2.2vw,40px)!important;margin-top:42px!important;margin-bottom:18px!important;border-left:8px solid var(--teal)!important;padding-left:clamp(28px,4vw,72px)!important;line-height:1.08!important;}
-  body>h2{font-size:clamp(20px,1.55vw,30px)!important;margin-top:28px!important;margin-bottom:14px!important;color:var(--head)!important;}
-  body>h3{font-size:clamp(17px,1.2vw,22px)!important;color:var(--mute)!important;margin-top:22px!important;}
-  p,li,td,th{font-size:clamp(14px,0.95vw,18px)!important;}
-  table{border-spacing:0!important;width:calc(100% - clamp(56px,8vw,144px))!important;margin-left:clamp(28px,4vw,72px)!important;margin-right:clamp(28px,4vw,72px)!important;}
-  table th,table td{padding:12px 14px!important;}
-  .cover{height:min(82vh,820px)!important;min-height:560px!important;width:100%!important;break-after:auto!important;page-break-after:auto!important;background:linear-gradient(135deg,#061b2d 0%,#0C2A43 54%,#0F3B52 100%)!important;}
-  .cover::after{right:-12vw!important;top:-10vw!important;width:42vw!important;height:42vw!important;}
-  .cover-inner{padding:clamp(44px,7vw,110px)!important;}
-  .cover-title{font-size:clamp(48px,5.5vw,92px)!important;max-width:980px!important;line-height:.98!important;}
-  .cover-sub{font-size:clamp(22px,1.7vw,34px)!important;max-width:900px!important;}
-  .cover-meta{font-size:clamp(14px,1vw,18px)!important;}
-  .cover-note{font-size:clamp(13px,.9vw,16px)!important;max-width:880px!important;}
-  .evi,.callout,blockquote{width:calc(100% - clamp(56px,8vw,144px))!important;margin-left:clamp(28px,4vw,72px)!important;margin-right:clamp(28px,4vw,72px)!important;padding:20px 24px!important;border-radius:18px!important;}
-  .docfoot{padding:22px clamp(28px,4vw,72px)!important;margin-top:44px!important;}
-}
-</style>
-</head><body>
-<section class="cover"><div class="cover-inner">
-  <div class="kicker">Caso de Estudio · WP3 / Academia</div>
-  <div class="cover-title">Mes Azul IDMA</div>
-  <div class="cover-sub">Piloto 2 · Encuentro anual de vinculación de la economía azul</div>
-  <div class="cover-rule"></div>
-  <div class="cover-meta">
-    <div><b>Blue Economy Lab</b> · WP3 · IDMA · Proyecto Erasmus+ N.º 101183250</div>
-    <div>Versión 2 · actualizada — 22 de junio de 2026</div>
-  </div>
-  <p class="cover-note">Versión 2: incorpora los resultados de las Mentorías 3 y 4, la evidencia de implementación verificada y el estado del proyecto al 22-jun-2026. Los datos entre [corchetes] siguen pendientes de confirmar por el equipo.</p>
-</div></section><h2>Metadatos</h2><table class="kv"><tr><th>Título</th><td>Mes Azul IDMA</td></tr><tr><th>País / Institución</th><td>Chile · IDMA (sede CTS Buin)</td></tr><tr><th>Contacto</th><td>Paola Cerda (logística) · Víctor Bravo (curatoría de charlas) · Javiera Núñez (puente científico)</td></tr><tr><th>Año / Semestre</th><td>2026 (ciclo de mentorías junio 2026)</td></tr><tr><th>Nivel</th><td>Extracurricular / sensibilización + curso certificable (educación continua)</td></tr><tr><th>Contexto</th><td>Costero y territorial; jornada presencial + componentes online (cobertura nacional)</td></tr><tr><th>Áreas clave</th><td>Cultura oceánica, ciudadanía azul, vinculación academia–empresa, empleabilidad</td></tr><tr><th>ODS (≤3)</th><td>ODS 4 (Educación de calidad), ODS 8 (Trabajo decente), ODS 17 (Alianzas)</td></tr><tr><th>Estado (jun-2026)</th><td>Mentorías M1–M4 completadas; testeo con el sector validado; KPIs definidos; en cross-assessment (evaluadores: Mil y un mentorías y UNIMINUTO).</td></tr></table><h1>1) Problema / oportunidad</h1><p>La hipótesis del piloto, validada en la Mentoría 1, es la <b>falta de vinculación entre academia, empresa y sector productivo de la economía azul</b>. Para el técnico profesional, esa desconexión se traduce en inestabilidad laboral, ausencia de redes locales y dificultad para que su formación sea valorada.</p><p>La lectura comparada con Colombia (Jessica Morales, Uniminuto) confirma el problema con tres factores: pertinencia curricular insuficiente, fragmentación de la política pública y dificultad de transferir el conocimiento de la academia al sector productivo.</p><h1>2) Objetivos</h1><ul><li>Vincular a la academia con las empresas y el sector productivo de la economía azul.</li><li>Posicionar a IDMA y a los centros de formación técnica como referentes nacionales, instalando un hito anual reconocido por el sector.</li><li>Acercar la cultura oceánica y la ciudadanía azul a la comunidad mediante una feria abierta.</li><li>Generar vinculaciones concretas estudiante–empresa y rutas de continuidad formativa.</li></ul><h1>3) Población objetivo y actores</h1><p><b>Usuario principal — arquetipo “Pedro”:</b> técnico profesional de 20 a 30 años, que trabaja de forma independiente (consultorías ambientales menores, turismo esporádico) o busca su primer empleo formal; alta conciencia ecológica; busca especialización práctica, red de contactos y claridad sobre su continuidad formativa.</p><p><b>Audiencias complementarias:</b> estudiantes y titulados IDMA; empresas y startups del sector; trabajadores de oficio (pescadores artesanales, mariscadores); comunidades escolares que llegan vía Guardianes del Agua; y público general.</p><p><b>Mentores y equipo:</b> Jessica Morales (Uniminuto, M2), Sebastián Gallardo (U. de Antofagasta, M4); equipo IDMA: Paola Cerda, Víctor Bravo y Javiera Núñez.</p><h1>4) Enfoque y metodología</h1><p>El Mes Azul es un <b>programa anual</b> que combina un ciclo de charlas tipo TED y contenidos digitales distribuidos a lo largo del mes, con una <b>jornada de cierre</b> que articula seminario, feria de emprendimientos y dinámicas participativas en sede CTS Buin. Premisa transversal: toda oferta presencial tiene su versión online (doble canal), para asegurar acceso desde todo Chile.</p><p>Recoge el <b>modelo multimodal de Uniminuto</b> (presencial / a distancia con plataforma offline y sábados en territorio / 100 % virtual), las <b>tarifas diferenciadas por territorio</b> y una línea de becas con consejo de empresarios.</p><h1>5) Actividades principales</h1><p><b>Los 9 componentes del programa</b> (consolidados en M2–M3):</p><ul><li>Feria presencial de economía azul (evento de cierre) en sede CTS Buin, con stands de tecnologías del sector (potabilización, humedales artificiales, desalinización, biofertilizantes, cultivos marinos, gestión de residuos).</li><li>Entrada inmersiva (muestra fotográfica + montaje informativo, propuesta de Víctor Bravo).</li><li>Ciclo de 6 charlas tipo TED (20 min, 1–2 por semana) en tres dimensiones: ciencia · gestión pública · comunidad y territorio.</li><li>Seminario + feria de emprendimientos en la jornada de cierre.</li><li>Talleres prácticos en las instalaciones de CTS Buin.</li><li>Curso con certificación OTEC IDMA (doble modalidad) — tangible principal para el participante.</li><li>Cápsulas y contenido digital en Class on Live.</li><li>Muestra de proyectos escolares de Guardianes del Agua (articula ambos pilotos del WP3).</li><li>Rueda de vinculación y merchandising educativo.</li></ul><p><b>Recorrido del participante (6 etapas):</b> descubrimiento → inscripción (gratis charlas/feria; curso con tarifa diferenciada) → onboarding en Class on Live → participación mensual → jornada de cierre presencial → certificación OTEC.</p><h1>6) Recursos utilizados</h1><ul><li>Sede CTS Buin (planta de tratamiento, huertos, estaciones interactivas) y plan de traslado (Metrotren / van).</li><li>Plataforma Class on Live para onboarding, cápsulas y registro.</li><li>Red de auspicios (empresas con RSE) y línea de becas (modelo Uniminuto, consejo de empresarios).</li><li>Equipo IDMA (logística, curatoría de charlas, contenido científico) y red de mentores.</li></ul><h1>7) Competencias trabajadas</h1><ul><li>Vinculación y networking profesional con el sector productivo.</li><li>Divulgación y comunicación de la economía azul a públicos diversos.</li><li>Emprendimiento e innovación azul.</li><li>Alfabetización oceánica y ciudadanía ambiental.</li></ul><h1>8) Resultados y evidencias</h1><p><b>Productos:</b> propuesta de solución <b>v0.8</b> (programa del Mes Azul), Canvas MicroVET, y un set de <b>5 KPIs de continuidad</b> para la versión anual.</p><p><b>KPIs de continuidad definidos (v0.8):</b></p><ul><li>Alcance online (visualizaciones de charlas/cápsulas e inscritos).</li><li>Nº de empresas y stands participantes.</li><li>Vinculaciones concretas estudiante–empresa generadas.</li><li>Alcance de los proyectos escolares de Guardianes del Agua incorporados.</li><li>Auspicios y becas comprometidos.</li></ul><p><b>Aportes de diseño de feria (M4, Sebastián Gallardo):</b> ferias de referencia y cifras — Chao Pescado (Caldera, +16 años), Fiesta de la Ciencia (Antofagasta, ~5.000 personas), Puerto de Ideas (~22.000 personas, ~$80M). Costos de referencia en Antofagasta: feria tipo C-TyS no baja de ~$30M; Puerto de Ideas ~$80M; Ladera Sur ~$250M. Capacidad de la jornada de cierre en CTS Buin: ~70 personas en espacio cerrado, ~100 al aire libre, hasta ~1.000 con activación de redes.</p><div class="evi"><span class="evi-tag">Evidencia de implementación · T3.3 · criterio 5 (peso 20%) — nota: a la fecha (v0.8) no hay feria ya ejecutada ni cartas firmadas; la feria, certificación y convenios están en fase de diseño/próximos pasos.</span><ul><li><b>Testeo con el sector, validado (Experimento 1):</b> entrevista a Aldo Poblete; confirma la brecha de vinculación academia–sector y abre alianzas (IFOP — cargo de “observador científico”; Sernapesca y gremios; ECIM-PUC).</li><li><b>Focus group (Experimento 2):</b> conducido por Víctor Bravo con tres estudiantes del perfil “Pedro”, dentro del plan de testeo de la M3.</li><li><b>Vínculo institucional en negociación</b> con la U. de Antofagasta (Sebastián Gallardo, C-TyS): convenio de colaboración y charla virtual para estudiantes; formalización pendiente.</li><li><b>Articulación entre pilotos:</b> las comunidades escolares de Guardianes del Agua presentan proyectos en stands de la feria de cierre; puente operativo a cargo de Javiera Núñez.</li></ul></div><h1>9) Voces del territorio</h1><div class="voces"><blockquote><p>Una de las cosas que necesita mucho la industria, principalmente la pesquera o la salmonera, es dejar de ver los peces como un producto y más como un organismo.</p><cite>Aldo Poblete<span>Biólogo marino · voz del sector productivo</span></cite></blockquote><blockquote><p>Las comunidades son muy reacias a la presencia de la salmonera; la mejor forma de romper eso es involucrándolas en todos los procesos, y lo que a ellas más les interesa es que su entorno esté saludable.</p><cite>Aldo Poblete<span>Sobre vinculación comunitaria y licencia social</span></cite></blockquote></div><h1>10) Evaluación (cross-assessment T3.3)</h1><p>Evaluación con la <b>rúbrica T3.3</b> (8 criterios ponderados, umbral 80 %). Asignación cruzada del consorcio para el Mes Azul: <b>Mil y un mentorías + UNIMINUTO</b> (sin autoevaluación).</p><p>Cronograma de cierre: instrumento disponible al consorcio el <b>23-jun</b>; encuestas pre/post aplicadas (<b>19-jun</b>); entrega formal del reporte de cross-assessment el <b>29-jun</b>.</p><h1>11) Lecciones aprendidas</h1><ul><li>Es difícil unificar a todos los actores en una sola instancia (pesca artesanal, industria, IFOP, Armada, sindicatos, ONG): conviene una feria temática que responda a problemáticas reales y locales (“maritorio”).</li><li>Las actividades de bajo umbral y transversales por edad funcionan mejor (filetear pescado, conchas de loco, krill, “el tamaño de la ballena”).</li><li>Conviene comparar “un gran evento” vs “muchos colegios con actividad lista” para maximizar el alcance.</li><li>Los auspicios se consiguen a cambio de cobertura/registro de asistencia y un stand propio (aportes en especie o recursos).</li></ul><h1>12) Transferibilidad y sostenibilidad</h1><p>El Mes Azul se concibe como <b>programa anual replicable</b> y referente nacional, con proyección de cooperación regional Chile–Colombia (Uniminuto). Se propone formalizar un <b>convenio de colaboración con la U. de Antofagasta</b> (Sebastián Gallardo / red CTS, Fiesta de la Ciencia de noviembre).</p><p>Requisitos de réplica: una sede con flujo, una red de auspicios/becas y la articulación con un piloto escolar (Guardianes) que aporte la muestra.</p><h1>13) Riesgos y mitigaciones</h1><ul><li>Costos de la feria (~$30M en Antofagasta según referencia C-TyS) — mitigación: auspicios en especie y modelo escalable por colegios.</li><li>Convocatoria y unificación de actores — mitigación: enfoque temático y alianzas locales (municipios, gremios, Armada/SHOA).</li><li>Logística de traslado a CTS Buin — mitigación: Metrotren y van institucional.</li><li>Secciones de logística y curatoría aún [PENDIENTE] (Paola Cerda; Víctor Bravo: definir las 6 charlas) — mitigación: plazos antes de la M4.</li></ul><h1>14) Referencias y créditos</h1><p>Fuentes: documento de solución “Mes Azul IDMA” v0.8 (IDMA, 2026); voces expertas Jessica Morales (Uniminuto), Aldo Poblete y Sebastián Gallardo (U. de Antofagasta); rúbrica T3.3.</p><p>Créditos: equipo WP3 IDMA. Licencia sugerida: CC BY 4.0. Proyecto Erasmus+ N.º 101183250.</p><footer class="docfoot">Blue Economy Lab · WP3 · IDMA · Proyecto Erasmus+ N.º 101183250 · Entregable v2 · 22 de junio de 2026</footer></body></html>
-</template><template id="wp3-template-guardianes">
-<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Caso de Estudio · Guardianes del Agua</title><style>
-:root{--navy:#0C2A43;--deep:#071E2E;--teal:#15B8C9;--ink:#16242F;--mute:#5A7280;
-      --soft:#F4F8F9;--line:#D8E2E6;--head:#0F3B52}
-*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-@page{size:A4;margin:18mm 16mm}
-@page:first{margin:0}
-html,body{margin:0;padding:0}
-body{font-family:"Segoe UI",Arial,Helvetica,sans-serif;color:var(--ink);font-size:10.6pt;line-height:1.5}
-h1,h2,h3{font-family:Georgia,"Times New Roman",serif;color:var(--ink);margin:0}
-h1{font-size:16pt;color:var(--head);margin:20px 0 8px;padding-left:12px;border-left:4px solid var(--teal);break-after:avoid}
-h2{font-size:12.5pt;margin:16px 0 6px;break-after:avoid}
-h3{font-size:11pt;color:var(--mute);margin:12px 0 4px;break-after:avoid}
-p{margin:0 0 7px}
-.lead{font-size:11pt;color:#23323d}
-ul,ol{margin:0 0 8px;padding-left:20px}
-li{margin:0 0 4px}
-small,.note{font-size:8.6pt;color:var(--mute)}
-.note{font-style:italic;margin-top:4px}
-/* portada a sangre */
-.cover{height:297mm;background:linear-gradient(135deg,var(--deep),var(--navy) 55%,var(--head));
-       color:#fff;display:flex;align-items:flex-end;padding:0;break-after:page;position:relative}
-.cover::after{content:"";position:absolute;right:-60mm;top:-60mm;width:160mm;height:160mm;border-radius:50%;
-       background:radial-gradient(circle,rgba(21,184,201,.35),transparent 70%)}
-.cover-inner{padding:26mm 22mm;position:relative;z-index:1;width:100%}
-.kicker{font-size:9pt;letter-spacing:3px;text-transform:uppercase;font-weight:800;color:#8FE3EC}
-.cover-title{font-size:30pt;line-height:1.06;color:#fff;margin:8px 0 6px;border:none;padding:0}
-.cover-sub{font-size:13pt;font-style:italic;color:rgba(255,255,255,.86)}
-.cover-rule{width:70mm;height:3px;background:var(--teal);margin:16px 0}
-.cover-meta{font-size:9.5pt;color:rgba(255,255,255,.9);line-height:1.7}
-.cover-note{font-size:8.6pt;color:rgba(255,255,255,.7);font-style:italic;margin-top:14px;max-width:140mm}
-/* tablas */
-table{width:100%;border-collapse:collapse;margin:6px 0 10px;font-size:9.6pt;break-inside:avoid}
-table.kv th{width:34%;text-align:left;background:var(--soft);color:var(--head);font-weight:700;
-       border:1px solid var(--line);padding:6px 9px;vertical-align:top}
-table.kv td{border:1px solid var(--line);padding:6px 9px;vertical-align:top}
-table.data th{background:var(--head);color:#fff;font-weight:700;border:1px solid var(--head);padding:6px 9px;text-align:left}
-table.data td{border:1px solid var(--line);padding:6px 9px;vertical-align:top}
-table.data tbody tr:nth-child(even){background:var(--soft)}
-/* citas */
-.voces{margin:8px 0 10px}
-blockquote{margin:0 0 9px;padding:11px 16px;background:var(--soft);border-left:3px solid var(--teal);
-       border-radius:0 8px 8px 0;break-inside:avoid}
-blockquote p{font-family:Georgia,serif;font-style:italic;font-size:10.6pt;color:#1d2e3a;margin:0 0 5px}
-blockquote cite{font-style:normal;font-weight:800;color:var(--head);font-size:9pt}
-blockquote cite span{display:block;font-weight:500;color:var(--mute);font-size:8.4pt}
-/* caja evidencia */
-.evi{border:1px solid var(--line);border-radius:10px;padding:10px 14px 6px;margin:8px 0 10px;background:#fff;break-inside:avoid}
-.evi-tag{display:inline-block;font-size:7.8pt;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
-       color:var(--teal);background:rgba(21,184,201,.10);border:1px solid rgba(21,184,201,.4);
-       border-radius:999px;padding:2px 9px;margin-bottom:6px}
-.callout{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0;break-inside:avoid}
-.callout .callout-l{display:block;font-size:8pt;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--head);margin-bottom:4px}
-.docfoot{margin-top:18px;padding-top:8px;border-top:1px solid var(--line);font-size:8pt;color:var(--mute)}
-</style>
-<style id="wp3-fullwidth-document-override">
-@media screen{
-  :root{--navy:#0C2A43;--deep:#071E2E;--teal:#15B8C9;--ink:#16242F;--mute:#5A7280;--soft:#F4F8F9;--line:#D8E2E6;--head:#0F3B52}
-  html,body{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;overflow-x:hidden!important;background:#ffffff!important;}
-  body{font-size:clamp(14px,0.95vw,18px)!important;line-height:1.55!important;}
-  body>h1,body>h2,body>h3,body>p,body>ul,body>ol,body>table,body>.voces,body>blockquote,body>.evi,body>.callout,body>.docfoot{width:100%!important;max-width:none!important;margin-left:0!important;margin-right:0!important;}
-  body>h1,body>h2,body>h3,body>p,body>ul,body>ol,body>table,body>.voces,body>blockquote,body>.evi,body>.callout{padding-left:clamp(28px,4vw,72px)!important;padding-right:clamp(28px,4vw,72px)!important;}
-  body>h1{font-size:clamp(25px,2.2vw,40px)!important;margin-top:42px!important;margin-bottom:18px!important;border-left:8px solid var(--teal)!important;padding-left:clamp(28px,4vw,72px)!important;line-height:1.08!important;}
-  body>h2{font-size:clamp(20px,1.55vw,30px)!important;margin-top:28px!important;margin-bottom:14px!important;color:var(--head)!important;}
-  body>h3{font-size:clamp(17px,1.2vw,22px)!important;color:var(--mute)!important;margin-top:22px!important;}
-  p,li,td,th{font-size:clamp(14px,0.95vw,18px)!important;}
-  table{border-spacing:0!important;width:calc(100% - clamp(56px,8vw,144px))!important;margin-left:clamp(28px,4vw,72px)!important;margin-right:clamp(28px,4vw,72px)!important;}
-  table th,table td{padding:12px 14px!important;}
-  .cover{height:min(82vh,820px)!important;min-height:560px!important;width:100%!important;break-after:auto!important;page-break-after:auto!important;background:linear-gradient(135deg,#061b2d 0%,#0C2A43 54%,#0F3B52 100%)!important;}
-  .cover::after{right:-12vw!important;top:-10vw!important;width:42vw!important;height:42vw!important;}
-  .cover-inner{padding:clamp(44px,7vw,110px)!important;}
-  .cover-title{font-size:clamp(48px,5.5vw,92px)!important;max-width:980px!important;line-height:.98!important;}
-  .cover-sub{font-size:clamp(22px,1.7vw,34px)!important;max-width:900px!important;}
-  .cover-meta{font-size:clamp(14px,1vw,18px)!important;}
-  .cover-note{font-size:clamp(13px,.9vw,16px)!important;max-width:880px!important;}
-  .evi,.callout,blockquote{width:calc(100% - clamp(56px,8vw,144px))!important;margin-left:clamp(28px,4vw,72px)!important;margin-right:clamp(28px,4vw,72px)!important;padding:20px 24px!important;border-radius:18px!important;}
-  .docfoot{padding:22px clamp(28px,4vw,72px)!important;margin-top:44px!important;}
-}
-</style>
-</head><body>
-<section class="cover"><div class="cover-inner">
-  <div class="kicker">Caso de Estudio · WP3 / Academia</div>
-  <div class="cover-title">Guardianes del Agua</div>
-  <div class="cover-sub">Piloto 3 · Educación ambiental escolar para la gestión hídrica costera</div>
-  <div class="cover-rule"></div>
-  <div class="cover-meta">
-    <div><b>Blue Economy Lab</b> · WP3 · IDMA · Proyecto Erasmus+ N.º 101183250</div>
-    <div>Versión 2 · actualizada — 22 de junio de 2026</div>
-  </div>
-  <p class="cover-note">Versión 2: incorpora los resultados de las Mentorías 3 y 4, la evidencia de implementación verificada y el estado del proyecto al 22-jun-2026. Los datos entre [corchetes] siguen pendientes de confirmar por el equipo.</p>
-</div></section><h2>Metadatos</h2><table class="kv"><tr><th>Título</th><td>Guardianes del Agua</td></tr><tr><th>País / Institución</th><td>Chile · IDMA (Antofagasta y Mejillones)</td></tr><tr><th>Contacto</th><td>Ada Calderón (insumos y carta de colaboración) · Javiera Núñez (contenido científico)</td></tr><tr><th>Año / Semestre</th><td>2026 (ciclo de mentorías junio 2026)</td></tr><tr><th>Nivel</th><td>Educación básica (foco 4°–6°), mediada por el docente formador</td></tr><tr><th>Contexto</th><td>Costero (zona norte, Corriente de Humboldt); comunidades escolares</td></tr><tr><th>Áreas clave</th><td>Alfabetización oceánica, gestión hídrica, educación ambiental, ABP</td></tr><tr><th>ODS (≤3)</th><td>ODS 4 (Educación de calidad), ODS 6 (Agua limpia), ODS 14 (Vida submarina)</td></tr><tr><th>Estado (jun-2026)</th><td>Mentorías M1–M4 completadas; testeo validado con DOS cartas firmadas; encuesta pre/post aplicada; en cross-assessment (evaluadores: UNIMINUTO y Mil y un mentorías).</td></tr></table><h1>1) Problema / oportunidad</h1><p>El instructivo responde a una <b>baja apropiación de los riesgos hídricos</b> en las comunidades escolares y a que los docentes, con buena disposición, pocas veces cuentan con herramientas listas para abordar la economía azul en el aula. El supuesto crítico: un marco metodológico aplicable y de bajo costo puede resolver esa brecha.</p><p>En la zona norte, la Corriente de Humboldt hace de la costa una de las más productivas del mundo, con amenazas relevantes (salmuera de la desalación, actividad portuaria y metales pesados, microplásticos) que constituyen oportunidades educativas situadas.</p><h1>2) Objetivos</h1><ul><li>Que los estudiantes transformen una problemática hídrica real de su territorio en una propuesta de participación para el Mes Azul.</li><li>Dejar capacidades instaladas en los docentes (“formar formadores”) mediante una metodología ABP lista para usar.</li><li>Articular la comunidad escolar con la economía azul y la feria del Mes Azul.</li></ul><h1>3) Población objetivo y actores</h1><p><b>Destinatario directo:</b> el docente formador, que necesita herramientas listas, alineadas al currículum y útiles para la recertificación ambiental del colegio. Las niñas y niños (≈ 8–15 años, foco 4°–6° básico) son beneficiarios mediados por ese adulto, con los resguardos correspondientes.</p><p><b>Comunidades piloto:</b> Liceo La Chimba (Antofagasta) y Escuela María Angélica Elizondo Briceño (Mejillones).</p><p><b>Mentees y mentores:</b> mentees Tania Melin, Ada Calderón y Eimilyn Alquinta; mentora Javiera Núñez (M2); voz experta Sebastián Gallardo (C-TyS UA, M3); Sebastián Cerda (Vinculación con el Medio).</p><h1>4) Enfoque y metodología</h1><p><b>Aprendizaje Basado en Proyectos (ABP):</b> los estudiantes investigan un problema real y construyen una respuesta propia; el docente acompaña y orienta, no dicta la solución. Estructura base de dos partes: teórica (importancia del océano y amenazas) seguida de práctica (experimento/operativo).</p><p>La economía azul se trabaja desde <b>tres pilares</b>: sostenibilidad (uso al ritmo de la regeneración), circularidad (el residuo de uno es el insumo de otro) y biomímesis (imitar estrategias de los ecosistemas marinos). El muestreo de microplásticos sigue la metodología de los <b>“Científicos de la Basura”</b> (Martin Thiel, U. Católica del Norte; ciencia ciudadana, censo por playa).</p><h1>5) Actividades principales</h1><p><b>Ruta del proyecto (7 pasos):</b> preparación del docente → activación (Mes Azul como meta) → elección de la problemática → investigación con datos y actores locales → diseño e implementación → compendio de resultados → presentación en el Mes Azul.</p><p><b>Decisión de alcance (MVP, M3):</b> la primera versión desarrolla a fondo <b>una</b> actividad —el operativo de limpieza de playa—, que ya cuenta con metodología validada (Guía de Operativos para Monitores, 5 pasos, y Manual de Comisión Logística). El resto del banco queda como propuestas a futuro.</p><p><b>Banco de experimentos ABP:</b></p><ul><li><b>Agua versus sal</b> — germinar legumbres con distintas salinidades (impacto de la salmuera).</li><li><b>La casa de los plásticos</b> — muestreo y clasificación de microplástico en un cuadrante de playa.</li><li><b>Vigilantes de la bahía</b> — entrevistas guiadas a pescadores y actores locales sobre cambios en la biodiversidad.</li><li><b>Turbidez y muestras de agua</b> — disco tipo Secchi y decantación.</li></ul><h1>6) Recursos utilizados</h1><ul><li>Kit de materiales por taller — presupuesto referencial: sacos ~$250 c/u; guantes ~$800; fruta ~$500/persona; más combustible/peaje si la actividad es en Mejillones [cifras a recalcular].</li><li>Guía de Operativos para Monitores (5 pasos) y Manual de Comisión Logística (insumos validados, Fundación Protección Oceánica).</li><li>Contenido científico y banco de experimentos ABP (Javiera Núñez).</li><li>Convenio de colaboración IDMA (Vinculación con el Medio) y financiamiento SENCE / ley REP.</li></ul><h1>7) Competencias trabajadas</h1><ul><li>Conciencia ambiental y oceánica; conexión historia–territorio–océano.</li><li>Pensamiento crítico y resolución de problemas reales.</li><li>Ciencia ciudadana (muestreo, registro y análisis de datos).</li><li>Trabajo en equipo y agencia comunitaria.</li></ul><h1>8) Resultados y evidencias</h1><p><b>Productos:</b> instructivo escolar <b>v7</b> (manual de capacitación docente), Canvas MicroVET, presentación M3/M4 y las guías de operativo y logística.</p><p><b>Estándar de evidencia mínima por taller:</b> fotografía de registro, lista de asistencia e informe/comunicación del docente, más entrega de un kit de materiales.</p><div class="evi"><span class="evi-tag">Evidencia de implementación · T3.3 · criterio 5 (peso 20%)</span><ul><li><b>Dos cartas de compromiso y colaboración FIRMADAS:</b> Liceo La Chimba (Antofagasta) y Escuela María Angélica Elizondo Briceño (Mejillones) — testeo validado en terreno (sección 12bis del documento v7).</li><li><b>Insumos ya validados</b> de la Fundación Protección Oceánica (vía Ada Calderón): Guía de Operativos para Monitores, Manual de Comisión Logística, kits físicos y red de contactos.</li><li><b>Plan de testeo ejecutado (M3):</b> envío del instructivo a un coordinador escolar de la comunidad objetivo, buscando feedback y la carta de colaboración escuela–IDMA (lograda).</li><li><b>Aliados de terreno comprometidos:</b> Aguas Antofagasta (desaladora) y Aguas Andinas (biofactoría) para visitas y validación; COPEC / RSE para materiales, traslados y auspicio de la feria.</li></ul></div><h1>9) Voces del territorio</h1><div class="voces"><blockquote><p>Si nosotros no conocemos algo, no creamos esa empatía. Es muy difícil crear esta relación con el océano. Yo no veo otro futuro posible si no fuera por los estudiantes.</p><cite>Ada Calderón<span>Estudiante IDMA y activista · Fundación Protección Oceánica</span></cite></blockquote><blockquote><p>La teoría se queda en teoría. La única forma de que el ser humano aprenda es viviéndolo. Nosotros que tenemos costa, siento que no se aprovecha la costa para estos aprendizajes.</p><cite>Eimilyn Alquinta<span>Estudiante IDMA · psicopedagoga (proyecto Bosque Escuela)</span></cite></blockquote><blockquote><p>El docente tiene que tener motivación; tiene que ser algo que le aliviane el trabajo en el aula, no una carga. Por eso las actividades tienen que venir listas, con las instrucciones y las plantillas para ejecutarlas.</p><cite>Ada Calderón<span>Sobre formar formadores y herramientas listas para el aula</span></cite></blockquote></div><h1>10) Evaluación (cross-assessment T3.3)</h1><p>Evaluación con la <b>rúbrica T3.3</b> (8 criterios, umbral 80 %). Asignación cruzada para Guardianes: <b>UNIMINUTO + Mil y un mentorías</b> (sin autoevaluación).</p><p>Cronograma de cierre: encuestas pre/post aplicadas (<b>22-jun</b>); instrumento al consorcio el <b>23-jun</b>; entrega formal del reporte de cross-assessment el <b>29-jun</b>.</p><h1>11) Lecciones aprendidas</h1><ul><li>Conviene un MVP enfocado (una actividad bien resuelta) antes de abrir todo el banco de experimentos.</li><li>Orden pedagógico: importancia del océano → amenazas → operativo; no pasar directo a “océano = amenaza”.</li><li>Un problema ambiental “es problema” cuando hay una comunidad que lo percibe como negativo (Sebastián Cerda); sin comunidad afectada queda como “externalidad”.</li><li>Los materiales deben llegar listos al docente (lógica de “kit de ciencias”); la principal barrera es económica.</li></ul><h1>12) Transferibilidad y sostenibilidad</h1><p>El programa se engloba en un <b>convenio de colaboración IDMA (Vinculación con el Medio)–comunidad escolar</b>, repetible (p. ej. una vez al año), con un sitio web “Guardianes del Agua” para acumular actividades. La metodología funciona como <b>“etiqueta blanca”</b> adaptable a otros colegios o a programas de RSE empresarial.</p><p>Financiamiento de continuidad: franquicia tributaria SENCE y venta directa a empresas (ley REP / RSE).</p><h1>13) Riesgos y mitigaciones</h1><ul><li>Barrera económica (horas docentes, materiales, traslados) — mitigación: kit de bajo costo y auspicios (COPEC / RSE).</li><li>Resguardos con menores (certificados de inhabilidad, autorizaciones de apoderados, supervisión adulta permanente) — mitigación: protocolo obligatorio del manual.</li><li>Permisos para manipular organismos (Sernapesca / SAG) — mitigación: solo invertebrados menores y resguardos.</li><li>Voluntad de autoridades — mitigación: cartas de colaboración y articulación con el PEI / recertificación ambiental.</li></ul><h1>14) Referencias y créditos</h1><p>Fuentes: instructivo escolar “Guardianes del Agua” v7 (IDMA, 2026); entrevistas a Ada Calderón y Eimilyn Alquinta; metodología “Científicos de la Basura” (Martin Thiel, UCN); rúbrica T3.3.</p><p>Créditos: equipo WP3 IDMA. Licencia sugerida: CC BY 4.0. Proyecto Erasmus+ N.º 101183250.</p><footer class="docfoot">Blue Economy Lab · WP3 · IDMA · Proyecto Erasmus+ N.º 101183250 · Entregable v2 · 22 de junio de 2026</footer></body></html>
-</template><template id="wp3-template-compilado">
-<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Informe de Casos de Estudio (Compilation Report)</title><style>
-:root{--navy:#0C2A43;--deep:#071E2E;--teal:#15B8C9;--ink:#16242F;--mute:#5A7280;
-      --soft:#F4F8F9;--line:#D8E2E6;--head:#0F3B52}
-*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-@page{size:A4;margin:18mm 16mm}
-@page:first{margin:0}
-html,body{margin:0;padding:0}
-body{font-family:"Segoe UI",Arial,Helvetica,sans-serif;color:var(--ink);font-size:10.6pt;line-height:1.5}
-h1,h2,h3{font-family:Georgia,"Times New Roman",serif;color:var(--ink);margin:0}
-h1{font-size:16pt;color:var(--head);margin:20px 0 8px;padding-left:12px;border-left:4px solid var(--teal);break-after:avoid}
-h2{font-size:12.5pt;margin:16px 0 6px;break-after:avoid}
-h3{font-size:11pt;color:var(--mute);margin:12px 0 4px;break-after:avoid}
-p{margin:0 0 7px}
-.lead{font-size:11pt;color:#23323d}
-ul,ol{margin:0 0 8px;padding-left:20px}
-li{margin:0 0 4px}
-small,.note{font-size:8.6pt;color:var(--mute)}
-.note{font-style:italic;margin-top:4px}
-/* portada a sangre */
-.cover{height:297mm;background:linear-gradient(135deg,var(--deep),var(--navy) 55%,var(--head));
-       color:#fff;display:flex;align-items:flex-end;padding:0;break-after:page;position:relative}
-.cover::after{content:"";position:absolute;right:-60mm;top:-60mm;width:160mm;height:160mm;border-radius:50%;
-       background:radial-gradient(circle,rgba(21,184,201,.35),transparent 70%)}
-.cover-inner{padding:26mm 22mm;position:relative;z-index:1;width:100%}
-.kicker{font-size:9pt;letter-spacing:3px;text-transform:uppercase;font-weight:800;color:#8FE3EC}
-.cover-title{font-size:30pt;line-height:1.06;color:#fff;margin:8px 0 6px;border:none;padding:0}
-.cover-sub{font-size:13pt;font-style:italic;color:rgba(255,255,255,.86)}
-.cover-rule{width:70mm;height:3px;background:var(--teal);margin:16px 0}
-.cover-meta{font-size:9.5pt;color:rgba(255,255,255,.9);line-height:1.7}
-.cover-note{font-size:8.6pt;color:rgba(255,255,255,.7);font-style:italic;margin-top:14px;max-width:140mm}
-/* tablas */
-table{width:100%;border-collapse:collapse;margin:6px 0 10px;font-size:9.6pt;break-inside:avoid}
-table.kv th{width:34%;text-align:left;background:var(--soft);color:var(--head);font-weight:700;
-       border:1px solid var(--line);padding:6px 9px;vertical-align:top}
-table.kv td{border:1px solid var(--line);padding:6px 9px;vertical-align:top}
-table.data th{background:var(--head);color:#fff;font-weight:700;border:1px solid var(--head);padding:6px 9px;text-align:left}
-table.data td{border:1px solid var(--line);padding:6px 9px;vertical-align:top}
-table.data tbody tr:nth-child(even){background:var(--soft)}
-/* citas */
-.voces{margin:8px 0 10px}
-blockquote{margin:0 0 9px;padding:11px 16px;background:var(--soft);border-left:3px solid var(--teal);
-       border-radius:0 8px 8px 0;break-inside:avoid}
-blockquote p{font-family:Georgia,serif;font-style:italic;font-size:10.6pt;color:#1d2e3a;margin:0 0 5px}
-blockquote cite{font-style:normal;font-weight:800;color:var(--head);font-size:9pt}
-blockquote cite span{display:block;font-weight:500;color:var(--mute);font-size:8.4pt}
-/* caja evidencia */
-.evi{border:1px solid var(--line);border-radius:10px;padding:10px 14px 6px;margin:8px 0 10px;background:#fff;break-inside:avoid}
-.evi-tag{display:inline-block;font-size:7.8pt;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
-       color:var(--teal);background:rgba(21,184,201,.10);border:1px solid rgba(21,184,201,.4);
-       border-radius:999px;padding:2px 9px;margin-bottom:6px}
-.callout{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0;break-inside:avoid}
-.callout .callout-l{display:block;font-size:8pt;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--head);margin-bottom:4px}
-.docfoot{margin-top:18px;padding-top:8px;border-top:1px solid var(--line);font-size:8pt;color:var(--mute)}
-</style>
-<style id="wp3-fullwidth-document-override">
-@media screen{
-  :root{--navy:#0C2A43;--deep:#071E2E;--teal:#15B8C9;--ink:#16242F;--mute:#5A7280;--soft:#F4F8F9;--line:#D8E2E6;--head:#0F3B52}
-  html,body{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;overflow-x:hidden!important;background:#ffffff!important;}
-  body{font-size:clamp(14px,0.95vw,18px)!important;line-height:1.55!important;}
-  body>h1,body>h2,body>h3,body>p,body>ul,body>ol,body>table,body>.voces,body>blockquote,body>.evi,body>.callout,body>.docfoot{width:100%!important;max-width:none!important;margin-left:0!important;margin-right:0!important;}
-  body>h1,body>h2,body>h3,body>p,body>ul,body>ol,body>table,body>.voces,body>blockquote,body>.evi,body>.callout{padding-left:clamp(28px,4vw,72px)!important;padding-right:clamp(28px,4vw,72px)!important;}
-  body>h1{font-size:clamp(25px,2.2vw,40px)!important;margin-top:42px!important;margin-bottom:18px!important;border-left:8px solid var(--teal)!important;padding-left:clamp(28px,4vw,72px)!important;line-height:1.08!important;}
-  body>h2{font-size:clamp(20px,1.55vw,30px)!important;margin-top:28px!important;margin-bottom:14px!important;color:var(--head)!important;}
-  body>h3{font-size:clamp(17px,1.2vw,22px)!important;color:var(--mute)!important;margin-top:22px!important;}
-  p,li,td,th{font-size:clamp(14px,0.95vw,18px)!important;}
-  table{border-spacing:0!important;width:calc(100% - clamp(56px,8vw,144px))!important;margin-left:clamp(28px,4vw,72px)!important;margin-right:clamp(28px,4vw,72px)!important;}
-  table th,table td{padding:12px 14px!important;}
-  .cover{height:min(82vh,820px)!important;min-height:560px!important;width:100%!important;break-after:auto!important;page-break-after:auto!important;background:linear-gradient(135deg,#061b2d 0%,#0C2A43 54%,#0F3B52 100%)!important;}
-  .cover::after{right:-12vw!important;top:-10vw!important;width:42vw!important;height:42vw!important;}
-  .cover-inner{padding:clamp(44px,7vw,110px)!important;}
-  .cover-title{font-size:clamp(48px,5.5vw,92px)!important;max-width:980px!important;line-height:.98!important;}
-  .cover-sub{font-size:clamp(22px,1.7vw,34px)!important;max-width:900px!important;}
-  .cover-meta{font-size:clamp(14px,1vw,18px)!important;}
-  .cover-note{font-size:clamp(13px,.9vw,16px)!important;max-width:880px!important;}
-  .evi,.callout,blockquote{width:calc(100% - clamp(56px,8vw,144px))!important;margin-left:clamp(28px,4vw,72px)!important;margin-right:clamp(28px,4vw,72px)!important;padding:20px 24px!important;border-radius:18px!important;}
-  .docfoot{padding:22px clamp(28px,4vw,72px)!important;margin-top:44px!important;}
-}
-</style>
-</head><body>
-<section class="cover"><div class="cover-inner">
-  <div class="kicker">Informe de Casos de Estudio · WP3</div>
-  <div class="cover-title">Casos de Estudio de los Pilotos IDMA</div>
-  <div class="cover-sub">Compilation Report — Work Package 3 · Blue Economy Lab</div>
-  <div class="cover-rule"></div>
-  <div class="cover-meta">
-    <div><b>Blue Economy Lab</b> · WP3 · IDMA · Proyecto Erasmus+ N.º 101183250</div>
-    <div>Versión 2 · actualizada — 22 de junio de 2026</div>
-  </div>
-  <p class="cover-note">Versión 2: sistematiza los tres pilotos con la evidencia de implementación verificada, las voces del territorio y el estado del cross-assessment al 22-jun-2026.</p>
-</div></section><h1>1. Presentación</h1><p>El Blue Economy Lab es un proyecto Erasmus+ de cooperación internacional que articula actores de educación, ciencia, industria y comunidad para promover la innovación educativa y el desarrollo sostenible desde la economía azul. Este documento corresponde al <b>Informe de Casos de Estudio</b> de los pilotos desarrollados por IDMA en el marco del <b>Work Package 3 (WP3): diseño y ejecución de pilotos</b>.</p><p>Su objetivo es documentar, sistematizar y analizar los tres pilotos educativos de IDMA —Diplomado en Economía Azul, Mes Azul y Guardianes del Agua— como experiencias formativas vinculadas a la economía azul. El informe se articula con la evaluación cruzada (T3.3) y el enfoque de microcredenciales del proyecto.</p><h1>2. Contexto general del proyecto</h1><p>La economía azul regenerativa integra la protección de los ecosistemas oceánicos con oportunidades económicas, sociales y educativas, en línea con los ODS (4, 8, 12, 13 y 14) y la alfabetización oceánica (COI-UNESCO). El proyecto fortalece las capacidades de proveedores de educación y formación técnica en Chile y Colombia. El consorcio reúne a IDMA y Mil y un mentorías (Chile), UNIMINUTO (Colombia) y los socios europeos 2811, DomSpain y Weltweit. Proyecto Erasmus+ N.º 101183250.</p><h1>3. Metodología de sistematización</h1><h2>3.1 Estrategia de recopilación</h2><p>La sistematización recoge información de múltiples fuentes generadas durante el ciclo de mentorías: documentos de solución por piloto (vigentes v0.5, v0.8 y v7), reportes y transcripciones de las 12 mentorías, Canvas MicroVET, entrevistas a actores, evidencias de implementación (cartas de colaboración, materiales, registros) e instancias de coordinación del equipo.</p><h2>3.2 Criterios de selección</h2><ul><li>Vinculación explícita con la economía azul.</li><li>Carácter aplicado de la experiencia (ciclo real de mentorías y desarrollo de solución).</li><li>Relevancia educativa (articulación con procesos formativos y participación de docentes/estudiantes).</li><li>Potencial de replicabilidad y escalabilidad.</li><li>Disponibilidad y calidad de la evidencia.</li></ul><h2>3.3 Proceso de análisis</h2><p>El análisis se desarrolló en tres etapas: revisión individual de cada piloto y su documentación; síntesis narrativa con una estructura común; y un análisis transversal que identifica patrones, diferencias y aprendizajes compartidos.</p><h1>4. Resultados</h1><h2>Caso de Estudio I: Diplomado en Economía Azul y Sostenibilidad Costera</h2><h3>Identificación del caso</h3><p>IDMA — Academia de Medioambiente (OTEC) / Dirección de Educación Continua. Mentees: Estefanía Campos y Juan Otero. Voces expertas: Sebastián Cerda (M2) y Aldo Poblete (M3–M4).</p><h3>Resumen ejecutivo</h3><p>Diplomado modularizable (4 cursos × 30 h = 120 h) que profesionaliza la economía azul con foco en empleabilidad, bajo enfoque de microcredenciales y un discurso de “oportunidad + conservación”. Documento de solución vigente: v0.5.</p><h3>Objetivo y alcance</h3><p>Formar personas capaces de identificar y aprovechar oportunidades de desarrollo sostenible asociadas al mar; alcance nacional en modalidad online con instancia presencial opcional. Población: arquetipo “Amaro” (25–45 años).</p><h3>Descripción de la experiencia</h3><p>Cuatro cursos disciplinares (economía azul y sistemas marino-costeros; gestión de recursos y residuos; innovación y tecnologías; normativa e institucionalidad), con 60/40 teórico-práctico, modelo bimestral (3 h sinc. + 1 h asinc.) y micro-certificación por curso. Incorpora un eje de gobernanza y permisología (SEA, Subpesca, Sernapesca, IFOP, Directemar).</p><h3>Componentes principales</h3><ul><li>Enfoque de microcredenciales (MicroVET/MBMC).</li><li>ABP con casos reales del territorio.</li><li>Micro-certificaciones por curso (GIS, ISO 14001, formulación de proyectos, valorización de residuos).</li><li>Alianzas con el sector (IFOP, Sernapesca, gremios, ECIM-PUC).</li><li>Financiamiento vía SENCE.</li></ul><h3>Resultados y evidencias</h3><div class="evi"><span class="evi-tag">Evidencia de implementación · T3.3 · criterio 5 (peso 20%)</span><ul><li>Documento de solución v0.5, Canvas MicroVET y reportes M1–M4.</li><li>Testeo de empleabilidad validado por Aldo Poblete; M3 ejecutada con Aldo Poblete, Estefanía Campos y Juan Otero.</li><li>Encuesta de demanda formativa diseñada y lista (Google Form); base de contactos del sector en construcción (Juan Otero).</li></ul></div><h3>Proyección y continuidad</h3><ul><li>Presentación a coordinación académica (Hilda Zúñiga) y rectoría.</li><li>Definición de timing, equipo docente y costos.</li><li>Financiamiento SENCE y venta directa a empresas.</li></ul><h2>Caso de Estudio II: Mes Azul IDMA</h2><h3>Identificación del caso</h3><p>IDMA (sede CTS Buin). Equipo: Paola Cerda, Víctor Bravo y Javiera Núñez. Voces expertas: Jessica Morales (Uniminuto, M2) y Sebastián Gallardo (U. de Antofagasta, M4).</p><h3>Resumen ejecutivo</h3><p>Programa anual de vinculación de la economía azul que combina charlas tipo TED, contenidos digitales y una jornada de cierre con feria y seminario. Documento vigente: v0.8. Usuario principal: arquetipo “Pedro” (20–30 años).</p><h3>Objetivo y alcance</h3><p>Vincular academia, empresa y sector productivo; posicionar a IDMA como referente nacional e instalar un hito anual. Alcance territorial con doble canal presencial/online.</p><h3>Descripción de la experiencia</h3><p>Nueve componentes: feria presencial con stands tecnológicos, entrada inmersiva, ciclo de 6 charlas TED (ciencia / gestión pública / comunidad), seminario, talleres prácticos, curso certificable OTEC, cápsulas Class on Live, muestra de proyectos escolares de Guardianes del Agua y rueda de vinculación.</p><h3>Componentes principales</h3><ul><li>Feria de economía azul como pieza central.</li><li>Charlas TED y cápsulas digitales (doble canal).</li><li>Curso con certificación OTEC IDMA.</li><li>Rueda de vinculación estudiante–empresa.</li><li>Articulación con el piloto Guardianes del Agua.</li></ul><h3>Resultados y evidencias</h3><div class="evi"><span class="evi-tag">Evidencia de implementación · T3.3 · criterio 5 (peso 20%)</span><ul><li>Documento de solución v0.8, Canvas MicroVET y 5 KPIs de continuidad.</li><li>Testeo con Aldo Poblete (sector) + focus group de Víctor Bravo con estudiantes “Pedro”.</li><li>Aportes de diseño de feria (M4, Sebastián Gallardo): ferias de referencia y cifras, costos (~$30M–$80M) y modelo de auspicios; vínculo con la U. de Antofagasta en negociación.</li></ul></div><h3>Proyección y continuidad</h3><ul><li>Cerrar el modelo de negocio e implementación (presupuesto, auspicios, becas).</li><li>Formalizar convenio con la U. de Antofagasta.</li><li>Proyección de cooperación regional Chile–Colombia.</li></ul><h2>Caso de Estudio III: Guardianes del Agua</h2><h3>Identificación del caso</h3><p>IDMA en comunidades escolares de Antofagasta y Mejillones (Liceo La Chimba y Escuela M. A. Elizondo Briceño). Mentees: Tania Melin, Ada Calderón y Eimilyn Alquinta. Voces expertas: Javiera Núñez (M2) y Sebastián Gallardo (M3).</p><h3>Resumen ejecutivo</h3><p>Instructivo escolar y guía de operativos que, mediante ABP, permite a la comunidad escolar transformar una problemática hídrica real en un proyecto que se presenta en el Mes Azul. Documento vigente: v7. Destinatario directo: el docente formador.</p><h3>Objetivo y alcance</h3><p>Dejar capacidades instaladas en los docentes (“formar formadores”) y articular la comunidad escolar con la economía azul. Foco 4°–6° básico, con resguardos para el trabajo con menores.</p><h3>Descripción de la experiencia</h3><p>Ruta de 7 pasos y banco de experimentos ABP; MVP centrado en el operativo de limpieza de playa con la metodología “Científicos de la Basura” (Martin Thiel, UCN). Orden pedagógico: importancia del océano → amenazas → operativo. Tres pilares: sostenibilidad, circularidad y biomímesis.</p><h3>Componentes principales</h3><ul><li>Metodología ABP lista para el docente (“kit de ciencias”).</li><li>Banco de 4 experimentos y operativo de limpieza (MVP).</li><li>Guía de Operativos para Monitores y Manual de Comisión Logística.</li><li>Convenio de Vinculación con el Medio (capacidad instalada).</li><li>Articulación con el Mes Azul.</li></ul><h3>Resultados y evidencias</h3><div class="evi"><span class="evi-tag">Evidencia de implementación · T3.3 · criterio 5 (peso 20%)</span><ul><li>Instructivo v7, Canvas MicroVET y guías PDF.</li><li>Resultado del testeo validado: <b>dos cartas de compromiso firmadas</b> (Liceo La Chimba y Escuela M. A. Elizondo Briceño).</li><li>Insumos validados de la Fundación Protección Oceánica; aliados de terreno (Aguas Antofagasta, Aguas Andinas, COPEC).</li></ul></div><h3>Proyección y continuidad</h3><ul><li>Convenio anual IDMA–comunidad escolar y sitio web del programa.</li><li>Financiamiento SENCE / ley REP (RSE).</li><li>Apertura progresiva del banco de experimentos.</li></ul><h1>5. Análisis transversal</h1><h2>5.1 Patrones comunes</h2><p>Los tres pilotos comparten condiciones habilitantes: <b>territorialización</b> (la economía azul se aborda desde el contexto marino-costero concreto), desarrollo de <b>blue skills como combinaciones de competencias</b> (no habilidades aisladas) y el uso de la economía azul como <b>marco pedagógico operativo</b> que articula sostenibilidad, educación e innovación.</p><h2>5.2 Funciones complementarias</h2><ul><li>Diplomado — formación profesional y empleabilidad (educación continua / superior).</li><li>Mes Azul — vinculación, cultura oceánica y ciudadanía azul (encuentro academia–empresa–comunidad).</li><li>Guardianes del Agua — alfabetización oceánica y formación temprana (educación escolar).</li></ul><p>En conjunto cubren múltiples niveles del sistema educativo (escolar, técnico-profesional y educación continua) y dimensiones complementarias de la transición hacia una economía azul regenerativa.</p><h2>5.3 Voces del territorio</h2><div class="voces"><blockquote><p>Sin conocimiento no hay empatía, y sin empatía no hay protección.</p><cite>Ada Calderón<span>Estudiante IDMA y activista (Guardianes del Agua)</span></cite></blockquote><blockquote><p>El mayor desafío es llegar a un lenguaje común entre la teoría y la práctica; de ahí surge la alfabetización tecnológica.</p><cite>Aldo Poblete<span>Biólogo marino, voz del sector (Diplomado / Mes Azul)</span></cite></blockquote><blockquote><p>Las barreras siempre van a ser los adultos, porque el adulto tiene que desaprender para poder hacer esto.</p><cite>Eimilyn Alquinta<span>Estudiante IDMA, psicopedagoga (Guardianes del Agua)</span></cite></blockquote></div><h1>6. Conclusiones y proyecciones</h1><p>El WP3 de IDMA consolida tres pilotos con propuestas de solución vigentes, Canvas MicroVET completos y evidencia de implementación real (incluidas dos cartas de colaboración firmadas en Guardianes del Agua). Los casos validan la pertinencia de la economía azul como enfoque educativo transversal y aportan criterios empíricos para el diseño, la evaluación cruzada (T3.3) y la sistematización de casos (T3.4).</p><div class="callout"><span class="callout-l">Cronograma de cierre</span><ul><li><b>23-jun:</b> instrumento de evaluación cruzada disponible al consorcio.</li><li><b>25-jun:</b> D3.3 (compilado de casos de estudio, ~15 páginas).</li><li><b>29-jun:</b> entrega formal del Reporte de Pilotos y del Reporte de Cross-assessment (cada uno ~10–12 páginas, en español).</li><li><b>Fin de julio:</b> plantilla común de reporte del proyecto. <b>Diciembre (M12):</b> cierre formal.</li></ul></div><h1>Anexos</h1><ul><li>Anexo 1 — Casos de estudio individuales (3 fichas según plantilla estándar WP3 / Academia).</li><li>Anexo 2 — Documentos de solución vigentes: Diplomado v0.5, Mes Azul v0.8, Guardianes v7.</li><li>Anexo 3 — Canvas MicroVET por piloto; rúbrica T3.3 y base de datos de evaluaciones.</li><li>Anexo 4 — Evidencia de implementación: cartas de colaboración, guías de operativo, reportes de mentoría.</li></ul><footer class="docfoot">Blue Economy Lab · WP3 · IDMA · Proyecto Erasmus+ N.º 101183250 · Entregable v2 · 22 de junio de 2026</footer></body></html>
-</template><template id="wp3-template-consolidado">
-<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Informe Final Consolidado del WP3</title><style>
-:root{--navy:#0C2A43;--deep:#071E2E;--teal:#15B8C9;--ink:#16242F;--mute:#5A7280;
-      --soft:#F4F8F9;--line:#D8E2E6;--head:#0F3B52}
-*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-@page{size:A4;margin:18mm 16mm}
-@page:first{margin:0}
-html,body{margin:0;padding:0}
-body{font-family:"Segoe UI",Arial,Helvetica,sans-serif;color:var(--ink);font-size:10.6pt;line-height:1.5}
-h1,h2,h3{font-family:Georgia,"Times New Roman",serif;color:var(--ink);margin:0}
-h1{font-size:16pt;color:var(--head);margin:20px 0 8px;padding-left:12px;border-left:4px solid var(--teal);break-after:avoid}
-h2{font-size:12.5pt;margin:16px 0 6px;break-after:avoid}
-h3{font-size:11pt;color:var(--mute);margin:12px 0 4px;break-after:avoid}
-p{margin:0 0 7px}
-.lead{font-size:11pt;color:#23323d}
-ul,ol{margin:0 0 8px;padding-left:20px}
-li{margin:0 0 4px}
-small,.note{font-size:8.6pt;color:var(--mute)}
-.note{font-style:italic;margin-top:4px}
-/* portada a sangre */
-.cover{height:297mm;background:linear-gradient(135deg,var(--deep),var(--navy) 55%,var(--head));
-       color:#fff;display:flex;align-items:flex-end;padding:0;break-after:page;position:relative}
-.cover::after{content:"";position:absolute;right:-60mm;top:-60mm;width:160mm;height:160mm;border-radius:50%;
-       background:radial-gradient(circle,rgba(21,184,201,.35),transparent 70%)}
-.cover-inner{padding:26mm 22mm;position:relative;z-index:1;width:100%}
-.kicker{font-size:9pt;letter-spacing:3px;text-transform:uppercase;font-weight:800;color:#8FE3EC}
-.cover-title{font-size:30pt;line-height:1.06;color:#fff;margin:8px 0 6px;border:none;padding:0}
-.cover-sub{font-size:13pt;font-style:italic;color:rgba(255,255,255,.86)}
-.cover-rule{width:70mm;height:3px;background:var(--teal);margin:16px 0}
-.cover-meta{font-size:9.5pt;color:rgba(255,255,255,.9);line-height:1.7}
-.cover-note{font-size:8.6pt;color:rgba(255,255,255,.7);font-style:italic;margin-top:14px;max-width:140mm}
-/* tablas */
-table{width:100%;border-collapse:collapse;margin:6px 0 10px;font-size:9.6pt;break-inside:avoid}
-table.kv th{width:34%;text-align:left;background:var(--soft);color:var(--head);font-weight:700;
-       border:1px solid var(--line);padding:6px 9px;vertical-align:top}
-table.kv td{border:1px solid var(--line);padding:6px 9px;vertical-align:top}
-table.data th{background:var(--head);color:#fff;font-weight:700;border:1px solid var(--head);padding:6px 9px;text-align:left}
-table.data td{border:1px solid var(--line);padding:6px 9px;vertical-align:top}
-table.data tbody tr:nth-child(even){background:var(--soft)}
-/* citas */
-.voces{margin:8px 0 10px}
-blockquote{margin:0 0 9px;padding:11px 16px;background:var(--soft);border-left:3px solid var(--teal);
-       border-radius:0 8px 8px 0;break-inside:avoid}
-blockquote p{font-family:Georgia,serif;font-style:italic;font-size:10.6pt;color:#1d2e3a;margin:0 0 5px}
-blockquote cite{font-style:normal;font-weight:800;color:var(--head);font-size:9pt}
-blockquote cite span{display:block;font-weight:500;color:var(--mute);font-size:8.4pt}
-/* caja evidencia */
-.evi{border:1px solid var(--line);border-radius:10px;padding:10px 14px 6px;margin:8px 0 10px;background:#fff;break-inside:avoid}
-.evi-tag{display:inline-block;font-size:7.8pt;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
-       color:var(--teal);background:rgba(21,184,201,.10);border:1px solid rgba(21,184,201,.4);
-       border-radius:999px;padding:2px 9px;margin-bottom:6px}
-.callout{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0;break-inside:avoid}
-.callout .callout-l{display:block;font-size:8pt;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--head);margin-bottom:4px}
-.docfoot{margin-top:18px;padding-top:8px;border-top:1px solid var(--line);font-size:8pt;color:var(--mute)}
-</style>
-<style id="wp3-fullwidth-document-override">
-@media screen{
-  :root{--navy:#0C2A43;--deep:#071E2E;--teal:#15B8C9;--ink:#16242F;--mute:#5A7280;--soft:#F4F8F9;--line:#D8E2E6;--head:#0F3B52}
-  html,body{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;overflow-x:hidden!important;background:#ffffff!important;}
-  body{font-size:clamp(14px,0.95vw,18px)!important;line-height:1.55!important;}
-  body>h1,body>h2,body>h3,body>p,body>ul,body>ol,body>table,body>.voces,body>blockquote,body>.evi,body>.callout,body>.docfoot{width:100%!important;max-width:none!important;margin-left:0!important;margin-right:0!important;}
-  body>h1,body>h2,body>h3,body>p,body>ul,body>ol,body>table,body>.voces,body>blockquote,body>.evi,body>.callout{padding-left:clamp(28px,4vw,72px)!important;padding-right:clamp(28px,4vw,72px)!important;}
-  body>h1{font-size:clamp(25px,2.2vw,40px)!important;margin-top:42px!important;margin-bottom:18px!important;border-left:8px solid var(--teal)!important;padding-left:clamp(28px,4vw,72px)!important;line-height:1.08!important;}
-  body>h2{font-size:clamp(20px,1.55vw,30px)!important;margin-top:28px!important;margin-bottom:14px!important;color:var(--head)!important;}
-  body>h3{font-size:clamp(17px,1.2vw,22px)!important;color:var(--mute)!important;margin-top:22px!important;}
-  p,li,td,th{font-size:clamp(14px,0.95vw,18px)!important;}
-  table{border-spacing:0!important;width:calc(100% - clamp(56px,8vw,144px))!important;margin-left:clamp(28px,4vw,72px)!important;margin-right:clamp(28px,4vw,72px)!important;}
-  table th,table td{padding:12px 14px!important;}
-  .cover{height:min(82vh,820px)!important;min-height:560px!important;width:100%!important;break-after:auto!important;page-break-after:auto!important;background:linear-gradient(135deg,#061b2d 0%,#0C2A43 54%,#0F3B52 100%)!important;}
-  .cover::after{right:-12vw!important;top:-10vw!important;width:42vw!important;height:42vw!important;}
-  .cover-inner{padding:clamp(44px,7vw,110px)!important;}
-  .cover-title{font-size:clamp(48px,5.5vw,92px)!important;max-width:980px!important;line-height:.98!important;}
-  .cover-sub{font-size:clamp(22px,1.7vw,34px)!important;max-width:900px!important;}
-  .cover-meta{font-size:clamp(14px,1vw,18px)!important;}
-  .cover-note{font-size:clamp(13px,.9vw,16px)!important;max-width:880px!important;}
-  .evi,.callout,blockquote{width:calc(100% - clamp(56px,8vw,144px))!important;margin-left:clamp(28px,4vw,72px)!important;margin-right:clamp(28px,4vw,72px)!important;padding:20px 24px!important;border-radius:18px!important;}
-  .docfoot{padding:22px clamp(28px,4vw,72px)!important;margin-top:44px!important;}
-}
-</style>
-</head><body>
-<section class="cover"><div class="cover-inner">
-  <div class="kicker">Informe Final Consolidado · WP3</div>
-  <div class="cover-title">Informe Final Consolidado del WP3</div>
-  <div class="cover-sub">Diseño y ejecución de pilotos · Blue Economy Lab</div>
-  <div class="cover-rule"></div>
-  <div class="cover-meta">
-    <div><b>Blue Economy Lab</b> · WP3 · IDMA · Proyecto Erasmus+ N.º 101183250</div>
-    <div>Versión 2 · actualizada — 22 de junio de 2026</div>
-  </div>
-  <p class="cover-note">Versión 2: incorpora el ciclo completo de 12 mentorías, la evidencia de implementación, las voces del territorio y el estado del cross-assessment y los entregables al 22-jun-2026.</p>
-</div></section><h1>1. Resumen ejecutivo</h1><p>El Work Package 3 (WP3), liderado por IDMA, diseñó y ejecutó tres pilotos educativos de economía azul —Diplomado en Economía Azul, Mes Azul y Guardianes del Agua— mediante un ciclo de cuatro mentorías por piloto (12 en total, completadas en junio de 2026). Cada piloto cuenta con una propuesta de solución vigente (v0.5, v0.8 y v7), un Canvas MicroVET y evidencia de implementación. El instrumento de evaluación cruzada (T3.3) está listo para su aplicación por el consorcio.</p><h1>2. Contexto del proyecto</h1><p>Blue Economy Lab es un proyecto Erasmus+ (N.º 101183250), de 24 meses (sep 2025 – 2027), que articula a IDMA y Mil y un mentorías (Chile), UNIMINUTO (Colombia) y los socios europeos 2811, DomSpain y Weltweit. El WP3, liderado por IDMA, comprende: <b>T3.2</b> ejecución de pilotos, <b>T3.3</b> evaluación cruzada entre pares (hito M12) y <b>T3.4</b> sistematización de casos de estudio. DomSpain integra la plataforma de pilotos como subpágina en blueeconomylabs.com/aprende-y-crece.</p><h1>3. Enfoque metodológico</h1><p>Los pilotos se diseñan bajo el <b>enfoque de microcredenciales (MicroVET / MBMC)</b>, combinando aprendizaje basado en proyectos/problemas (ABP), alfabetización oceánica y pensamiento sistémico. Cada piloto recorre un ciclo de cuatro mentorías con un canvas por sesión:</p><ul><li>M1 — Segmento y problema (definición del usuario y desafío central).</li><li>M2 — Propuesta de valor y solución (con voz experta).</li><li>M3 — Testcard y validación (prueba de supuestos en terreno).</li><li>M4 — Canvas de continuidad (escalamiento y sostenibilidad).</li></ul><p>Marcos de referencia: EQF, ECTS, Europass y la Recomendación del Consejo UE 2022; INNOVET LATAM, ESCO, EQAVET, CEDEFOP y la alfabetización oceánica de UNESCO.</p><h1>4. Los tres pilotos</h1><h2>4.1 Diplomado en Economía Azul y Sostenibilidad Costera (v0.5)</h2><p>Educación continua (4 cursos × 30 h = 120 h), 60/40 teórico-práctico, modelo bimestral, micro-certificación por curso y eje de gobernanza/permisología. Mentees: Estefanía Campos y Juan Otero. Persona: “Amaro”. Financiamiento: SENCE.</p><h2>4.2 Mes Azul IDMA (v0.8)</h2><p>Programa anual de vinculación con feria de economía azul, 6 charlas TED y curso certificable OTEC. Equipo: Paola Cerda, Víctor Bravo, Javiera Núñez. Persona: “Pedro”. 5 KPIs de continuidad definidos.</p><h2>4.3 Guardianes del Agua (v7)</h2><p>Instructivo escolar ABP con MVP en el operativo de limpieza de playa (“Científicos de la Basura”). Comunidades: Liceo La Chimba y Escuela M. A. Elizondo Briceño. Mentees: Tania Melin, Ada Calderón y Eimilyn Alquinta. Dos cartas de colaboración firmadas.</p><h1>5. Sistema de mentorías</h1><p>Las 12 mentorías (4 × 3 pilotos) se realizaron con una estructura común de sesión: apertura y registro → presentación del mentor → pregunta gatillo → trabajo en el canvas → tareas. Voces expertas:</p><ul><li>Jessica Morales (UNIMINUTO, Colombia) — pertinencia curricular y modelo multimodal (Mes Azul M2).</li><li>Javiera Núñez (IDMA, bióloga marina) — ecosistemas costeros y banco de experimentos (Guardianes M2).</li><li>Sebastián Gallardo (U. de Antofagasta, C-TyS) — divulgación científica y diseño de ferias (Guardianes M3 / Mes Azul M4).</li><li>Aldo Poblete (IDMA, biólogo marino) — empleabilidad y lenguaje común teoría-práctica (Diplomado M3–M4).</li><li>Sebastián Cerda (IDMA, OTEC AMA) — diseño curricular y educación continua (Diplomado M2).</li></ul><h1>6. Evaluación cruzada (T3.3)</h1><p>Instrumento estandarizado (hito MS5) co-liderado por IDMA y Mil y un mentorías. Principio: cada piloto es evaluado por pares de <b>otras</b> instituciones (mínimo 2, sin autoevaluación). Escala 1–4; puntaje ponderado = Σ(peso × nivel); % de logro = ponderado / 4; <b>umbral de aprobación 80 %</b> (≥ 3,2/4).</p><table class="data"><thead><tr><th>N</th><th>Criterio</th><th>Dimensión</th><th>Peso</th></tr></thead><tbody><tr><td>1</td><td>Alineación con economía azul y sostenibilidad</td><td>Curricular</td><td>15%</td></tr><tr><td>2</td><td>Claridad de resultados de aprendizaje</td><td>Curricular</td><td>15%</td></tr><tr><td>3</td><td>Pertinencia territorial y participación comunitaria</td><td>Extracurricular</td><td>10%</td></tr><tr><td>4</td><td>Calidad metodológica del piloto (MicroVET/ABP)</td><td>Ambas</td><td>15%</td></tr><tr><td>5</td><td>Evidencia de implementación real</td><td>Ambas</td><td>20%</td></tr><tr><td>6</td><td>Potencial de escalabilidad / replicabilidad</td><td>Extracurricular</td><td>10%</td></tr><tr><td>7</td><td>Viabilidad institucional y continuidad</td><td>Extracurricular</td><td>10%</td></tr><tr><td>8</td><td>Inclusión, accesibilidad y enfoque ecosocial</td><td>Ambas</td><td>5%</td></tr></tbody></table><p><b>Asignación cruzada</b> definida para los pilotos IDMA:</p><table class="data"><thead><tr><th>Piloto / actividad</th><th>Institución responsable</th><th>Evaluador 1</th><th>Evaluador 2</th></tr></thead><tbody><tr><td>Mes Azul IDMA</td><td>IDMA</td><td>Mil y un mentorías</td><td>UNIMINUTO</td></tr><tr><td>Diplomado Economía Azul</td><td>IDMA</td><td>2811</td><td>DomSpain</td></tr><tr><td>Guardianes del Agua</td><td>IDMA</td><td>UNIMINUTO</td><td>Mil y un mentorías</td></tr></tbody></table><p>Estado: el instrumento y la base de datos de evaluaciones en línea están listos y conectados a la plataforma web. Disponible al consorcio el 23-jun; entrega formal del reporte de cross-assessment el 29-jun (hito M12 en diciembre).</p><h1>7. Resultados, impacto y aprendizajes</h1><ul><li>3 pilotos con propuestas de solución vigentes y Canvas MicroVET completos.</li><li>12 mentorías realizadas con 5+ voces expertas y 8 mentees/estudiantes; encuestas pre/post aplicadas (19 y 22-jun).</li><li>Evidencia de implementación real: dos cartas de colaboración firmadas (Liceo La Chimba, Escuela M. A. Elizondo Briceño).</li><li>Instrumento de evaluación cruzada operativo y conectado a la plataforma web.</li></ul><h2>Voces del territorio</h2><div class="voces"><blockquote><p>Sin conocimiento no hay empatía, y sin empatía no hay protección.</p><cite>Ada Calderón<span>Guardianes del Agua</span></cite></blockquote><blockquote><p>Lo que tiene que primar es un criterio operativo ante la crisis y un lenguaje común entre la teoría y la práctica.</p><cite>Aldo Poblete<span>Diplomado / Mes Azul</span></cite></blockquote><blockquote><p>Con uno que toques y le dejes esa semillita, ya es uno que va a replicar.</p><cite>Eimilyn Alquinta<span>Guardianes del Agua</span></cite></blockquote></div><h1>8. Microcredenciales y alineación europea</h1><p>Los pilotos se diseñan bajo el enfoque de microcredenciales, pero aún <b>no</b> se otorgan como tales: falta definir la entidad emisora y la certificación. El Business Model Canvas for Microcredentials (MBMC) estructura cada piloto en bloques (learner persona, propuesta de valor, currículum, mapa del viaje, canales, socios clave, actividades/recursos, calidad, costos/ingresos). El mapeo a EQF/ECTS se confirma con la coordinación (2811 / Weltweit).</p><h1>9. Conclusiones y próximos pasos</h1><ul><li>Cierre interno de pilotos (fin de julio) y consolidación de evidencia.</li><li>Completar la evaluación cruzada T3.3 (hito M12, diciembre).</li><li>Sistematizar los casos de estudio (T3.4) a partir de los pilotos; nuevas entrevistas en curso (Natalia Poblete; Víctor Bravo / Juan Otero).</li><li>Integrar la plataforma de pilotos en blueeconomylabs.com/aprende-y-crece (DomSpain).</li><li>Definir la entidad emisora de las microcredenciales y la ruta de certificación.</li></ul><h1>Anexos</h1><ul><li>Anexo A — Casos de estudio (3) según plantilla estándar WP3 / Academia.</li><li>Anexo B — Informe de Casos de Estudio (Compilation Report) de los pilotos IDMA.</li><li>Anexo C — Documentos de solución vigentes (v0.5 / v0.8 / v7) y Canvas MicroVET.</li><li>Anexo D — Rúbrica T3.3, matriz de asignación cruzada y base de datos de evaluaciones.</li></ul><footer class="docfoot">Blue Economy Lab · WP3 · IDMA · Proyecto Erasmus+ N.º 101183250 · Entregable v2 · 22 de junio de 2026</footer></body></html>
-</template>
 
 <script>
 (function(){
@@ -2818,15 +2404,11 @@ blockquote cite span{display:block;font-weight:500;color:var(--mute);font-size:8
   function loadFrame(id){
     var frame = document.querySelector('[data-wp3-frame="' + id + '"]');
     if(!frame) return;
-    var html = getDeliverableHTML(id);
-    if(!html) return;
-    if(!frame.dataset.loaded){
-      frame.srcdoc = html;
-      frame.dataset.loaded = '1';
+    if(!frame.dataset.bound){
+      frame.dataset.bound = '1';
       frame.addEventListener('load', function(){ resizeFrame(frame); [120,400,900,1600,2600].forEach(function(t){ setTimeout(function(){ resizeFrame(frame); }, t); }); });
-    } else {
-      resizeFrame(frame);
     }
+    try{ var d = frame.contentDocument; if(d && d.readyState === 'complete') resizeFrame(frame); }catch(e){}
   }
   function setDeliverable(id){
     document.querySelectorAll('.wp3-doc-tab').forEach(function(btn){
@@ -2842,7 +2424,7 @@ blockquote cite span{display:block;font-weight:500;color:var(--mute);font-size:8
   function printDeliverable(id){
     var frame = document.querySelector('[data-wp3-frame="' + id + '"]');
     if(!frame){ alert('No se encontró el documento.'); return; }
-    if(!frame.dataset.loaded){ loadFrame(id); }
+    loadFrame(id);
     setTimeout(function(){
       try{
         frame.contentWindow.focus();
