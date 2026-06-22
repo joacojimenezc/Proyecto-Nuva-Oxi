@@ -1752,7 +1752,7 @@ html:not(.embed) #home #hero .hero-content{padding-top:6px!important;padding-bot
 .wp3-doc-tab.active{background:#1C6E82!important;border-color:#1C6E82!important;box-shadow:0 14px 30px rgba(28,110,130,.30)!important}
 .wp3-doc-tab.active small{color:rgba(255,255,255,.9)!important}
 /* (4) Fondo de Entregables en oscuro (la sección venía en --soft claro) + recursos legibles */
-#repositorio.panel-page{background:#06131F!important}
+#repositorio.panel-page{background:#0C2A43!important}
 #repositorio .resource-card{background:rgba(255,255,255,.05)!important;border-color:rgba(255,255,255,.12)!important}
 #repositorio .resource-card h4{color:#8FE3EC!important}
 #repositorio .resource-link{background:rgba(255,255,255,.08)!important;color:#eaf6f8!important;border-color:rgba(255,255,255,.16)!important}
@@ -1763,15 +1763,22 @@ html:not(.embed) #home #hero .hero-content{padding-top:6px!important;padding-bot
 .pilot-page .voz blockquote::before{color:var(--teal,#15b8c9)!important;opacity:.55!important}
 .pilot-page .voz cite{color:#0F3B52!important}
 .pilot-page .voz cite small{color:#5A7280!important}
-/* (6) Fondo uniforme #06131F en TODA la página (igual que Entregables): sin fotos de fondo */
-html,body,.app-section,.pilot-page,.panel-page,#home,#hero{background-color:#06131F!important}
+/* (6) Fondo uniforme #0C2A43 (navy del header del visor) en TODA la página — el nav y el footer de logos se mantienen */
+html:not(.embed) body{background:#0C2A43!important}
+html:not(.embed) .pilot-page,html:not(.embed) .panel-page,html:not(.embed) #home,html:not(.embed) #hero{background:#0C2A43!important}
+html:not(.embed) #home #hero{background:#0C2A43!important}
+html,body,.app-section,.pilot-page,.panel-page,#home,#hero{background-color:#0C2A43!important}
 html:not(.embed) #home #hero .hero-bg,html:not(.embed) #home #hero .hero-veil{display:none!important}
 #home #hero .hero-bg,.hero-bg{display:none!important}
-#mes-azul .p-hero,#diplomado .p-hero,#guardianes .p-hero{background:#06131F!important}
+#mes-azul .p-hero,#diplomado .p-hero,#guardianes .p-hero{background:#0C2A43!important}
 .pilot-page .p-hero::before,.pilot-page .p-hero::after{background:none!important;display:none!important}
-#microvet .microvet-hero-card{background:#06131F!important;background-image:none!important}
+#microvet .microvet-hero-card{background:#0C2A43!important;background-image:none!important}
 /* (7) Quitar la sección de enlaces de respaldo (Drive/XLSX) al pie de Entregables */
 #repositorio .resource-grid{display:none!important}
+/* (8) Eliminar la banda vacía entre el menú y el header del visor de Entregables */
+#repositorio.panel-page{padding-top:0!important}
+#repositorio>.wrap{padding-top:0!important}
+#repositorio .wp3-fullwidth-deliverables{margin-top:0!important}
 </style>
 </head>
 <body><header class="nav" id="mainNav">
