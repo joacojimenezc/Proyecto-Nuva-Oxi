@@ -1826,6 +1826,25 @@ html,body,.app-section,.pilot-page,.panel-page,#home,#hero{background-color:#0C2
 @media(max-width:768px){#repositorio>.wrap{padding-left:20px!important;padding-right:20px!important}}
 @media(max-width:900px){.wp3-doc-head{padding-left:20px!important;padding-right:20px!important}}
 
+/* === Ajuste final 22-jun-2026: márgenes laterales + documento centrado + exportación PDF de entregables === */
+#repositorio .wp3-doc-viewer{background:#edf4f6!important;padding:0 clamp(34px,5.5vw,92px) 58px!important;}
+#repositorio .wp3-doc-panel{background:#edf4f6!important;}
+#repositorio .wp3-doc-frame{display:block!important;width:100%!important;max-width:1180px!important;margin:0 auto!important;border:0!important;background:#fff!important;box-shadow:0 26px 90px -58px rgba(7,30,46,.55)!important;}
+#repositorio .wp3-doc-actions button{top:14px!important;right:18px!important;}
+@media(max-width:900px){
+  #repositorio .wp3-doc-viewer{padding:0 20px 42px!important;}
+  #repositorio .wp3-doc-frame{max-width:100%!important;box-shadow:0 18px 50px -38px rgba(7,30,46,.42)!important;}
+}
+@media print{
+  #repositorio .wp3-doc-head,
+  #repositorio .wp3-doc-toolbar,
+  #repositorio .wp3-doc-tabs{display:none!important;}
+  #repositorio .wp3-doc-viewer,
+  #repositorio .wp3-doc-panel{background:#fff!important;padding:0!important;}
+  #repositorio .wp3-doc-panel:not(.active){display:none!important;}
+  #repositorio .wp3-doc-frame{width:100%!important;max-width:100%!important;margin:0!important;box-shadow:none!important;}
+}
+
 /* === Ajustes: Centrar menú principal (nav-links) === */
 @media(min-width:901px){
   .nav-inner{display:grid !important;grid-template-columns:1fr auto 1fr !important;align-items:center !important;justify-content:initial !important;position:relative}
