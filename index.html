@@ -2424,16 +2424,16 @@ function descargarCanvas(pilotId, titulo, subt){
   }
   function printDeliverable(id){
     var frame = document.querySelector('[data-wp3-frame="' + id + '"]');
-    if(!frame){ alert('No se encontró el documento.'); return; }
-    loadFrame(id);
-    setTimeout(function(){
-      try{
-        frame.contentWindow.focus();
-        frame.contentWindow.print();
-      }catch(e){
-        alert('No se pudo imprimir desde el visor.');
+    var url = frame ? frame.getAttribute('src') : ('entregables/informe-' + (id === 'pilotos' ? 'pilotos' : 'final') + '.html');
+    if(frame){
+      var d = null; try{ d = frame.contentDocument; }catch(e){}
+      if(d && d.readyState === 'complete' && d.body){
+        try{ frame.contentWindow.focus(); frame.contentWindow.print(); return; }catch(e){}
       }
-    }, 300);
+    }
+    var w = window.open(url, '_blank');
+    if(w){ try{ w.addEventListener('load', function(){ try{ w.focus(); w.print(); }catch(e){} }); }catch(e){} }
+    else { alert('Permite las ventanas emergentes para descargar el PDF, o abre el documento desde el visor.'); }
   }
   window.wp3SetDeliverable = setDeliverable;
   window.addEventListener('message', function(e){ var d=e.data; if(!d||!d.wp3frame||!d.h) return; var fr=document.querySelectorAll('.wp3-doc-frame'); for(var i=0;i<fr.length;i++){ if(fr[i].contentWindow===e.source){ fr[i].style.height=(d.h+6)+'px'; break; } } });
