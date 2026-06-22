@@ -1734,6 +1734,35 @@ html:not(.embed) #home #hero .hero-content{padding-top:6px!important;padding-bot
 #repositorio .resource-grid{max-width:var(--maxw)!important;margin-left:auto!important;margin-right:auto!important;padding-left:32px!important;padding-right:32px!important;}
 @media(max-width:900px){.wp3-doc-head{position:relative;padding:26px 20px 18px}.wp3-doc-tab{min-width:100%;}.wp3-doc-toolbar{flex-direction:column;align-items:flex-start;padding:16px 20px}.wp3-doc-actions{width:100%}.wp3-doc-actions button{flex:1}.wp3-doc-frame{min-height:78vh}#repositorio>.wrap>.panel-card:first-child>.eyebrow,#repositorio>.wrap>.panel-card:first-child>h2,#repositorio>.wrap>.panel-card:first-child>p.lead,#repositorio .entregables-status,#repositorio .resource-grid{padding-left:20px!important;padding-right:20px!important}}
 
+/* === Ajustes 22-jun-2026: Entregables sin barras blancas · citas en blanco · contraste === */
+/* (1) Quitar intro blanco de Entregables (redundante con el header del visor) */
+#repositorio>.wrap>.panel-card:first-child{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;margin:0 0 4px!important;border-radius:0!important}
+#repositorio>.wrap>.panel-card:first-child>.eyebrow,
+#repositorio>.wrap>.panel-card:first-child>h2,
+#repositorio>.wrap>.panel-card:first-child>p.lead,
+#repositorio .entregables-status{display:none!important}
+/* (2) Quitar barra blanca (toolbar) de cada documento; botón pequeño superpuesto arriba-derecha */
+.wp3-doc-panel{position:relative!important}
+.wp3-doc-toolbar{position:absolute!important;top:0;right:0;left:auto!important;width:auto!important;max-width:none!important;background:transparent!important;border:0!important;box-shadow:none!important;padding:12px 16px!important;margin:0!important;z-index:9;justify-content:flex-end!important;flex-direction:row!important}
+.wp3-doc-toolbar>div:first-child{display:none!important}
+.wp3-doc-actions{margin:0!important;width:auto!important}
+.wp3-doc-actions button{flex:none!important;padding:6px 12px!important;font-size:11.5px!important;font-weight:800!important;border-radius:999px!important;background:rgba(255,255,255,.94)!important;border:1px solid rgba(12,42,67,.22)!important;color:#0C2A43!important;box-shadow:0 8px 22px -8px rgba(0,0,0,.55)!important}
+.wp3-doc-actions button:hover{background:#fff!important;border-color:#1C6E82!important;color:#1C6E82!important}
+/* (3) Pestaña activa del visor: teal oscuro para contraste con el texto blanco */
+.wp3-doc-tab.active{background:#1C6E82!important;border-color:#1C6E82!important;box-shadow:0 14px 30px rgba(28,110,130,.30)!important}
+.wp3-doc-tab.active small{color:rgba(255,255,255,.9)!important}
+/* (4) Fondo de Entregables en oscuro (la sección venía en --soft claro) + recursos legibles */
+#repositorio.panel-page{background:#06131F!important}
+#repositorio .resource-card{background:rgba(255,255,255,.05)!important;border-color:rgba(255,255,255,.12)!important}
+#repositorio .resource-card h4{color:#8FE3EC!important}
+#repositorio .resource-link{background:rgba(255,255,255,.08)!important;color:#eaf6f8!important;border-color:rgba(255,255,255,.16)!important}
+#repositorio .resource-link small{color:#bcd7dd!important}
+/* (5) Citas "Voces del territorio" (y cualquier cita) con FONDO BLANCO y texto oscuro */
+.pilot-page .voz{background:#ffffff!important;border:1px solid #d8e2e6!important;border-left:3px solid var(--teal,#15b8c9)!important;box-shadow:0 14px 36px -26px rgba(0,0,0,.5)!important}
+.pilot-page .voz blockquote{color:#16242F!important}
+.pilot-page .voz blockquote::before{color:var(--teal,#15b8c9)!important;opacity:.55!important}
+.pilot-page .voz cite{color:#0F3B52!important}
+.pilot-page .voz cite small{color:#5A7280!important}
 </style>
 </head>
 <body><header class="nav" id="mainNav">
@@ -1752,7 +1781,7 @@ html:not(.embed) #home #hero .hero-content{padding-top:6px!important;padding-bot
 <button data-tab="guardianes" type="button">Guardianes del Agua</button>
 </div>
 </div>
-<button class="tab-btn" data-tab="microvet" type="button">MicroVET</button><button class="tab-btn" data-tab="evaluacion" type="button">Evaluación</button><button class="tab-btn" data-tab="repositorio" type="button">Entregables WP3</button>
+<button class="tab-btn" data-tab="microvet" type="button">MicroVET</button><button class="tab-btn" data-tab="evaluacion" type="button">Cross-Assessment</button><button class="tab-btn" data-tab="repositorio" type="button">Entregables WP3</button>
 </nav>
 <div class="lang-toggle" id="langToggle"><button class="lang-btn active" data-lang="es" type="button">ES</button><button class="lang-btn" data-lang="en" type="button">EN</button></div>
 </div>
@@ -2838,7 +2867,7 @@ blockquote cite span{display:block;font-weight:500;color:var(--mute);font-size:8
 </div></div></div><div class="app-section panel-page" id="evaluacion"><div class="wrap">
 <div class="ev-head">
 <div class="eyebrow"><span class="i18n-es">Cross-assessment del consorcio</span><span class="i18n-en">Consortium cross-assessment</span></div>
-<h2 class="panel-card-title" style="font-family:var(--dp);color:var(--n1);font-size:clamp(30px,4vw,44px);line-height:1.08;margin:0 0 12px;letter-spacing:-.5px">Evaluación cruzada de pilotos</h2>
+<h2 class="panel-card-title" style="font-family:var(--dp);color:var(--n1);font-size:clamp(30px,4vw,44px);line-height:1.08;margin:0 0 12px;letter-spacing:-.5px">Cross-Assessment de pilotos</h2>
 <p class="lead" style="max-width:78ch">Instrumento de validación del WP3: los socios del consorcio Blue Economy Lab evalúan mutuamente sus pilotos formativos con una rúbrica común. Aquí puedes conocer y calificar los tres pilotos chilenos de IDMA, <strong>cargar los pilotos de tu organización</strong> para que el equipo chileno los evalúe, y consultar los resultados consolidados. La plataforma funciona como <strong>repositorio del trabajo del consorcio</strong> y como base para construir el <strong>caso de estudio</strong> posterior al cross-assessment.</p>
 </div>
 <div class="ev-subnav" id="evSubnav">
