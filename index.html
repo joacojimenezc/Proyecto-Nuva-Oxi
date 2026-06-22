@@ -1763,6 +1763,15 @@ html:not(.embed) #home #hero .hero-content{padding-top:6px!important;padding-bot
 .pilot-page .voz blockquote::before{color:var(--teal,#15b8c9)!important;opacity:.55!important}
 .pilot-page .voz cite{color:#0F3B52!important}
 .pilot-page .voz cite small{color:#5A7280!important}
+/* (6) Fondo uniforme #06131F en TODA la página (igual que Entregables): sin fotos de fondo */
+html,body,.app-section,.pilot-page,.panel-page,#home,#hero{background-color:#06131F!important}
+html:not(.embed) #home #hero .hero-bg,html:not(.embed) #home #hero .hero-veil{display:none!important}
+#home #hero .hero-bg,.hero-bg{display:none!important}
+#mes-azul .p-hero,#diplomado .p-hero,#guardianes .p-hero{background:#06131F!important}
+.pilot-page .p-hero::before,.pilot-page .p-hero::after{background:none!important;display:none!important}
+#microvet .microvet-hero-card{background:#06131F!important;background-image:none!important}
+/* (7) Quitar la sección de enlaces de respaldo (Drive/XLSX) al pie de Entregables */
+#repositorio .resource-grid{display:none!important}
 </style>
 </head>
 <body><header class="nav" id="mainNav">
@@ -2811,7 +2820,7 @@ blockquote cite span{display:block;font-weight:500;color:var(--mute);font-size:8
     if(!frame.dataset.loaded){
       frame.srcdoc = html;
       frame.dataset.loaded = '1';
-      frame.addEventListener('load', function(){ resizeFrame(frame); });
+      frame.addEventListener('load', function(){ resizeFrame(frame); [120,400,900,1600,2600].forEach(function(t){ setTimeout(function(){ resizeFrame(frame); }, t); }); });
     } else {
       resizeFrame(frame);
     }
@@ -2853,6 +2862,11 @@ blockquote cite span{display:block;font-weight:500;color:var(--mute);font-size:8
     window.addEventListener('resize', function(){
       var active = document.querySelector('.wp3-doc-panel.active .wp3-doc-frame');
       if(active) resizeFrame(active);
+    });
+    document.querySelectorAll('[data-tab="repositorio"]').forEach(function(b){
+      b.addEventListener('click', function(){
+        [60,400,900,1600].forEach(function(t){ setTimeout(function(){ var a=document.querySelector('.wp3-doc-panel.active .wp3-doc-frame'); if(a) resizeFrame(a); }, t); });
+      });
     });
   }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initDeliverables); else initDeliverables();
@@ -3019,9 +3033,7 @@ blockquote cite span{display:block;font-weight:500;color:var(--mute);font-size:8
 <h3 style="font-family:var(--dp);color:var(--n1);margin:28px 0 10px"><span class="i18n-es">Evaluaciones recibidas</span><span class="i18n-en">Assessments received</span></h3>
 <div id="evEvaluationsList"></div>
 <div class="btn-row" style="margin-top:24px">
-<button class="link-btn" id="evExportXlsx" type="button"><span class="i18n-es">Descargar como Excel (.xlsx)</span><span class="i18n-en">Download as Excel (.xlsx)</span></button>
-<button class="link-btn secondary" id="evOpenSheet" type="button"><span class="i18n-es">Abrir base de datos (Google Sheet)</span><span class="i18n-en">Open database (Google Sheet)</span></button>
-</div>
+<button class="link-btn" id="evExportXlsx" type="button"><span class="i18n-es">Descargar como Excel (.xlsx)</span><span class="i18n-en">Download as Excel (.xlsx)</span></button></div>
 </div>
 </div></div>
 <footer>
