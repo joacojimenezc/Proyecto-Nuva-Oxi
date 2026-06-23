@@ -2529,8 +2529,8 @@ function descargarCanvas(pilotId, titulo, subt){
 </div>
 </div>
 <div class="ev-alert info" style="margin-top:24px">
-<span class="i18n-es"><strong>Sobre el cross-assessment:</strong> es uno de los instrumentos de validación del WP3 (Tarea T3.3). Su objetivo es enriquecer cada piloto con la mirada experta de los demás socios del consorcio antes del cierre. Los registros se guardan en este navegador y pueden exportarse en JSON o CSV.</span>
-<span class="i18n-en"><strong>About the cross-assessment:</strong> it is one of the WP3 validation instruments (Task T3.3). Its goal is to enrich each pilot with the expert view of the other consortium partners before closing. Records are stored in this browser and can be exported as JSON or CSV.</span>
+<span class="i18n-es"><strong>Sobre el cross-assessment:</strong> es el instrumento de validación entre pares del WP3 (Tarea T3.3 · Hito MS5). La co-evaluación es entre las <b>tres instituciones de educación que ejecutaron pilotos —IDMA, UNIMINUTO y Mil y un Mentorías—</b>: cada piloto lo evalúan ≥2 socios de otra institución (sin autoevaluación), para enriquecerlo con la mirada experta del consorcio antes del cierre. Tus respuestas se envían a la base de datos compartida del proyecto.</span>
+<span class="i18n-en"><strong>About the cross-assessment:</strong> it is the WP3 peer-validation instrument (Task T3.3 · Milestone MS5). Co-assessment is among the <b>three education institutions that ran pilots —IDMA, UNIMINUTO and Mil y un Mentorías—</b>: each pilot is assessed by ≥2 partners from another institution (no self-assessment), to enrich it with the consortium's expert view before closing. Your responses are sent to the project's shared database.</span>
     </div>
 <div class="ev-alert info" style="margin-top:14px">
 <span class="i18n-es"><strong>Reglas de la evaluación cruzada:</strong> <b>sin autoevaluación</b> —cada piloto lo evalúan <b>≥ 2 instituciones distintas</b> a la responsable (ideal 3). Escala de <b>4 niveles ponderada</b> por criterio; cada criterio cubre la dimensión <b>curricular y/o extracurricular</b>. <b>% de logro = puntaje / 4</b>, con <b>umbral de aprobación del 80%</b> (coherente con el corte de microcredenciales). Cada puntaje se respalda con <b>evidencia observable</b> y el resultado final del piloto es el <b>promedio de los evaluadores</b>.</span>
@@ -2821,6 +2821,15 @@ if(heroBg)addEventListener('scroll',()=>{heroBg.style.transform='scale(1.05) tra
   /* Institución responsable de cada piloto chileno (para bloquear autoevaluación) */
   var PILOT_OWNER_CL = { 'mes-azul':'IDMA', 'diplomado':'IDMA', 'guardianes':'IDMA' };
 
+  /* Pilotos del consorcio SEMBRADOS — compartidos para todos los navegadores (no solo localStorage),
+     para que la co-evaluación sea mutua. Añadir aquí los pilotos de UNIMINUTO y Mil y un Mentorías
+     cuando los envíen (cada alta requiere redeploy). Usar id estable en kebab-case (no Date.now()):
+       { id:'uniminuto-1', name:'Nombre del piloto', org:'UNIMINUTO', country:'Colombia',
+         type:'', archetype:'', problem:'', solution:'', docLink:'' } */
+  var CONSORTIUM_PILOTS = [
+    // (vacío hasta que UNIMINUTO / Mil y un Mentorías compartan sus pilotos)
+  ];
+
   /* Rúbrica oficial WP3 T3.3 — 8 criterios ponderados, escala 1–4 con descriptor por nivel.
      Fuente: WP3_T3.3_CrossAssessment_Framework_v1_BORRADOR.xlsx (hoja "Rubrica"). */
   var RUBRIC = [
@@ -2841,9 +2850,9 @@ if(heroBg)addEventListener('scroll',()=>{heroBg.style.transform='scale(1.05) tra
         levels:['No grounding or external actors.','Emerging territorial grounding.','Territorial actors involved.','Sustained, validated territorial co-design.'] } },
     { id:'q4', weight:0.15,
       es:{ text:'Calidad metodológica del piloto', dim:'Ambas',
-        levels:['Improvisada o inconsistente.','Básica, sin justificación.','Coherente y justificada (MicroVET/ABP).','Robusta, replicable y bien documentada.'] },
+        levels:['Improvisada o inconsistente.','Básica, sin justificación.','Coherente y justificada según la metodología de mentoría declarada (cubre Segmento–Problema–Solución–Testeo–Implementación; p. ej. MicroVET, ABP u otra).','Robusta, replicable y bien documentada.'] },
       en:{ text:'Methodological quality of the pilot', dim:'Both',
-        levels:['Improvised or inconsistent.','Basic, unjustified.','Coherent and justified (MicroVET/PBL).','Robust, replicable and well documented.'] } },
+        levels:['Improvised or inconsistent.','Basic, unjustified.','Coherent and justified per the declared mentoring methodology (covers Segment–Problem–Solution–Testing–Implementation; e.g. MicroVET, PBL or other).','Robust, replicable and well documented.'] } },
     { id:'q5', weight:0.20,
       es:{ text:'Evidencia de implementación real', dim:'Ambas',
         levels:['Sin evidencia verificable.','Parcial o desordenada.','Completa por mentoría.','Trazable, validada, lista para caso de estudio.'] },
@@ -2899,6 +2908,16 @@ if(heroBg)addEventListener('scroll',()=>{heroBg.style.transform='scale(1.05) tra
     try{ localStorage.setItem(KEY, JSON.stringify(data)); }catch(e){}
   }
   var DATA = load();
+
+  /* Sembrar los pilotos del consorcio compartidos sin duplicar lo guardado localmente.
+     Garantiza que UNIMINUTO/MILUNAM sean evaluables por todas las instituciones (no solo IDMA). */
+  (function(){
+    CONSORTIUM_PILOTS.forEach(function(seed){
+      if(!DATA.consortiumPilots.some(function(p){ return String(p.id)===String(seed.id); })){
+        DATA.consortiumPilots.push(seed);
+      }
+    });
+  })();
 
   /* ====== Integración con Google Sheet (base de datos compartida) ======
      Pega la URL /exec del Apps Script en EVAL_API (ver apps-script/README_DESPLIEGUE.md).
