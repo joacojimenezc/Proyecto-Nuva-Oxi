@@ -1919,6 +1919,13 @@ html,body,.app-section,.pilot-page,.panel-page,#home,#hero{background-color:#0C2
 #repositorio .wp3-fullwidth-deliverables > .wp3-doc-head .wp3-doc-tab strong{font-size:12.5px !important;line-height:1.15 !important;}
 #repositorio .wp3-fullwidth-deliverables > .wp3-doc-head .wp3-doc-tab small{font-size:10.5px !important;line-height:1.15 !important;margin-top:2px !important;}
 
+/* === Nav principal: sticky (se mantiene arriba al hacer scroll, integrado al flujo; vence al position:relative de la l.926) === */
+.nav{position:sticky!important;top:0!important;}
+
+/* === Rail de Entregables: llena toda el área azul disponible a la izquierda (alto del viewport) === */
+#repositorio .wp3-fullwidth-deliverables > .wp3-doc-head{min-height:calc(100vh - 104px)!important;}
+@media(max-width:820px){#repositorio .wp3-fullwidth-deliverables > .wp3-doc-head{min-height:0!important;}}
+
 /* === Ajustes: Centrar menú principal (nav-links) === */
 @media(min-width:901px){
   .nav-inner{display:grid !important;grid-template-columns:1fr auto 1fr !important;align-items:center !important;justify-content:initial !important;position:relative}
