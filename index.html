@@ -1078,14 +1078,32 @@ body{
 
 
 /* === Hoja de ruta + organizaciones Blue Economy Lab === */
-.roadmap-partners-grid{
-  display:grid;
-  grid-template-columns:minmax(300px, 0.9fr) minmax(520px, 1.35fr);
+#programa .roadmap-partners-grid{
+  display:flex;
+  flex-direction:column;
   gap:22px;
-  align-items:stretch;
   margin-top:30px;
 }
-.roadmap-partners-grid .timeline{margin-top:0;height:100%;}
+#programa .roadmap-partners-grid .partners-panel{order:1}
+#programa .roadmap-partners-grid .timeline{
+  order:2;
+  margin-top:0;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px 22px;
+  align-items:start;
+}
+#programa .roadmap-partners-grid .timeline .timeline-title{grid-column:1 / -1;margin-bottom:6px}
+#programa .roadmap-partners-grid .tl-item{flex-direction:column;align-items:flex-start;gap:9px;border-bottom:none;padding:8px 0}
+#programa .roadmap-partners-grid .tl-item:not(:last-child){border-right:1px solid var(--line);padding-right:20px}
+#programa .prog-consortium{margin-top:6px}
+@media(max-width:760px){
+  #programa .roadmap-partners-grid .timeline{grid-template-columns:repeat(2,1fr)}
+  #programa .roadmap-partners-grid .tl-item:not(:last-child){border-right:none}
+}
+@media(max-width:460px){
+  #programa .roadmap-partners-grid .timeline{grid-template-columns:1fr}
+}
 .partners-panel{
   background:var(--soft);
   border:1px solid var(--line);
@@ -2038,7 +2056,7 @@ html:not(.embed){zoom:0.9;}
 <p>Su propósito es que las instituciones de formación técnico-profesional incorporen la sostenibilidad oceánica y costera de forma práctica y pertinente al territorio. Bajo el liderazgo de <b>IDMA</b> (Chile), instituciones del consorcio en Chile y Colombia diseñan, implementan y evalúan propuestas formativas innovadoras.</p>
 <p>La lógica del paquete de trabajo WP3 es <b>diseñar, implementar, evaluar, aprender y transferir</b>. Cada actividad deja evidencia verificable: un archivo, un registro, una entrevista o una decisión documentada.</p>
 <p><span class="i18n-es">El proyecto persigue tres <b>objetivos específicos</b>: <b>SO1</b> — la inclusión de <i>green/blue skills</i> en la economía azul; <b>SO2</b> — el fortalecimiento de las capacidades de docentes y equipos formadores; y <b>SO3</b> — la integración en actividades curriculares y extracurriculares que mejoran la empleabilidad y responden a las necesidades del territorio.</span><span class="i18n-en">The project pursues three <b>specific objectives</b>: <b>SO1</b> — the inclusion of <i>green/blue skills</i> in the blue economy; <b>SO2</b> — strengthening the capacities of teachers and training teams; and <b>SO3</b> — integration into curricular and extracurricular activities that improve employability and respond to the needs of the territory.</span></p>
-<p><span class="i18n-es">El consorcio acordó un <b>foco común</b> para todos los pilotos —Segmento–Problema → Problema–Solución → Solución–Testeo → Implementación—, proveniente del ciclo de mentorías de Militza (<i>Mil y un mentorías</i>). Cada institución recorre ese foco con su <b>propia metodología</b>: IDMA con MicroVET (MBMC + GROW + Test Cards), y UNIMINUTO y Mil y un mentorías con las suyas. Así, cada piloto avanza por un <b>ciclo de cuatro mentorías</b> —del segmento y el problema hasta la implementación— con trabajo asincrónico, canvas y testeo con usuarios reales. Al final del ciclo, los pilotos se someten a una <b>evaluación cruzada (cross-assessment)</b> entre los socios del consorcio, que enriquece cada propuesta y alimenta el caso de estudio del proyecto.</span><span class="i18n-en">The consortium agreed on a <b>common focus</b> for every pilot —Segment–Problem → Problem–Solution → Solution–Testing → Implementation—, drawn from Militza's mentoring cycle (<i>Mil y un mentorías</i>). Each institution runs that focus with its <b>own methodology</b>: IDMA with MicroVET (MBMC + GROW + Test Cards), and UNIMINUTO and Mil y un mentorías with theirs. Thus each pilot advances through a <b>cycle of four mentoring sessions</b> —from segment and problem to implementation— with asynchronous work, canvases and testing with real users. At the end of the cycle, pilots undergo a <b>consortium cross-assessment</b> that enriches each proposal and feeds the project case study.</span></p>
+
 </div>
 <div class="prog-visual fade">
 <div class="prog-img"><img alt="Imagen del programa Blue Economy Lab" src="assets/programa.jpg"/><span class="prog-img-tag">Economía azul · empleos verdes · IDMA</span></div><div class="stats-grid">
@@ -2047,7 +2065,8 @@ html:not(.embed){zoom:0.9;}
 <div class="stat"><div class="stat-n"><span class="i18n-es">Foco común</span><span class="i18n-en">Common focus</span></div><div class="stat-l"><span class="i18n-es">Segmento–Problema → Solución → Testeo → Implementación; cada institución con su propia metodología (IDMA: MicroVET)</span><span class="i18n-en">Segment–Problem → Solution → Testing → Implementation; each institution with its own methodology (IDMA: MicroVET)</span></div></div>
 </div>
 </div>
-</div><div class="roadmap-partners-grid">
+</div><div class="prog-text fade prog-consortium"><p><span class="i18n-es">El consorcio acordó un <b>foco común</b> para todos los pilotos —Segmento–Problema → Problema–Solución → Solución–Testeo → Implementación—, proveniente del ciclo de mentorías de Militza (<i>Mil y un mentorías</i>). Cada institución recorre ese foco con su <b>propia metodología</b>: IDMA con MicroVET (MBMC + GROW + Test Cards), y UNIMINUTO y Mil y un mentorías con las suyas. Así, cada piloto avanza por un <b>ciclo de cuatro mentorías</b> —del segmento y el problema hasta la implementación— con trabajo asincrónico, canvas y testeo con usuarios reales. Al final del ciclo, los pilotos se someten a una <b>evaluación cruzada (cross-assessment)</b> entre los socios del consorcio, que enriquece cada propuesta y alimenta el caso de estudio del proyecto.</span><span class="i18n-en">The consortium agreed on a <b>common focus</b> for every pilot —Segment–Problem → Problem–Solution → Solution–Testing → Implementation—, drawn from Militza's mentoring cycle (<i>Mil y un mentorías</i>). Each institution runs that focus with its <b>own methodology</b>: IDMA with MicroVET (MBMC + GROW + Test Cards), and UNIMINUTO and Mil y un mentorías with theirs. Thus each pilot advances through a <b>cycle of four mentoring sessions</b> —from segment and problem to implementation— with asynchronous work, canvases and testing with real users. At the end of the cycle, pilots undergo a <b>consortium cross-assessment</b> that enriches each proposal and feeds the project case study.</span></p></div>
+<div class="roadmap-partners-grid">
 <div class="timeline">
 <div class="timeline-title">Hoja de ruta · 4 mentorías</div>
 <div class="tl-item"><div class="tl-num">M1</div><div class="tl-body"><h4>Segmento – Problema</h4><p>Validar el perfil del participante y la necesidad central</p></div></div>
@@ -2065,6 +2084,50 @@ html:not(.embed){zoom:0.9;}
 <div class="partner-card"><div class="partner-logo-wrap"><img alt="IDMA" src="assets/logo-idma.png"/></div><h4>IDMA</h4><p>Instituto chileno de formación técnica ambiental; lidera el WP3 del consorcio y sus tres pilotos en Chile.</p></div>
 <div class="partner-card"><div class="partner-logo-wrap"><img alt="Mil y un mentorías" src="https://blueeconomylabs.com/wp-content/uploads/2025/05/mil.webp"/></div><h4>Mil y un mentorías</h4><p>Organización chilena de innovación educativa, mentorías, sostenibilidad y redes territoriales.</p></div>
 </div>
+</div>
+</div>
+</div>
+
+<div class="wrap wp3-info-wrap">
+
+<div class="wp3-info enfoque">
+<div class="info-eyebrow"><span class="i18n-es">Nuestro enfoque</span><span class="i18n-en">Our approach</span></div>
+<h2 class="info-title"><span class="i18n-es">Innovación centrada <i>en las personas</i></span><span class="i18n-en">People-centred <i>innovation</i></span></h2>
+<p class="info-lead"><span class="i18n-es">En WP3 creemos que las mejores soluciones nacen escuchando, aprendiendo y construyendo juntos. Articulamos formación, co-creación e impacto territorial para transformar la educación azul en oportunidades reales para las personas y sus comunidades.</span><span class="i18n-en">At WP3 we believe the best solutions are born from listening, learning and building together. We weave training, co-creation and territorial impact to turn blue education into real opportunities for people and their communities.</span></p>
+<div class="impact-grid cols-3 enfoque-grid">
+<div class="impact-item"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.5 9.5 12 5.5l9.5 4-9.5 4-9.5-4Z"/><path d="M6.5 11.6V16c0 1.4 2.5 2.6 5.5 2.6s5.5-1.2 5.5-2.6v-4.4"/><path d="M21.5 9.6v5"/></svg></div><h5><span class="i18n-es">Formación</span><span class="i18n-en">Training</span></h5><p><span class="i18n-es">Desarrollamos capacidades y competencias para líderes, educadores y comunidades que impulsan el cambio.</span><span class="i18n-en">We build skills and competencies for leaders, educators and communities driving change.</span></p></div>
+<div class="impact-item"><div class="info-badge c-coral"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="2.6"/><path d="M3.6 18c0-3 2.5-4.7 5.4-4.7S14.4 15 14.4 18"/><circle cx="16.6" cy="8.5" r="2.1"/><path d="M15.2 13.3c2.9.2 4.8 1.8 4.8 4.7"/></svg></div><h5><span class="i18n-es">Co-creación</span><span class="i18n-en">Co-creation</span></h5><p><span class="i18n-es">Diseñamos juntos soluciones educativas relevantes, inclusivas y alineadas con los desafíos locales.</span><span class="i18n-en">We co-design educational solutions that are relevant, inclusive and aligned with local challenges.</span></p></div>
+<div class="impact-item"><div class="info-badge c-green"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19c0-8 6-13 14-13 0 8-5 14.4-13 13Z"/><path d="M5.5 18.5c3-5 6-7.2 9-8.7"/></svg></div><h5><span class="i18n-es">Impacto territorial</span><span class="i18n-en">Territorial impact</span></h5><p><span class="i18n-es">Acompañamos la implementación y escalamiento de iniciativas que generan valor social, ambiental y económico.</span><span class="i18n-en">We support implementing and scaling initiatives that create social, environmental and economic value.</span></p></div>
+</div>
+<div class="info-eyebrow mt"><span class="i18n-es">Nuestros 3 pilotos</span><span class="i18n-en">Our 3 pilots</span></div>
+<div class="pilot-mini-grid">
+<a class="pilot-mini" href="#diplomado" onclick="if(window.activateTab){activateTab('diplomado');}"><div class="pm-top"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.5 9.5 12 5.5l9.5 4-9.5 4-9.5-4Z"/><path d="M6.5 11.6V16c0 1.4 2.5 2.6 5.5 2.6s5.5-1.2 5.5-2.6v-4.4"/><path d="M21.5 9.6v5"/></svg></div><div><span class="pm-lbl">Piloto 1</span><b><span class="i18n-es">Diplomado en Economía Azul y Sostenibilidad Costera</span><span class="i18n-en">Diploma in Blue Economy and Coastal Sustainability</span></b></div></div><p><span class="i18n-es">Formación avanzada para líderes del territorio en gestión sostenible de recursos marinos y costeros, con capacidades técnicas y de liderazgo para impulsar cambios desde adentro.</span><span class="i18n-en">Advanced training for local leaders in sustainable management of marine and coastal resources, with technical and leadership skills to drive change from within.</span></p></a>
+<a class="pilot-mini" href="#mes-azul" onclick="if(window.activateTab){activateTab('mes-azul');}"><div class="pm-top"><div class="info-badge c-coral"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 3 2.55 5.5 6 .82-4.4 4.13 1.15 5.95L12 18.6l-5.45 2.8L7.7 13.45 3.3 9.32l6-.82Z"/></svg></div><div><span class="pm-lbl">Piloto 2</span><b><span class="i18n-es">Mes Azul IDMA</span><span class="i18n-en">Mes Azul IDMA</span></b></div></div><p><span class="i18n-es">Un mes para inspirar, conectar y actuar: actividades abiertas que acercan el conocimiento del mar a toda la comunidad y fomentan cultura oceánica y participación ciudadana.</span><span class="i18n-en">A month to inspire, connect and act: open activities that bring ocean knowledge to the whole community and foster ocean culture and citizen participation.</span></p></a>
+<a class="pilot-mini" href="#guardianes" onclick="if(window.activateTab){activateTab('guardianes');}"><div class="pm-top"><div class="info-badge c-blue"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.5 9c2-2.3 4-2.3 6 0s4 2.3 6 0 4-2.3 6 0"/><path d="M2.5 14c2-2.3 4-2.3 6 0s4 2.3 6 0 4-2.3 6 0"/></svg></div><div><span class="pm-lbl">Piloto 3</span><b><span class="i18n-es">Guardianes del Agua</span><span class="i18n-en">Guardians of the Water</span></b></div></div><p><span class="i18n-es">Educación ambiental desde lo local para proteger cuencas, playas y humedales; estudiantes y comunidades se vuelven agentes de cambio para el cuidado del agua y los ecosistemas.</span><span class="i18n-en">Local environmental education to protect basins, beaches and wetlands; students and communities become agents of change for water and ecosystems.</span></p></a>
+</div>
+</div>
+
+<div class="wp3-info metodo">
+<div class="info-eyebrow"><span class="i18n-es">Metodología</span><span class="i18n-en">Methodology</span></div>
+<h2 class="info-title"><span class="i18n-es">Cómo convertimos <i>ideas en acción</i></span><span class="i18n-en">How we turn <i>ideas into action</i></span></h2>
+<p class="info-lead"><span class="i18n-es">Nuestra metodología es participativa, iterativa y orientada a resultados. Integramos conocimiento, experiencia local y evidencia para diseñar soluciones educativas que respondan a los desafíos reales del territorio.</span><span class="i18n-en">Our methodology is participatory, iterative and results-oriented. We blend knowledge, local experience and evidence to design educational solutions that answer the real challenges of the territory.</span></p>
+<div class="method-flow">
+<div class="method-step"><div class="step-n">01</div><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 4.6 4.6"/></svg></div><h5><span class="i18n-es">Descubrir</span><span class="i18n-en">Discover</span></h5><p><span class="i18n-es">Escuchamos y comprendemos el contexto, los desafíos y las oportunidades del territorio.</span><span class="i18n-en">We listen to and understand the context, challenges and opportunities of the territory.</span></p></div>
+<div class="method-step"><div class="step-n">02</div><div class="info-badge c-coral"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="2.6"/><path d="M3.6 18c0-3 2.5-4.7 5.4-4.7S14.4 15 14.4 18"/><circle cx="16.6" cy="8.5" r="2.1"/><path d="M15.2 13.3c2.9.2 4.8 1.8 4.8 4.7"/></svg></div><h5><span class="i18n-es">Co-crear</span><span class="i18n-en">Co-create</span></h5><p><span class="i18n-es">Trabajamos junto a las comunidades para idear soluciones relevantes, inclusivas y viables.</span><span class="i18n-en">We work with communities to devise relevant, inclusive and viable solutions.</span></p></div>
+<div class="method-step"><div class="step-n">03</div><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9Z"/><path d="m4 7.6 8 4.5 8-4.5"/><path d="M12 12.1V21"/></svg></div><h5><span class="i18n-es">Prototipar</span><span class="i18n-en">Prototype</span></h5><p><span class="i18n-es">Diseñamos y probamos prototipos educativos en entornos reales, aprendiendo y ajustando.</span><span class="i18n-en">We design and test educational prototypes in real settings, learning and adjusting.</span></p></div>
+<div class="method-step"><div class="step-n">04</div><div class="info-badge c-green"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19c0-8 6-13 14-13 0 8-5 14.4-13 13Z"/><path d="M5.5 18.5c3-5 6-7.2 9-8.7"/></svg></div><h5><span class="i18n-es">Implementar</span><span class="i18n-en">Implement</span></h5><p><span class="i18n-es">Ponemos en marcha las soluciones con acompañamiento cercano y fortalecimiento de capacidades.</span><span class="i18n-en">We launch the solutions with close support and capacity building.</span></p></div>
+<div class="method-step"><div class="step-n">05</div><div class="info-badge c-blue"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19h16"/><path d="M4 19V5"/><path d="m7 15 3.5-3.5 3 3L20 7"/><path d="M20 11.2V7h-4.2"/></svg></div><h5><span class="i18n-es">Escalar</span><span class="i18n-en">Scale</span></h5><p><span class="i18n-es">Evaluamos impacto, documentamos aprendizajes y promovemos la replicabilidad en nuevos territorios.</span><span class="i18n-en">We evaluate impact, document learnings and promote replication in new territories.</span></p></div>
+</div>
+<div class="method-loop"><span class="i18n-es">Evaluar, aprender y mejorar continuamente</span><span class="i18n-en">Evaluate, learn and improve continuously</span></div>
+</div>
+<div class="impact-strip">
+<div class="info-eyebrow"><span class="i18n-es">Nuestros principios que guían cada paso</span><span class="i18n-en">The principles that guide every step</span></div>
+<div class="impact-grid cols-5">
+<div class="impact-item"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 20s-7-4.3-7-9.2A4 4 0 0 1 12 7a4 4 0 0 1 7 3.8C19 15.7 12 20 12 20Z"/></svg></div><h5><span class="i18n-es">Empatía</span><span class="i18n-en">Empathy</span></h5><p><span class="i18n-es">Ponemos a las personas en el centro: escuchamos activamente y valoramos las realidades locales.</span><span class="i18n-en">We put people at the centre: we listen actively and value local realities.</span></p></div>
+<div class="impact-item"><div class="info-badge c-coral"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="2.6"/><path d="M3.6 18c0-3 2.5-4.7 5.4-4.7S14.4 15 14.4 18"/><circle cx="16.6" cy="8.5" r="2.1"/><path d="M15.2 13.3c2.9.2 4.8 1.8 4.8 4.7"/></svg></div><h5><span class="i18n-es">Colaboración</span><span class="i18n-en">Collaboration</span></h5><p><span class="i18n-es">Creemos en el poder de trabajar juntos. Sumamos saberes para multiplicar resultados.</span><span class="i18n-en">We believe in the power of working together. We pool knowledge to multiply results.</span></p></div>
+<div class="impact-item"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s6-5.3 6-10a6 6 0 0 0-12 0c0 4.7 6 10 6 10Z"/><circle cx="12" cy="11" r="2.3"/></svg></div><h5><span class="i18n-es">Pertinencia</span><span class="i18n-en">Relevance</span></h5><p><span class="i18n-es">Diseñamos soluciones útiles y contextualizadas que responden a desafíos reales y prioritarios.</span><span class="i18n-en">We design useful, context-aware solutions that respond to real, priority challenges.</span></p></div>
+<div class="impact-item"><div class="info-badge c-green"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9.2 17h5.6"/><path d="M10.2 20h3.6"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.1 2.2h5c0-.9.5-1.7 1.1-2.2A6 6 0 0 0 12 3Z"/></svg></div><h5><span class="i18n-es">Innovación</span><span class="i18n-en">Innovation</span></h5><p><span class="i18n-es">Impulsamos ideas creativas y aprendizajes que abren nuevas posibilidades.</span><span class="i18n-en">We foster creative ideas and learning that open new possibilities.</span></p></div>
+<div class="impact-item"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19c0-8 6-13 14-13 0 8-5 14.4-13 13Z"/><path d="M5.5 18.5c3-5 6-7.2 9-8.7"/></svg></div><h5><span class="i18n-es">Sostenibilidad</span><span class="i18n-en">Sustainability</span></h5><p><span class="i18n-es">Promovemos acciones que generan bienestar hoy sin comprometer el mañana.</span><span class="i18n-en">We promote actions that create wellbeing today without compromising tomorrow.</span></p></div>
 </div>
 </div>
 </div>
@@ -2111,6 +2174,69 @@ a.btn-canvas-dl{text-decoration:none}
 .btn-canvas-print{background:#eef3f6;color:var(--n2);border:1.5px solid var(--line);box-shadow:none}
 .btn-canvas-print:hover{border-color:var(--n4);color:var(--n4);box-shadow:none}
 .pilot-page .hist-block p.lead-drop::first-letter{font-family:var(--dp);font-size:3.2em;line-height:.78;float:left;margin:8px 12px 0 0;color:var(--n4);font-weight:700}
+.pilot-page .pilot-gallery{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:16px 0 6px}
+@media(max-width:760px){.pilot-page .pilot-gallery{grid-template-columns:1fr}}
+.pilot-page .pilot-gallery figure{margin:0;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(255,255,255,.14);box-shadow:0 20px 44px -24px rgba(0,0,0,.6)}
+.pilot-page .pilot-gallery img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+.pilot-page .pilot-gallery figcaption{padding:12px 15px;font-family:var(--ss);font-size:12.5px;line-height:1.46;color:#16242F;background:#fff}
+.pilot-page .pilot-gallery figcaption b{color:#0C2A43}
+.pilot-page .pilot-gallery.solo{grid-template-columns:minmax(0,820px);justify-content:center}
+.pilot-page .pilot-gallery.solo img{aspect-ratio:auto}
+.pilot-page .pilot-gallery.solo.lg{grid-template-columns:minmax(0,1000px)}
+
+/* === Infografías nativas WP3 (icono SVG + arte vectorial) === */
+.wp3-info{margin:34px 0 8px}
+.wp3-info-wrap{padding-top:8px;padding-bottom:10px}
+.wp3-info .info-eyebrow{font-family:var(--ss);font-size:12px;letter-spacing:2.4px;text-transform:uppercase;font-weight:800;color:#36c7d8;margin:0 0 16px}
+.wp3-info .info-eyebrow.mt{margin-top:30px}
+.wp3-info .info-title{font-family:var(--dp);font-size:clamp(26px,4vw,44px);line-height:1.05;color:#fff;margin:0 0 14px}
+.wp3-info .info-title i{font-style:italic;color:#5fd2e0}
+.wp3-info .info-lead{font-family:var(--ss);font-size:15px;line-height:1.65;color:#b9cad4;max-width:74ch;margin:0 0 22px}
+.info-list{display:grid;grid-template-columns:1fr 1fr;gap:6px 40px}
+@media(max-width:860px){.info-list{grid-template-columns:1fr}}
+.info-item{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;padding:15px 0;border-bottom:1px solid rgba(255,255,255,.10)}
+.info-item .info-tx h5{margin:3px 0 5px;font-family:var(--ss);font-size:15px;font-weight:800;letter-spacing:.4px;color:#eef6f8;text-transform:uppercase;line-height:1.14}
+.info-item .info-tx p{margin:0;font-family:var(--ss);font-size:13px;line-height:1.5;color:#a7bac5}
+.info-badge{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;flex:0 0 auto;box-shadow:0 12px 24px -12px rgba(0,0,0,.65)}
+.info-badge svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.c-teal{background:linear-gradient(135deg,#1a9fb2,#127082)}
+.c-coral{background:linear-gradient(135deg,#e2674a,#c2452c)}
+.c-green{background:linear-gradient(135deg,#54ab5f,#367f41)}
+.c-blue{background:linear-gradient(135deg,#2f80b4,#21597e)}
+.impact-strip{margin-top:14px;padding:24px 26px;border:1px solid rgba(255,255,255,.12);border-radius:20px;background:rgba(255,255,255,.035)}
+.impact-grid{display:grid;gap:24px}
+.impact-grid.cols-3{grid-template-columns:repeat(3,1fr)}
+.impact-grid.cols-4{grid-template-columns:repeat(4,1fr)}
+.impact-grid.cols-5{grid-template-columns:repeat(5,1fr)}
+@media(max-width:860px){.impact-grid.cols-3,.impact-grid.cols-4,.impact-grid.cols-5{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.impact-grid.cols-3,.impact-grid.cols-4,.impact-grid.cols-5{grid-template-columns:1fr}}
+.impact-item{text-align:center}
+.impact-item .info-badge{margin:0 auto 12px}
+.impact-item h5{margin:0 0 6px;font-family:var(--ss);font-size:13.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:#eef6f8;line-height:1.18}
+.impact-item p{margin:0;font-family:var(--ss);font-size:12.5px;line-height:1.5;color:#a7bac5}
+.enfoque-grid{margin-bottom:4px}
+.method-flow{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin:6px 0 4px}
+@media(max-width:860px){.method-flow{grid-template-columns:repeat(2,1fr);gap:26px}}
+@media(max-width:520px){.method-flow{grid-template-columns:1fr}}
+.method-step{text-align:center;position:relative}
+.method-step .step-n{font-family:var(--dp);font-size:30px;font-weight:700;color:rgba(255,255,255,.5);line-height:1;margin-bottom:8px}
+.method-step .info-badge{margin:0 auto 12px;width:64px;height:64px}
+.method-step .info-badge svg{width:30px;height:30px}
+.method-step h5{margin:0 0 6px;font-family:var(--ss);font-size:14px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#eef6f8}
+.method-step p{margin:0;font-family:var(--ss);font-size:12.5px;line-height:1.5;color:#a7bac5}
+.method-step:not(:last-child)::after{content:"";position:absolute;top:46px;right:-9px;width:18px;height:18px;border-top:2px dotted rgba(255,255,255,.35);border-right:2px dotted rgba(255,255,255,.35);transform:rotate(45deg)}
+@media(max-width:860px){.method-step::after{display:none}}
+.method-loop{text-align:center;margin:14px auto 0;max-width:560px;font-family:var(--ss);font-size:11.5px;letter-spacing:2px;text-transform:uppercase;font-weight:800;color:#8fa6b2;border-top:1px dashed rgba(255,255,255,.2);padding-top:12px}
+.pilot-mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:860px){.pilot-mini-grid{grid-template-columns:1fr}}
+.pilot-mini{display:block;text-decoration:none;padding:18px;border:1px solid rgba(255,255,255,.12);border-radius:18px;background:rgba(255,255,255,.04);transition:transform .18s,border-color .18s,background .18s}
+.pilot-mini:hover{transform:translateY(-3px);border-color:rgba(95,210,224,.5);background:rgba(95,210,224,.07)}
+.pilot-mini .pm-top{display:flex;gap:13px;align-items:center;margin-bottom:11px}
+.pilot-mini .info-badge{width:46px;height:46px}
+.pilot-mini .info-badge svg{width:23px;height:23px}
+.pilot-mini .pm-lbl{display:block;font-family:var(--ss);font-size:10.5px;letter-spacing:1.6px;text-transform:uppercase;font-weight:800;color:#5fd2e0;margin-bottom:2px}
+.pilot-mini b{font-family:var(--ss);font-size:14.5px;font-weight:800;color:#eef6f8;line-height:1.18;display:block}
+.pilot-mini p{margin:0;font-family:var(--ss);font-size:12.5px;line-height:1.5;color:#a7bac5}
 </style>
 <div class="app-section pilot-page" id="mes-azul"><div class="wrap">
 
@@ -2124,6 +2250,13 @@ a.btn-canvas-dl{text-decoration:none}
 <span class="p-pill">Arquetipo: «Pedro»</span>
 <span class="p-pill">Mentoras/es: Jessica Morales · Aldo Poblete · Sebastián Gallardo</span>
 </div>
+</div>
+
+<h3 class="sec-head"><span class="i18n-es">Cómo se ve la solución</span><span class="i18n-en">What the solution looks like</span></h3>
+<p class="sec-sub"><span class="i18n-es">El formato al que apunta el Mes Azul: una feria presencial del sector y un ciclo de charlas tipo congreso (imágenes de referencia).</span><span class="i18n-en">The format Mes Azul aims for: an in-person sector fair and a congress-style talks cycle (reference images).</span></p>
+<div class="pilot-gallery">
+<figure><img src="assets/mesazul-feria.jpg" loading="lazy" alt="Feria sectorial con múltiples stands de empresas"><figcaption><span class="i18n-es"><b>La feria de cierre.</b> Una feria sectorial donde se encuentran academia, empresas, sector productivo y comunidades bajo la lógica de la economía azul.</span><span class="i18n-en"><b>The closing fair.</b> A sector fair where academia, companies, industry and communities meet under the blue-economy logic.</span></figcaption></figure>
+<figure><img src="assets/mesazul-expoagua.jpg" loading="lazy" alt="Congreso con panel en escenario, estilo Expo Agua Santiago"><figcaption><span class="i18n-es"><b>El ciclo de charlas.</b> Un componente tipo congreso —a la manera de encuentros como Expo Agua Santiago— que articula expertos, gestión pública y comunidad.</span><span class="i18n-en"><b>The talks cycle.</b> A congress-style component —in the style of events like Expo Agua Santiago— bringing together experts, public management and community.</span></figcaption></figure>
 </div>
 
 <h3 class="sec-head">El recorrido MicroVET</h3>
@@ -2164,12 +2297,38 @@ a.btn-canvas-dl{text-decoration:none}
 </div>
 </div>
 
+<div class="pilot-gallery solo lg">
+<figure><img src="assets/mesazul-ecosistema.jpg" loading="lazy" alt="Diagrama del ecosistema Mes Azul IDMA: estudiantes, docentes, industria, comunidad y territorio conectados en torno al mar"><figcaption><span class="i18n-es"><b>El ecosistema del Mes Azul.</b> En el centro, IDMA articula a estudiantes, docentes, industria, comunidad y territorio en torno a la economía azul: cada actor aporta y se conecta con los demás para sostener el programa en el tiempo.</span><span class="i18n-en"><b>The Mes Azul ecosystem.</b> At the centre, IDMA brings together students, teachers, industry, community and territory around the blue economy: each actor contributes and connects with the others to sustain the programme over time.</span></figcaption></figure>
+</div>
+
 <h3 class="sec-head"><span class="i18n-es">Voces del territorio</span><span class="i18n-en">Voices from the territory</span></h3>
 <p class="sec-sub"><span class="i18n-es">Lo que dijeron, en sus propias palabras, quienes ayudaron a validar el piloto.</span><span class="i18n-en">What those who helped validate the pilot said, in their own words.</span></p>
 <div class="voces">
 <div class="voz"><blockquote><span class="i18n-es">Una de las cosas que necesita mucho la industria, principalmente la pesquera o la salmonera, es dejar de ver los peces como un producto y más como un organismo.</span><span class="i18n-en">One of the things the industry — mainly fishing and salmon farming — needs most is to stop seeing fish as a product and more as a living organism.</span></blockquote><cite>Aldo Poblete<small><span class="i18n-es">Biólogo marino · voz del sector productivo (Mentoría 3)</span><span class="i18n-en">Marine biologist · industry voice (Mentoring 3)</span></small></cite></div>
 <div class="voz"><blockquote><span class="i18n-es">Uno de nuestros principales desafíos es la pertinencia curricular y la desconexión con los territorios; por eso cocreamos currículos adaptados que dialoguen no solo con el mundo laboral, sino también con las comunidades.</span><span class="i18n-en">One of our main challenges is curricular relevance and the disconnect with the territories; that's why we co-create adapted curricula that speak not only to the labor market but also to the communities.</span></blockquote><cite>Jessica Morales<small><span class="i18n-es">UNIMINUTO (Colombia) · Mentoría 2</span><span class="i18n-en">UNIMINUTO (Colombia) · Mentoring 2</span></small></cite></div>
 <div class="voz"><blockquote><span class="i18n-es">En Chile hay cariño hacia el mar, hay cuidado hacia el mar, pero no es tan profundo: somos más románticos de verlo que de cuidarlo.</span><span class="i18n-en">In Chile there's affection and care for the sea, but it doesn't run deep: we're more romantic about looking at it than about caring for it.</span></blockquote><cite>Sebastián Gallardo<small><span class="i18n-es">U. de Antofagasta (C-TyS) · Mentoría 4</span><span class="i18n-en">University of Antofagasta (C-TyS) · Mentoring 4</span></small></cite></div>
+</div>
+
+
+<div class="wp3-info">
+<div class="info-eyebrow"><span class="i18n-es">¿Cómo lo hacemos?</span><span class="i18n-en">How we do it</span></div>
+<div class="info-list">
+<div class="info-item"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 6.5h10A1.5 1.5 0 0 1 15 8v3.6a1.5 1.5 0 0 1-1.5 1.5H8l-3.6 3v-3H3.5A1.5 1.5 0 0 1 2 11.6V8a1.5 1.5 0 0 1 1.5-1.5Z"/><path d="M17 9h3.5A1.5 1.5 0 0 1 22 10.5v3.6a1.5 1.5 0 0 1-1.5 1.5H20v2.4L16.6 15"/></svg></div><div class="info-tx"><h5><span class="i18n-es">Charlas y talleres</span><span class="i18n-en">Talks and workshops</span></h5><p><span class="i18n-es">Encuentros con expertos y referentes que acercan conocimiento e inspiración.</span><span class="i18n-en">Sessions with experts and role models that bring knowledge and inspiration closer.</span></p></div></div>
+<div class="info-item"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 11.5V5.6a1.4 1.4 0 0 1 2.8 0v5.4"/><path d="M10.8 11V4.6a1.4 1.4 0 0 1 2.8 0V11"/><path d="M13.6 11.4V6.4a1.4 1.4 0 0 1 2.8 0V13c0 3.3-2.2 6-6 6-2 0-3.5-.7-4.7-2.3L4 14.4a1.5 1.5 0 0 1 2.4-1.8L8 14.3"/></svg></div><div class="info-tx"><h5><span class="i18n-es">Actividades prácticas</span><span class="i18n-en">Hands-on activities</span></h5><p><span class="i18n-es">Experiencias en terreno y laboratorios para aprender haciendo.</span><span class="i18n-en">Field experiences and labs to learn by doing.</span></p></div></div>
+<div class="info-item"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="6" cy="7" r="2"/><circle cx="18" cy="7" r="2"/><circle cx="12" cy="18" r="2"/><path d="m7.7 8.4 3 7.4M16.3 8.4l-3 7.4M8 7.2h8"/></svg></div><div class="info-tx"><h5><span class="i18n-es">Ferias y redes</span><span class="i18n-en">Fairs and networks</span></h5><p><span class="i18n-es">Espacios de conexión entre estudiantes, organizaciones, empresas e instituciones.</span><span class="i18n-en">Spaces that connect students, organisations, companies and institutions.</span></p></div></div>
+<div class="info-item"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="5" width="14" height="16" rx="2"/><path d="M9 5V4.2A1.6 1.6 0 0 1 10.6 2.6h2.8A1.6 1.6 0 0 1 15 4.2V5"/><path d="M8.6 10h6.8M8.6 13.5h6.8M8.6 17h4.2"/></svg></div><div class="info-tx"><h5><span class="i18n-es">Desafíos escolares</span><span class="i18n-en">School challenges</span></h5><p><span class="i18n-es">Retos creativos que invitan a proponer soluciones para el mar y el territorio.</span><span class="i18n-en">Creative challenges that invite solutions for the sea and the territory.</span></p></div></div>
+<div class="info-item"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 3 2.55 5.5 6 .82-4.4 4.13 1.15 5.95L12 18.6l-5.45 2.8L7.7 13.45 3.3 9.32l6-.82Z"/></svg></div><div class="info-tx"><h5><span class="i18n-es">Celebración final</span><span class="i18n-en">Closing celebration</span></h5><p><span class="i18n-es">Una jornada para compartir logros, reconocer talentos y proyectar el futuro.</span><span class="i18n-en">A day to share achievements, recognise talent and look to the future.</span></p></div></div>
+</div>
+</div>
+<div class="impact-strip">
+<div class="info-eyebrow"><span class="i18n-es">¿Qué impacto generamos?</span><span class="i18n-en">What impact we create</span></div>
+<div class="impact-grid cols-5">
+<div class="impact-item"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="2.6"/><path d="M3.6 18c0-3 2.5-4.7 5.4-4.7S14.4 15 14.4 18"/><circle cx="16.6" cy="8.5" r="2.1"/><path d="M15.2 13.3c2.9.2 4.8 1.8 4.8 4.7"/></svg></div><h5><span class="i18n-es">Mayor participación juvenil</span><span class="i18n-en">More youth participation</span></h5><p><span class="i18n-es">Más jóvenes involucrados y protagonistas de su aprendizaje y su territorio.</span><span class="i18n-en">More young people involved and leading their own learning and territory.</span></p></div>
+<div class="impact-item"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.5 9c2-2.3 4-2.3 6 0s4 2.3 6 0 4-2.3 6 0"/><path d="M2.5 14c2-2.3 4-2.3 6 0s4 2.3 6 0 4-2.3 6 0"/></svg></div><h5><span class="i18n-es">Fortalecimiento de la cultura oceánica</span><span class="i18n-en">Stronger ocean culture</span></h5><p><span class="i18n-es">Comprensión y valoración del mar como base de nuestro bienestar.</span><span class="i18n-en">Understanding and valuing the sea as the basis of our wellbeing.</span></p></div>
+<div class="impact-item"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="6" cy="7" r="2"/><circle cx="18" cy="7" r="2"/><circle cx="12" cy="18" r="2"/><path d="m7.7 8.4 3 7.4M16.3 8.4l-3 7.4M8 7.2h8"/></svg></div><h5><span class="i18n-es">Redes locales activas</span><span class="i18n-en">Active local networks</span></h5><p><span class="i18n-es">Alianzas que potencian proyectos y oportunidades a futuro.</span><span class="i18n-en">Alliances that boost future projects and opportunities.</span></p></div>
+<div class="impact-item"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 10.4 17 5.4v13L5 13.6Z"/><path d="M5 10.4H4.2a1.6 1.6 0 0 0 0 3.2H5"/><path d="M8.2 14.4 9.4 19h2.2l-1.3-4.8"/><path d="M19.2 9.2a3.2 3.2 0 0 1 0 5.6"/></svg></div><h5><span class="i18n-es">Visibilidad e inspiración</span><span class="i18n-en">Visibility and inspiration</span></h5><p><span class="i18n-es">Historias y experiencias que inspiran a más personas a sumarse.</span><span class="i18n-en">Stories and experiences that inspire more people to join.</span></p></div>
+<div class="impact-item"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.5 9.5 12 5.5l9.5 4-9.5 4-9.5-4Z"/><path d="M6.5 11.6V16c0 1.4 2.5 2.6 5.5 2.6s5.5-1.2 5.5-2.6v-4.4"/><path d="M21.5 9.6v5"/></svg></div><h5><span class="i18n-es">Aprendizaje significativo</span><span class="i18n-en">Meaningful learning</span></h5><p><span class="i18n-es">Conexión entre conocimiento, acción y propósito.</span><span class="i18n-en">A connection between knowledge, action and purpose.</span></p></div>
+</div>
 </div>
 
 <h3 class="sec-head">Canvas MicroVET · Modelo de negocio de la microcredencial</h3>
@@ -2205,6 +2364,12 @@ a.btn-canvas-dl{text-decoration:none}
 <span class="p-pill">Arquetipo: «Amaro»</span>
 <span class="p-pill">Mentoría: Sebastián Cerda · Aldo Poblete</span>
 </div>
+</div>
+
+<h3 class="sec-head"><span class="i18n-es">Cómo se ve la solución</span><span class="i18n-en">What the solution looks like</span></h3>
+<p class="sec-sub"><span class="i18n-es">El diplomado 100% online en acción: una clase en vivo con módulos de economía azul y participantes conectados desde distintos territorios (imagen de referencia).</span><span class="i18n-en">The 100% online diploma in action: a live class with blue-economy modules and participants connected from different territories (reference image).</span></p>
+<div class="pilot-gallery solo">
+<figure><img src="assets/diplomado-clase.jpg" loading="lazy" alt="Clase en vivo online del Diplomado en Economía Azul con participantes en videollamada"><figcaption><span class="i18n-es"><b>La clase en vivo.</b> Formato 100% online (con instancia presencial opcional): módulos como ecosistemas marinos, pesca y acuicultura sostenible, energía oceánica, economía circular y comunidades costeras, con estudiantes de distintas caletas y territorios.</span><span class="i18n-en"><b>The live class.</b> A 100% online format (with an optional in-person session): modules such as marine ecosystems, sustainable fishing and aquaculture, ocean energy, circular economy and coastal communities, with students from different coves and territories.</span></figcaption></figure>
 </div>
 
 <h3 class="sec-head">El recorrido MicroVET</h3>
@@ -2252,6 +2417,27 @@ a.btn-canvas-dl{text-decoration:none}
 <div class="voz"><blockquote><span class="i18n-es">Lo que más importa, sobre todo en esta era de la digitalización, es levantarnos un poco del computador y entender que la formación sigue siendo un proceso social de aprendizaje.</span><span class="i18n-en">What matters most, especially in this age of digitalization, is to step away from the computer a little and understand that learning is still a social process.</span></blockquote><cite>Sebastián Cerda<small><span class="i18n-es">Dir. Educación Continua, OTEC AMA · Mentoría 2</span><span class="i18n-en">Continuing Education Director, OTEC AMA · Mentoring 2</span></small></cite></div>
 </div>
 
+
+<div class="wp3-info">
+<div class="info-eyebrow"><span class="i18n-es">¿Cómo lo hacemos?</span><span class="i18n-en">How we do it</span></div>
+<div class="info-list">
+<div class="info-item"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 6.5C10.5 5.2 8.5 4.7 4 5v13c4.5-.3 6.5.2 8 1.5 1.5-1.3 3.5-1.8 8-1.5V5c-4.5-.3-6.5.2-8 1.5Z"/><path d="M12 6.5V19"/></svg></div><div class="info-tx"><h5><span class="i18n-es">Módulos formativos</span><span class="i18n-en">Training modules</span></h5><p><span class="i18n-es">Contenidos actualizados sobre economía azul, sostenibilidad costera, gobernanza, innovación y desarrollo territorial.</span><span class="i18n-en">Up-to-date content on blue economy, coastal sustainability, governance, innovation and territorial development.</span></p></div></div>
+<div class="info-item"><div class="info-badge c-blue"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="9" r="5.2"/><path d="M9.4 13 8.1 20.6l3.9-2.3 3.9 2.3L14.6 13"/><path d="m12 6.4.95 1.9 2.1.3-1.52 1.48.36 2.08L12 12.46l-1.89.78.36-2.08L8.95 8.6l2.1-.3Z"/></svg></div><div class="info-tx"><h5><span class="i18n-es">Microcredenciales</span><span class="i18n-en">Micro-credentials</span></h5><p><span class="i18n-es">Certificaciones modulares que reconocen aprendizajes clave para el desarrollo profesional y académico.</span><span class="i18n-en">Modular certifications that recognise key learning for professional and academic development.</span></p></div></div>
+<div class="info-item"><div class="info-badge c-green"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="5.5" width="16" height="10" rx="1.5"/><path d="M2.5 18.5h19"/></svg></div><div class="info-tx"><h5><span class="i18n-es">Modalidad flexible</span><span class="i18n-en">Flexible format</span></h5><p><span class="i18n-es">Clases online en vivo, recursos asincrónicos y actividades prácticas adaptadas a las dinámicas de cada territorio.</span><span class="i18n-en">Live online classes, asynchronous resources and hands-on activities adapted to each territory.</span></p></div></div>
+<div class="info-item"><div class="info-badge c-coral"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="2.6"/><path d="M3.6 18c0-3 2.5-4.7 5.4-4.7S14.4 15 14.4 18"/><circle cx="16.6" cy="8.5" r="2.1"/><path d="M15.2 13.3c2.9.2 4.8 1.8 4.8 4.7"/></svg></div><div class="info-tx"><h5><span class="i18n-es">Mentorías especializadas</span><span class="i18n-en">Specialised mentoring</span></h5><p><span class="i18n-es">Acompañamiento de expertos y líderes del territorio para fortalecer capacidades y proyectos.</span><span class="i18n-en">Support from experts and local leaders to strengthen capacities and projects.</span></p></div></div>
+<div class="info-item"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 20.5v-6.5"/><path d="M12 14c-.2-3-2.4-5-5.2-5 0 3 2.2 5.2 5.2 5Z"/><path d="M12 12.4c0-2.7 2-4.6 4.8-4.6.1 2.9-1.9 4.9-4.8 4.6Z"/><path d="M7 20.5h10"/></svg></div><div class="info-tx"><h5><span class="i18n-es">Proyectos aplicados</span><span class="i18n-en">Applied projects</span></h5><p><span class="i18n-es">Aprendizaje basado en desafíos reales, con impacto concreto en comunidades y ecosistemas costeros.</span><span class="i18n-en">Challenge-based learning with concrete impact on coastal communities and ecosystems.</span></p></div></div>
+</div>
+</div>
+<div class="impact-strip">
+<div class="info-eyebrow"><span class="i18n-es">Impacto que generamos</span><span class="i18n-en">The impact we create</span></div>
+<div class="impact-grid cols-4">
+<div class="impact-item"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="2.6"/><path d="M3.6 18c0-3 2.5-4.7 5.4-4.7S14.4 15 14.4 18"/><circle cx="16.6" cy="8.5" r="2.1"/><path d="M15.2 13.3c2.9.2 4.8 1.8 4.8 4.7"/></svg></div><h5><span class="i18n-es">Liderazgo local</span><span class="i18n-en">Local leadership</span></h5><p><span class="i18n-es">Potenciamos líderes que impulsan el desarrollo sostenible.</span><span class="i18n-en">We empower leaders who drive sustainable development.</span></p></div>
+<div class="impact-item"><div class="info-badge c-coral"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="7.5" width="17" height="11" rx="1.6"/><path d="M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5"/><path d="M3.5 12h17"/></svg></div><h5><span class="i18n-es">Empleabilidad</span><span class="i18n-en">Employability</span></h5><p><span class="i18n-es">Nuevas oportunidades en sectores emergentes.</span><span class="i18n-en">New opportunities in emerging sectors.</span></p></div>
+<div class="impact-item"><div class="info-badge c-green"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9.2 17h5.6"/><path d="M10.2 20h3.6"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.1 2.2h5c0-.9.5-1.7 1.1-2.2A6 6 0 0 0 12 3Z"/></svg></div><h5><span class="i18n-es">Innovación aplicada</span><span class="i18n-en">Applied innovation</span></h5><p><span class="i18n-es">Soluciones creativas para desafíos reales.</span><span class="i18n-en">Creative solutions for real challenges.</span></p></div>
+<div class="impact-item"><div class="info-badge c-teal"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9.6 14.4 4.8-4.8"/><path d="M8.2 12 6.3 13.9a3 3 0 0 0 4.2 4.2l1.8-1.8"/><path d="M15.8 12l1.9-1.9a3 3 0 0 0-4.2-4.2L11.7 7.7"/></svg></div><h5><span class="i18n-es">Vinculación territorial</span><span class="i18n-en">Territorial links</span></h5><p><span class="i18n-es">Redes colaborativas para transformar juntos.</span><span class="i18n-en">Collaborative networks to transform together.</span></p></div>
+</div>
+</div>
+
 <h3 class="sec-head">Canvas MicroVET · Modelo de negocio de la microcredencial</h3>
 <p class="sec-sub">Los doce bloques de la metodología MicroVET, completados con lo trabajado en las cuatro mentorías.</p>
 <div class="mbmc">
@@ -2285,6 +2471,12 @@ a.btn-canvas-dl{text-decoration:none}
 <span class="p-pill">Foco: comunidad escolar 4°–6° básico</span>
 <span class="p-pill">Voces: Sebastián Gallardo · Javiera Núñez · Ada Calderón</span>
 </div>
+</div>
+
+<h3 class="sec-head"><span class="i18n-es">Cómo se ve la solución</span><span class="i18n-en">What the solution looks like</span></h3>
+<p class="sec-sub"><span class="i18n-es">El ABP en acción: estudiantes presentan ante su curso un proyecto sobre una problemática hídrica/marina del territorio (imagen de referencia).</span><span class="i18n-en">PBL in action: students present a project on a local water/marine issue to their class (reference image).</span></p>
+<div class="pilot-gallery solo">
+<figure><img src="assets/guardianes-microplasticos.jpg" loading="lazy" alt="Estudiantes presentando un proyecto escolar sobre microplásticos en el mar"><figcaption><span class="i18n-es"><b>El proyecto, presentado.</b> La metodología convierte una problemática del territorio —aquí, microplásticos en el mar— en un proyecto escolar con diagnóstico, maqueta y soluciones, listo para mostrarse en el Mes Azul.</span><span class="i18n-en"><b>The project, presented.</b> The methodology turns a local issue —here, microplastics in the sea— into a school project with diagnosis, model and solutions, ready to be shown at the Mes Azul fair.</span></figcaption></figure>
 </div>
 
 <h3 class="sec-head">El recorrido MicroVET</h3>
