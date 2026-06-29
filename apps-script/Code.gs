@@ -1,24 +1,26 @@
 /**
- * WP3 · Blue Economy Lab — Backend de evaluaciones (cross-assessment)
+ * WP3 · Blue Economy Lab — Backend (Apps Script Web App)
  * --------------------------------------------------------------------
- * Conecta el formulario de rúbrica de la web (sitio estático en Vercel)
- * con la Google Sheet que funciona como base de datos:
- *   "WP3 Cross-Assessment — Base de Datos de Evaluaciones"
+ * Un solo Web App sirve DOS cosas sobre la misma Google Sheet:
  *
- *  • doPost  -> agrega una fila por cada evaluación enviada desde la web.
- *  • doGet   -> devuelve todas las evaluaciones en JSON para que la
- *               sección «Resultados» de la web las muestre en vivo.
+ *  1) EVALUACIONES (cross-assessment)
+ *     • doPost (sin "type")      -> agrega una fila por evaluación.
+ *     • doGet  (sin "type")      -> devuelve todas las evaluaciones en JSON.
  *
- * La Sheet puede permanecer PRIVADA: este script corre como tú (el dueño)
- * y es el único que la lee/escribe. Solo el Web App se publica como
- * «cualquier persona».
+ *  2) CONTENIDO EDITABLE (modo "Editar contenido" de la web)
+ *     • doGet  ?type=content     -> devuelve los textos editados (overrides) en JSON.
+ *     • doPost {type:"content"}  -> guarda los overrides. REQUIERE contraseña
+ *                                   (Script Property EDIT_PASSWORD).
  *
- * >>> Cómo desplegar: ver README_DESPLIEGUE.md (mismo directorio). <<<
+ * La Sheet puede permanecer PRIVADA: el script corre como tú (el dueño).
+ * Solo el Web App se publica como «cualquier persona».
+ *
+ * >>> Cómo desplegar / configurar la contraseña: ver README_DESPLIEGUE.md <<<
  */
 
 var SHEET_ID = '1WCnjvygXah8H2eutZYdvVcZJ7IKcsdi4UknXz0ZNxBU';
 
-/* Orden EXACTO de columnas de la Sheet (fila 1 = encabezados). */
+/* Orden EXACTO de columnas de la Sheet de evaluaciones (fila 1 = encabezados). */
 var COLS = [
   'timestamp','evaluator.name','evaluator.org','evaluator.country','evaluator.email',
   'pilotId','pilotName',
@@ -41,9 +43,27 @@ function json_(obj) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-/* ---------- LECTURA: la web pide las evaluaciones guardadas ---------- */
+/* ===================== CONTENIDO EDITABLE ===================== */
+/* Los overrides {clave: html} se guardan como un único JSON en la celda A1
+ * de una pestaña "Contenido" de la misma Sheet. */
+function contentCell_() {
+  var ss = SpreadsheetApp.openById(SHEET_ID);
+  var sh = ss.getSheetByName('Contenido');
+  if (!sh) { sh = ss.insertSheet('Contenido'); sh.getRange('A1').setValue('{}'); }
+  return sh.getRange('A1');
+}
+function getContent_() {
+  try { var v = contentCell_().getValue(); return v ? JSON.parse(v) : {}; }
+  catch (e) { return {}; }
+}
+function setContent_(obj) { contentCell_().setValue(JSON.stringify(obj)); }
+
+/* ---------- LECTURA ---------- */
 function doGet(e) {
   try {
+    if (e && e.parameter && e.parameter.type === 'content') {
+      return json_({ ok: true, content: getContent_() });
+    }
     var values = sheet_().getDataRange().getValues();
     var out = [];
     for (var i = 1; i < values.length; i++) {
@@ -69,10 +89,23 @@ function doGet(e) {
   }
 }
 
-/* ---------- ESCRITURA: la web envía una evaluación nueva ---------- */
+/* ---------- ESCRITURA ---------- */
 function doPost(e) {
   try {
     var body = JSON.parse(e.postData.contents);
+
+    // (2) Guardar contenido editado — requiere contraseña.
+    if (body && body.type === 'content') {
+      var pw = PropertiesService.getScriptProperties().getProperty('EDIT_PASSWORD');
+      if (!pw || String(body.password) !== String(pw)) {
+        return json_({ ok: false, error: 'unauthorized' });
+      }
+      var content = (body.content && typeof body.content === 'object') ? body.content : {};
+      setContent_(content);
+      return json_({ ok: true, count: Object.keys(content).length });
+    }
+
+    // (1) Evaluación nueva.
     var row = COLS.map(function (path) { return get_(body, path); });
     sheet_().appendRow(row);
     return json_({ ok: true });

@@ -43,3 +43,39 @@ Desde ese momento:
 ## Si cambias el `Code.gs` más adelante
 Vuelve a **Implementar → Gestionar implementaciones → editar (lápiz) →
 Versión: Nueva → Implementar**. La URL `/exec` se mantiene.
+
+---
+
+# Editor de contenido en la web ("Editar contenido") — activar (1 sola vez)
+
+El mismo Web App ahora también guarda los **textos editados** desde la web (modo
+`?edit`). Para activarlo:
+
+## A — Actualizar el script
+1. Abre el Apps Script (Extensiones → Apps Script en la misma Sheet).
+2. **Reemplaza** el contenido por el [`Code.gs`](Code.gs) nuevo (ya trae las
+   funciones de contenido además de las de evaluación) y guarda 💾.
+
+## B — Poner la contraseña de edición (Script Property)
+1. En el Apps Script, icono **⚙️ Configuración del proyecto** (engranaje, panel izq.).
+2. Baja a **Propiedades del script → Agregar propiedad del script**.
+3. Propiedad: `EDIT_PASSWORD` · Valor: *(la contraseña que quieras)*. Guardar.
+   - Esta contraseña **no** queda en el repo ni en la web; vive solo en el script.
+
+## C — Redesplegar
+**Implementar → Gestionar implementaciones → editar (lápiz) → Versión: Nueva →
+Implementar.** La URL `/exec` se mantiene (la web ya la usa).
+
+## Cómo se usa
+- **Editar:** entra a la web agregando `?edit` al final de la URL
+  (`https://wp3-deploy.vercel.app/?edit`). Aparece una **barra arriba**.
+- Pulsa **Editar contenido** → te pide la contraseña → haz clic en cualquier
+  texto y edítalo en la página → **Publicar cambios**.
+- Lo publicado se guarda en la pestaña **"Contenido"** de la Sheet (celda A1, JSON)
+  y **todos los visitantes** lo ven (la web aplica los textos al cargar).
+- El público normal (sin `?edit`) **no ve** la barra de edición.
+
+> Si `EDIT_PASSWORD` no está puesta, "Publicar" devuelve *no autorizado*. Mientras
+> el script no se redespliegue, el editor igual abre pero no podrá publicar.
+> Seguridad: el gateo es por contraseña sobre HTTPS; cualquiera con la contraseña
+> puede editar, así que no la compartas.
