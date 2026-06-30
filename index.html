@@ -1701,8 +1701,8 @@ html:not(.embed) #home #hero{min-height:0!important;height:auto!important;max-he
   padding:96px 0 56px!important;align-items:center!important}
 html:not(.embed) #home #hero .hero-content{padding-top:6px!important;padding-bottom:30px!important}
 /* compactar: piloto y paneles (la barra superior es relativa → no necesitan tanto top) */
-.pilot-page,.panel-page{padding:38px 0 70px!important}
-.panel-page .wrap{padding-top:16px!important;padding-bottom:38px!important}
+.pilot-page,.panel-page{padding:0 0 70px!important}
+.panel-page .wrap{padding-top:0!important;padding-bottom:38px!important}
 .pilot-page .wrap{padding-top:0!important;padding-bottom:38px!important}
 #programa{padding:46px 0 70px!important}
 .pilot-page .sec-head{margin-top:30px!important}
@@ -2011,19 +2011,7 @@ html:not(.embed){zoom:0.9;}
 #evaluacion .link-btn.secondary{background:var(--teal,#15b8c9)!important;border-color:var(--teal,#15b8c9)!important;color:#06131f!important}
 </style>
 
-<style id="wp3-edit-skin">
-#wp3-edit-bar{position:fixed;top:0;left:0;right:0;z-index:2147483600;background:#0b1a26;border-bottom:2px solid #15b8c9;display:flex;gap:10px;align-items:center;padding:8px 16px;font-family:system-ui,Segoe UI,Arial,sans-serif;font-size:13px;color:#dbe8ee;box-shadow:0 6px 20px rgba(0,0,0,.45);flex-wrap:wrap}
-#wp3-edit-bar .ttl{font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#5fd2e0;font-size:11px}
-#wp3-edit-bar button{background:#15b8c9;color:#06131f;border:none;border-radius:8px;padding:7px 13px;font-weight:800;font-size:12.5px;cursor:pointer;font-family:inherit}
-#wp3-edit-bar button:disabled{opacity:.45;cursor:default}
-#wp3-edit-bar #wp3-ed-exit{background:transparent;color:#9fb6c2;border:1px solid #2b4a5c}
-#wp3-edit-bar #wp3-ed-msg{margin-left:auto;color:#9fb6c2;font-size:12px;min-width:120px;text-align:right}
-body.wp3-has-editbar{padding-top:48px}
-body.wp3-has-editbar .nav{top:48px}
-body.wp3-editing [contenteditable="true"]{outline:2px dashed rgba(21,184,201,.65);outline-offset:2px;border-radius:3px;cursor:text}
-body.wp3-editing [contenteditable="true"]:hover{outline-color:rgba(21,184,201,.95)}
-body.wp3-editing [contenteditable="true"]:focus{outline:2px solid #15b8c9;background:rgba(21,184,201,.08)}
-</style>
+
 
 
 <style id="lcab-skin">
@@ -2036,6 +2024,15 @@ body.wp3-editing [contenteditable="true"]:focus{outline:2px solid #15b8c9;backgr
 #lcab-monitoreo .p-hero{background:linear-gradient(120deg,#06131f 0%,#0c3a52 55%,#0a2740 100%)!important}
 #lcab-circular .p-hero{background:linear-gradient(120deg,#06131f 0%,#0f3b3a 55%,#0a2740 100%)!important}
 #lcab-guardianes-mar .p-hero{background:linear-gradient(120deg,#06131f 0%,#123a57 55%,#0a2740 100%)!important}
+.panel-page .microvet-hero-card{width:auto!important;min-height:88vh!important;display:flex!important;flex-direction:column!important;justify-content:center!important;border:0!important;border-radius:0!important;box-shadow:none!important;transform:none!important;opacity:1!important;margin:0 calc(-1 * var(--gut))!important;padding:104px var(--gut)!important}
+.panel-page .microvet-hero-card h2{font-size:clamp(40px,5.8vw,82px)!important;line-height:1.02!important;letter-spacing:-1.5px!important}
+.panel-page .microvet-hero-card p{max-width:64ch!important;font-size:clamp(16px,1.5vw,20px)!important;font-weight:300!important}
+/* Entregables: submenu completo sin scroll en el rail */
+#repositorio .wp3-fullwidth-deliverables>.wp3-doc-head{max-height:none!important;overflow:visible!important;min-height:0!important}
+#repositorio .wp3-fullwidth-deliverables>.wp3-doc-head h3{font-size:22px!important;margin:0 0 8px!important}
+#repositorio .wp3-fullwidth-deliverables>.wp3-doc-head .wp3-doc-tabs{flex:0 0 auto!important;overflow:visible!important}
+#repositorio .wp3-fullwidth-deliverables>.wp3-doc-head .wp3-doc-tab{flex:0 0 auto!important}
+
 </style>
 <style id="wp3-gate-skin">
 html:not(.wp3-unlocked) .tab-btn[data-tab="evaluacion"],
@@ -3878,126 +3875,7 @@ if(heroBg)addEventListener('scroll',()=>{heroBg.style.transform='scale(1.05) tra
 })();
 </script>
 
-<script>
-/* WP3 · Editor de contenido (barra SIEMPRE visible). Incluye documentos en iframes (Entregables). Publica vía Apps Script. */
-(function(){
-  var CONTENT_API='https://script.google.com/macros/s/AKfycbxU64AhIDL90bmFNyR5y2b36gHKY0dvi0RsKBClQt2vc6F3iA6NctWX0K-77T9b-HUF/exec';
-  var SEL='h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,cite,.stat-n,.stat-l,.eyebrow,.sec-sub,.lead-drop,.pm-lbl,.tagT,.ph-ph,.partners-title,.timeline-title';
-  var OUTLINE='[contenteditable="true"]{outline:2px dashed rgba(21,184,201,.65);outline-offset:2px;cursor:text}[contenteditable="true"]:focus{outline:2px solid #15b8c9;background:rgba(21,184,201,.08)}';
-  function hasI18n(el){return !!el.querySelector('.i18n-es,.i18n-en');}
-  function docEditableEls(doc){
-    var out=[],seen=new Set();
-    doc.querySelectorAll('.i18n-es,.i18n-en').forEach(function(el){
-      if(el.querySelector('.i18n-es,.i18n-en'))return;
-      if(el.closest('#wp3-edit-bar'))return;
-      out.push(el);seen.add(el);
-    });
-    doc.querySelectorAll(SEL).forEach(function(el){
-      if(el.closest('#wp3-edit-bar'))return;
-      if(hasI18n(el))return;
-      if(el.querySelector(SEL))return;
-      if(seen.has(el))return;
-      out.push(el);
-    });
-    return out;
-  }
-  function pathFor(el,doc){
-    var seg=[],n=el;
-    while(n&&n!==doc.body&&!n.id){
-      var p=n.parentElement;if(!p)break;
-      var i=Array.prototype.indexOf.call(p.children,n);
-      seg.unshift(n.tagName+i);n=p;
-    }
-    var pre=(n&&n.id)?('#'+n.id):'BODY';
-    return pre+'/'+seg.join('/');
-  }
-  function frameKey(fr){return fr.getAttribute('data-wp3-frame')||((fr.getAttribute('src')||'').split('/').pop().split('?')[0])||'frame';}
-  function keyOf(el,doc,prefix){return prefix+pathFor(el,doc);}
-  function allDocs(){
-    var docs=[{doc:document,prefix:''}];
-    document.querySelectorAll('iframe').forEach(function(fr){
-      var d=null;try{d=fr.contentDocument;}catch(e){d=null;}
-      if(d&&d.body)docs.push({doc:d,prefix:'@'+frameKey(fr)+'::',frame:fr});
-    });
-    return docs;
-  }
-  var overrides={},pass=null,editing=false,dirty={};
-  function setMsg(t){var m=document.getElementById('wp3-ed-msg');if(m)m.textContent=t||'';}
-  function pubBtn(){return document.getElementById('wp3-ed-publish');}
-  function applyToDoc(doc,prefix){
-    if(!overrides||!Object.keys(overrides).length)return;
-    var map={};docEditableEls(doc).forEach(function(el){map[keyOf(el,doc,prefix)]=el;});
-    Object.keys(overrides).forEach(function(k){if(map[k])map[k].innerHTML=overrides[k];});
-  }
-  function applyAll(){allDocs().forEach(function(o){try{applyToDoc(o.doc,o.prefix);}catch(e){}});}
-  function injectOutline(doc){if(doc.getElementById('wp3-ed-style'))return;var s=doc.createElement('style');s.id='wp3-ed-style';s.textContent=OUTLINE;(doc.head||doc.body).appendChild(s);}
-  function onInput(ev){var el=ev.currentTarget;dirty[el.__wp3key]=el.innerHTML;var b=pubBtn();if(b)b.disabled=false;setMsg('Cambios sin publicar…');}
-  function enableDoc(doc,prefix){
-    injectOutline(doc);
-    docEditableEls(doc).forEach(function(el){el.__wp3key=keyOf(el,doc,prefix);el.setAttribute('contenteditable','true');el.addEventListener('input',onInput);});
-  }
-  function disableDoc(doc){[].forEach.call(doc.querySelectorAll('[contenteditable="true"]'),function(el){el.removeAttribute('contenteditable');el.removeEventListener('input',onInput);});}
-  function hookFrames(){
-    document.querySelectorAll('iframe').forEach(function(fr){
-      if(fr.__wp3hooked)return;fr.__wp3hooked=1;
-      fr.addEventListener('load',function(){
-        var d=null;try{d=fr.contentDocument;}catch(e){}
-        if(d&&d.body){var prefix='@'+frameKey(fr)+'::';try{applyToDoc(d,prefix);}catch(e){}if(editing){try{enableDoc(d,prefix);}catch(e){}}}
-      });
-    });
-  }
-  (function fetchOv(){
-    try{
-      fetch(CONTENT_API+'?type=content').then(function(r){return r.json();}).then(function(d){
-        var c=d&&d.content;if(!c||typeof c!=='object')return;
-        overrides=c;applyAll();
-      }).catch(function(){});
-    }catch(e){}
-  })();
-  function build(){
-    if(document.getElementById('wp3-edit-bar'))return;
-    var bar=document.createElement('div');bar.id='wp3-edit-bar';
-    bar.innerHTML='<span class="ttl">Modo edición · WP3</span>'+
-      '<button id="wp3-ed-toggle" type="button">✏️ Editar contenido</button>'+
-      '<button id="wp3-ed-publish" type="button" disabled>Publicar cambios</button>'+
-      '<button id="wp3-ed-exit" type="button">Ocultar</button>'+
-      '<span id="wp3-ed-msg"></span>';
-    document.body.appendChild(bar);
-    document.body.classList.add('wp3-has-editbar');
-    var bToggle=bar.querySelector('#wp3-ed-toggle'),bExit=bar.querySelector('#wp3-ed-exit');
-    function startEdit(){
-      if(!pass){pass=prompt('Contraseña de edición:');if(!pass)return;}
-      editing=true;document.body.classList.add('wp3-editing');
-      allDocs().forEach(function(o){try{enableDoc(o.doc,o.prefix);}catch(e){}});
-      hookFrames();
-      bToggle.textContent='🔒 Terminar edición';
-      setMsg('Edita cualquier texto (incluidos los Entregables: abre cada documento). Luego “Publicar cambios”.');
-    }
-    function stopEdit(){
-      editing=false;document.body.classList.remove('wp3-editing');
-      allDocs().forEach(function(o){try{disableDoc(o.doc);}catch(e){}});
-      bToggle.textContent='✏️ Editar contenido';
-    }
-    bToggle.addEventListener('click',function(){editing?stopEdit():startEdit();});
-    bExit.addEventListener('click',function(){if(editing)stopEdit();document.body.classList.remove('wp3-has-editbar');bar.remove();});
-    bar.querySelector('#wp3-ed-publish').addEventListener('click',function(){
-      var keys=Object.keys(dirty);if(!keys.length){setMsg('No hay cambios.');return;}
-      var merged=Object.assign({},overrides,dirty);
-      var b=pubBtn();b.disabled=true;setMsg('Publicando…');
-      fetch(CONTENT_API+'?type=content').then(function(r){return r.json();}).then(function(chk){
-        if(!chk||typeof chk.content==='undefined'){setMsg('✗ Backend no actualizado: redepliega el Apps Script primero.');b.disabled=false;return;}
-        return fetch(CONTENT_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({type:'content',password:pass,content:merged})})
-          .then(function(r){return r.json();}).then(function(d){
-            if(d&&d.ok){overrides=merged;dirty={};setMsg('✓ Publicado ('+d.count+' textos). Recarga para verlo público.');}
-            else{var unauth=(d&&d.error==='unauthorized');setMsg('✗ '+(unauth?'Contraseña incorrecta':((d&&d.error)||'Error')));b.disabled=false;if(unauth)pass=null;}
-          });
-      }).catch(function(){setMsg('✗ Error de red');b.disabled=false;});
-    });
-    hookFrames();
-  }
-  function wp3GateOn(){try{return localStorage.getItem('wp3_gate_unlocked')==='1';}catch(e){return false;}}function syncBar(){if(wp3GateOn()){build();}else{var b=document.getElementById('wp3-edit-bar');if(b){document.body.classList.remove('wp3-has-editbar');b.remove();}}}window.wp3SyncEditor=syncBar;if(document.body)syncBar();else document.addEventListener('DOMContentLoaded',syncBar);
-})();
-</script>
+
 
 <script>
 /* WP3 · Gate de pestañas internas (Cross-Assessment + Entregables). Contraseña para revelarlas. */
