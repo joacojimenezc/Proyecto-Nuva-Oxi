@@ -3046,36 +3046,26 @@ function descargarCanvas(pilotId, titulo, subt){
 <div class="ev-head">
 <div class="eyebrow"><span class="i18n-es">Cross-assessment del consorcio</span><span class="i18n-en">Consortium cross-assessment</span><span class="i18n-de">Cross-Assessment des Konsortiums</span></div>
 <h2 class="panel-card-title" style="font-family:var(--dp);color:var(--n1);font-size:clamp(30px,4vw,44px);line-height:1.08;margin:0 0 12px;letter-spacing:-.5px">Cross-Assessment de pilotos</h2>
-<p class="lead" style="max-width:78ch">Instrumento de validación del WP3: los socios del consorcio Blue Economy Lab evalúan mutuamente sus pilotos formativos con una rúbrica común. Aquí puedes conocer y calificar los tres pilotos chilenos de IDMA, <strong>cargar los pilotos de tu organización</strong> para que el equipo chileno los evalúe, y consultar los resultados consolidados. La plataforma funciona como <strong>repositorio del trabajo del consorcio</strong> y como base para construir el <strong>caso de estudio</strong> posterior al cross-assessment.</p>
+<p class="lead" style="max-width:78ch">Instrumento de validación del WP3: los socios del consorcio Blue Economy Lab evalúan mutuamente sus pilotos formativos con una rúbrica común. Aquí puedes evaluar todos los pilotos del consorcio (Chile y Colombia) con una rúbrica común y consultar los resultados consolidados. La plataforma funciona como <strong>repositorio del trabajo del consorcio</strong> y como base para construir el <strong>caso de estudio</strong> posterior al cross-assessment.</p>
 </div>
 <div class="ev-subnav" id="evSubnav">
 <button class="ev-tab active" data-ev="inicio" type="button">Inicio</button>
-<button class="ev-tab" data-ev="pilotos" type="button">Pilotos de Chile</button>
+
 <button class="ev-tab" data-ev="rubrica" type="button">Aplicar rúbrica</button>
-<button class="ev-tab" data-ev="consorcio" type="button">Pilotos del consorcio</button>
+
 <button class="ev-tab" data-ev="resultados" type="button">Resultados</button>
 </div>
 <!-- INICIO -->
 <div class="ev-panel active" id="ev-inicio">
 <div class="ev-grid">
+
 <div class="ev-card">
-<span class="ev-step">Paso 1</span>
-<h3>Conoce los pilotos</h3>
-<p>Revisa los tres pilotos chilenos liderados por IDMA: Mes Azul, Diplomado en Economía Azul y Guardianes del Agua. Cada ficha resume arquetipo de usuario, problema validado y solución tras las Mentorías 2 y 3.</p>
-<button class="link-btn" onclick="evGo('pilotos')" type="button">Ver pilotos chilenos</button>
-</div>
-<div class="ev-card">
-<span class="ev-step">Paso 2</span>
+<span class="ev-step">Evaluar</span>
 <h3>Aplica la rúbrica</h3>
 <p>Completa la rúbrica ponderada de 8 criterios (escala 1–4) para evaluar un piloto. Tu identificación queda registrada para trazabilidad y tus respuestas alimentan los resultados consolidados.</p>
 <button class="link-btn" onclick="evGo('rubrica')" type="button">Aplicar rúbrica</button>
 </div>
-<div class="ev-card">
-<span class="ev-step">Paso 3</span>
-<h3>Carga tus pilotos</h3>
-<p>Sube los pilotos de tu organización para que el equipo chileno los evalúe con la misma rúbrica. Una ficha simple basta para iniciar la evaluación cruzada.</p>
-<button class="link-btn" onclick="evGo('consorcio')" type="button">Cargar piloto</button>
-</div>
+
 </div>
 <div class="ev-alert info" style="margin-top:24px">
 <span class="i18n-es"><strong>Sobre el cross-assessment:</strong> es el instrumento de validación entre pares del WP3 (Tarea T3.3 · Hito MS5). La co-evaluación es entre las <b>tres instituciones de educación que ejecutaron pilotos —IDMA, UNIMINUTO y Mil y un Mentorías—</b>: cada piloto lo evalúan ≥2 socios de otra institución (sin autoevaluación), para enriquecerlo con la mirada experta del consorcio antes del cierre. Tus respuestas se envían a la base de datos compartida del proyecto.</span>
@@ -3085,38 +3075,6 @@ function descargarCanvas(pilotId, titulo, subt){
 <span class="i18n-es"><strong>Reglas de la evaluación cruzada:</strong> <b>sin autoevaluación</b> —cada piloto lo evalúan <b>≥ 2 instituciones distintas</b> a la responsable (ideal 3). Escala de <b>4 niveles ponderada</b> por criterio; cada criterio cubre la dimensión <b>curricular y/o extracurricular</b>. <b>% de logro = puntaje / 4</b>, con <b>umbral de aprobación del 80%</b> (coherente con el corte de microcredenciales). Cada puntaje se respalda con <b>evidencia observable</b> y el resultado final del piloto es el <b>promedio de los evaluadores</b>.</span>
 <span class="i18n-en"><strong>Cross-assessment rules:</strong> <b>no self-assessment</b> —each pilot is assessed by <b>≥ 2 institutions different</b> from the one responsible (ideally 3). A <b>weighted 4-level scale</b> per criterion; each criterion covers the <b>curricular and/or extracurricular</b> dimension. <b>Achievement % = score / 4</b>, with an <b>80% approval threshold</b> (consistent with the micro-credential cut-off). Each score is backed by <b>observable evidence</b> and the pilot's final result is the <b>average of the assessors</b>.</span><span class="i18n-de"><strong>Regeln der gegenseitigen Bewertung:</strong> <b>keine Selbstbewertung</b> — jedes Pilotprojekt wird von <b>≥ 2 anderen Einrichtungen</b> als der verantwortlichen bewertet (idealerweise 3). Eine pro Kriterium <b>gewichtete 4-stufige Skala</b>; jedes Kriterium deckt die <b>curriculare und/oder außercurriculare</b> Dimension ab. <b>% der Erreichung = Punktzahl / 4</b>, mit einer <b>Bestehensschwelle von 80%</b> (kohärent mit der Grenze für Micro-Credentials). Jede Punktzahl wird mit <b>beobachtbaren Nachweisen</b> belegt, und das Endergebnis des Pilotprojekts ist der <b>Durchschnitt der Bewertenden</b>.</span>
     </div>
-</div>
-<!-- PILOTOS CHILE -->
-<div class="ev-panel" id="ev-pilotos">
-<div class="ev-grid">
-<div class="ev-card">
-<span class="ev-badge">Mes Azul IDMA</span>
-<h3>Programa anual de vinculación en economía azul</h3>
-<p><strong>Arquetipo:</strong> «Pedro», técnico profesional de 20–30 años que busca especialización y empleabilidad en el sector.</p>
-<p><strong>Problema:</strong> falta de vinculación entre academia, empresa y sector productivo de la economía azul.</p>
-<p><strong>Solución:</strong> ciclo de 6 charlas con expertos + jornada de cierre con feria de emprendimientos en CTS Buin + curso certificable IDMA en doble modalidad.</p>
-<p><span class="ev-pill">Equipo: Paola Cerda, Javiera Núñez, Víctor Bravo</span> <span class="ev-pill">Voz experta: Jessica Morales (Uniminuto)</span></p>
-<button class="link-btn secondary" onclick="evEval('mes-azul')" type="button">Evaluar este piloto</button>
-</div>
-<div class="ev-card">
-<span class="ev-badge">Diplomado en Economía Azul</span>
-<h3>Formación técnica especializada con microcredenciales MicroVET</h3>
-<p><strong>Arquetipo:</strong> «Amaro», adulto de 25–45 años, con cinco perfiles de biografía (del técnico medio a la reorientación vocacional).</p>
-<p><strong>Problema:</strong> brecha en formación práctica por el alto costo de actividades presenciales en la zona costera.</p>
-<p><strong>Solución:</strong> diplomado 100% online con semana presencial opcional como gancho, modular vía microcursos que cuentan como módulos del diplomado.</p>
-<p><span class="ev-pill">Equipo: Estefanía Campos, Juan Otero</span> <span class="ev-pill">Voz experta: Jessica Morales (Uniminuto)</span></p>
-<button class="link-btn secondary" onclick="evEval('diplomado')" type="button">Evaluar este piloto</button>
-</div>
-<div class="ev-card">
-<span class="ev-badge">Guardianes del Agua</span>
-<h3>Manual de capacitación docente · Aprendizaje basado en proyectos</h3>
-<p><strong>Arquetipo:</strong> «Sofía, Guardiana del Agua», comunidad escolar de 4°–6° básico mediada por docente formador (Mejillones y costa norte).</p>
-<p><strong>Problema:</strong> baja comprensión y apropiación de los riesgos hídricos del territorio.</p>
-<p><strong>Solución:</strong> manual de capacitación docente que permite aplicar el ABP con cualquier grupo, partiendo por la versión escolar.</p>
-<p><span class="ev-pill">Equipo: Ada Calderón, Eimilyn Alquinta, Tania Melín</span> <span class="ev-pill">Voz experta: Javiera Núñez (IDMA)</span></p>
-<button class="link-btn secondary" onclick="evEval('guardianes')" type="button">Evaluar este piloto</button>
-</div>
-</div>
 </div>
 <!-- APLICAR RUBRICA -->
 <div class="ev-panel" id="ev-rubrica">
@@ -3137,12 +3095,14 @@ function descargarCanvas(pilotId, titulo, subt){
 <label>Selecciona el piloto *</label>
 <select id="evPilot">
 <option value="">— Elige un piloto —</option>
-<optgroup label="Pilotos Chile · IDMA">
 <option value="mes-azul">Mes Azul IDMA</option>
 <option value="diplomado">Diplomado en Economía Azul</option>
 <option value="guardianes">Guardianes del Agua</option>
-</optgroup>
-<optgroup id="evConsortiumOptions" label="Pilotos del consorcio"></optgroup>
+<option value="uniminuto-electiva">Electiva en Economía Azul · UNIMINUTO</option>
+<option value="uniminuto-hackaton">Hackathon Blue Economy · UNIMINUTO</option>
+<option value="lcab-monitoreo">Monitoreo Costero Participativo · Liceo A. Bello</option>
+<option value="lcab-circular">MYM: Economía Circular Marina · Liceo A. Bello</option>
+<option value="lcab-guardianes-mar">Guardianes del Mar · Liceo A. Bello</option>
 </select>
 </div>
 </div>
@@ -3166,25 +3126,6 @@ function descargarCanvas(pilotId, titulo, subt){
 </div>
 <div style="text-align:right">
 <button class="link-btn" id="evSubmit" type="button">Enviar evaluación</button>
-</div>
-</div>
-<!-- PILOTOS CONSORCIO -->
-<div class="ev-panel" id="ev-consorcio">
-<p class="lead">Pilotos cargados por los demás socios del consorcio para que el equipo chileno los evalúe.</p>
-<div id="evConsortiumList" style="margin-bottom:26px"></div>
-<div class="ev-card">
-<h3 style="margin-top:0">Cargar un piloto del consorcio</h3>
-<div class="ev-grid">
-<div class="ev-field"><label>Nombre del piloto *</label><input id="evcName" type="text"/></div>
-<div class="ev-field"><label>Organización *</label><input id="evcOrg" type="text"/></div>
-<div class="ev-field"><label>País *</label><input id="evcCountry" type="text"/></div>
-</div>
-<div class="ev-field"><label>Tipo / formato</label><input id="evcType" placeholder="Curso, diplomado, manual, programa…" type="text"/></div>
-<div class="ev-field"><label>Arquetipo de usuario</label><input id="evcArchetype" type="text"/></div>
-<div class="ev-field"><label>Problema</label><textarea id="evcProblem"></textarea></div>
-<div class="ev-field"><label>Solución</label><textarea id="evcSolution"></textarea></div>
-<div class="ev-field"><label>Enlace al documento de solución (opcional)</label><input id="evcDoc" placeholder="https://…" type="url"/></div>
-<div style="text-align:right"><button class="link-btn secondary" id="evcSubmit" type="button">Cargar piloto</button></div>
 </div>
 </div>
 <!-- RESULTADOS -->
@@ -3366,7 +3307,7 @@ if(heroBg)addEventListener('scroll',()=>{heroBg.style.transform='scale(1.05) tra
   var sec = document.getElementById('evaluacion');
   if(!sec) return;
 
-  var PILOTS_CL = { 'mes-azul':'Mes Azul IDMA', 'diplomado':'Diplomado en Economía Azul', 'guardianes':'Guardianes del Agua' };
+  var PILOTS_CL = { 'mes-azul':'Mes Azul IDMA', 'diplomado':'Diplomado en Economía Azul', 'guardianes':'Guardianes del Agua', 'uniminuto-electiva':'Electiva en Economía Azul · UNIMINUTO', 'uniminuto-hackaton':'Hackathon Blue Economy · UNIMINUTO', 'lcab-monitoreo':'Monitoreo Costero Participativo · Liceo A. Bello', 'lcab-circular':'MYM: Economía Circular Marina · Liceo A. Bello', 'lcab-guardianes-mar':'Guardianes del Mar · Liceo A. Bello' };
   /* Institución responsable de cada piloto chileno (para bloquear autoevaluación) */
   var PILOT_OWNER_CL = { 'mes-azul':'IDMA', 'diplomado':'IDMA', 'guardianes':'IDMA' };
 
@@ -3595,11 +3536,11 @@ if(heroBg)addEventListener('scroll',()=>{heroBg.style.transform='scale(1.05) tra
 
   /* ---- Pilotos del consorcio ---- */
   function refreshPilotSelect(){
-    var og=document.getElementById('evConsortiumOptions');
+    var og=document.getElementById('evConsortiumOptions'); if(!og) return;
     og.innerHTML = DATA.consortiumPilots.map(function(p){ return '<option value="ext-'+p.id+'">'+esc(p.name)+' ('+esc(p.org)+')</option>'; }).join('');
   }
   function renderConsortium(){
-    var c=document.getElementById('evConsortiumList');
+    var c=document.getElementById('evConsortiumList'); if(!c) return;
     if(!DATA.consortiumPilots.length){ c.innerHTML='<div class="ev-empty">Aún no hay pilotos del consorcio cargados. Usa el formulario para subir el primero.</div>'; return; }
     c.innerHTML='<div class="ev-grid">'+DATA.consortiumPilots.map(function(p){
       return '<div class="ev-card"><span class="ev-pill">'+esc(p.country)+'</span>'+
@@ -3612,7 +3553,7 @@ if(heroBg)addEventListener('scroll',()=>{heroBg.style.transform='scale(1.05) tra
         '<button class="link-btn secondary" type="button" onclick="evEval(\'ext-'+p.id+'\')">Evaluar este piloto</button></div>';
     }).join('')+'</div>';
   }
-  document.getElementById('evcSubmit').addEventListener('click', function(){
+  var _evcBtn=document.getElementById('evcSubmit'); if(_evcBtn) _evcBtn.addEventListener('click', function(){
     var name=val('evcName'), org=val('evcOrg'), country=val('evcCountry');
     if(!name||!org||!country){ alert('Completa al menos nombre del piloto, organización y país.'); return; }
     DATA.consortiumPilots.push({
