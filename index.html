@@ -29,14 +29,14 @@
   --ink:#071E2E;--body:#2D4452;--muted:#6A8A9A;--light:#B8D0D8;
   --paper:#FFFFFF;--soft:#F0F5F6;--soft2:#E3EDEF;--line:#D0DEDE;
   --dp:Georgia,'Times New Roman',serif;--ss:Arial,Helvetica,system-ui,sans-serif;
-  --maxw:1280px;
+  --maxw:1600px;--gut:clamp(24px,6vw,150px);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:16px}
 body{font-family:var(--ss);color:var(--body);background:var(--paper);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
-.wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
+.wrap{max-width:none;margin:0 auto;padding:0 var(--gut)}
 @media(max-width:768px){.wrap{padding:0 20px}}
 .nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:22px 32px;transition:padding .4s}
@@ -1633,7 +1633,7 @@ input[type=text],input,select,textarea,
 .mentor-tab.active,.ptab.active{background:var(--teal)!important;border-color:var(--teal)!important;color:#06131f!important}
 
 /* ---- HEROES de piloto con foto + velo ---- */
-.pilot-page .p-hero{position:relative;border:0!important;border-radius:0!important;box-shadow:none!important;width:100vw;max-width:100vw;margin-left:calc(50% - 50vw)!important;margin-right:calc(50% - 50vw)!important;padding:50px max(32px,calc(50vw - var(--maxw,1180px)/2 + 32px))!important}
+.pilot-page .p-hero{position:relative;border:0!important;border-radius:0!important;box-shadow:none!important;width:100vw;max-width:100vw;margin-left:calc(50% - 50vw)!important;margin-right:calc(50% - 50vw)!important;padding:50px var(--gut)!important}
 .pilot-page .p-hero::after{background:rgba(21,184,201,.20)!important}
 #mes-azul .p-hero{background:linear-gradient(110deg,rgba(6,19,31,.82),rgba(6,19,31,.46)),url('assets/piloto-mesazul.jpg') center/cover!important}
 #diplomado .p-hero{background:linear-gradient(110deg,rgba(6,19,31,.82),rgba(6,19,31,.46)),url('assets/piloto-diplomado.jpg') center/cover!important}
