@@ -472,8 +472,8 @@ window.NUVA_DATA = {
                 ],
     "decisiones":  [
                        {
-                           "Tema":  "Modelo BCT/VCT",
-                           "Decision":  "Definir si opera full, parcial o solo apoyo",
+                           "Tema":  "Modelo VCT",
+                           "Decision":  "Definir rol de VCT (distribuidora de Concha y Toro): opera full, parcial o solo apoyo",
                            "Responsable":  "Jose Ignacio",
                            "Estado":  "Abierta"
                        },
