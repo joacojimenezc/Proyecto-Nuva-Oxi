@@ -1,5 +1,5 @@
 window.NUVA_DATA = {
-    "generado":  "2026-07-06",
+    "generado":  "2026-07-06 15:47",
     "clientes":  [
                      {
                          "ID_Cliente":  "CL-CEN",
