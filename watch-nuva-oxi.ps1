@@ -12,14 +12,17 @@
 $ErrorActionPreference = 'Continue'   # que un stderr de git no aborte el watcher
 
 # Resolucion robusta de la carpeta base (por si la tarea arranca sin $env:OneDrive):
-if ($env:OneDrive -and (Test-Path (Join-Path $env:OneDrive 'Escritorio\Proyecto Nuva Oxi\Proyecto-Nuva-Oxi'))) {
-    $BaseDir = Join-Path $env:OneDrive 'Escritorio\Proyecto Nuva Oxi'
+if ($env:OneDrive) {
+    $Escritorio = Join-Path $env:OneDrive 'Escritorio'
 } else {
     $od = Get-ChildItem $env:USERPROFILE -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -like 'OneDrive*' } | Select-Object -First 1
-    $BaseDir = Join-Path $od.FullName 'Escritorio\Proyecto Nuva Oxi'
+    $Escritorio = Join-Path $od.FullName 'Escritorio'
 }
-$RepoPath        = Join-Path $BaseDir 'Proyecto-Nuva-Oxi'
-$LogPath         = Join-Path $BaseDir 'nuva-oxi-sync.log'
+$RepoPath        = Join-Path $Escritorio 'Proyecto-Nuva-Oxi'
+# El log va FUERA del repo (evita bucles del watcher y no ensucia el repo):
+$LogDir          = Join-Path $env:USERPROFILE 'NuvaOxi-Sync'
+if (-not (Test-Path $LogDir)) { New-Item -ItemType Directory -Path $LogDir -Force | Out-Null }
+$LogPath         = Join-Path $LogDir 'nuva-oxi-sync.log'
 $Branch          = 'main'
 $DebounceSeconds = 5    # espera de "silencio" antes de sincronizar un lote de cambios locales
 $PollSeconds     = 30   # cada cuanto se consulta el remoto por cambios nuevos
