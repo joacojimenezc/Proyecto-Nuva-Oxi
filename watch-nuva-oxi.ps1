@@ -51,6 +51,12 @@ function Invoke-Sync {
             try { & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $RefreshScript 2>&1 | Out-Null; Write-Log "data.js regenerado por cambio en CRM." }
             catch { Write-Log "fallo refresh data.js: $($_.Exception.Message)" }
         }
+        # --- 0b) Regenerar manifiesto de facturas PDF de la web (no debe abortar el sync) ---
+        $genFac = Join-Path $RepoPath '7 web\gen-facturas.ps1'
+        if (Test-Path $genFac) {
+            try { & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $genFac 2>&1 | Out-Null }
+            catch { Write-Log "fallo gen-facturas: $($_.Exception.Message)" }
+        }
         # --- 1) Commit de cambios locales ---
         git add -A | Out-Null
         $status = git status --porcelain
