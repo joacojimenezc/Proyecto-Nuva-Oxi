@@ -1,0 +1,11 @@
+# Logs
+*.log
+
+# OS / sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporales
+*.tmp
+~$*
