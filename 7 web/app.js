@@ -185,6 +185,27 @@ const views = {
       {k:'Tema',t:'Tema'},{k:'Decision',t:'Decisión / acción'},{k:'Responsable',t:'Responsable'},
       {k:'Estado',t:'Estado',render:r=>badge(r.Estado)}];
     return table(cols, D.decisiones);
+  },
+  reportes(){
+    const card = id => {
+      const R = REPORTES[id]; const rows = R.rows(); const n = rows.length;
+      const prevCols = R.cols.slice(0,7).map(c=>({k:c.t, t:c.t, num:c.num, render:r=>cellWeb(c,r)}));
+      const prev = n ? table(prevCols, rows.slice(0,5))
+                     : '<p class="hint">Sin registros aún — el archivo se descargará como plantilla con solo los encabezados.</p>';
+      return `<div class="panel repcard">
+        <div class="rephead">
+          <h2>${R.icon} ${R.titulo}</h2>
+          <div class="repbtns">
+            <button class="btnrep xls" onclick="repExcel('${id}')">⬇ Excel</button>
+            <button class="btnrep pdf" onclick="repPdf('${id}')">⬇ PDF</button>
+          </div>
+        </div>
+        <p class="hint">${R.desc} · <b>${n}</b> registro(s).</p>
+        ${prev}
+      </div>`;
+    };
+    return `<p class="hint">Descarga cada reporte en Excel (.xls) o PDF. La vista previa muestra las primeras filas.</p>
+      ${card('ventas')}${card('compras')}${card('rcv')}`;
   }
 };
 
