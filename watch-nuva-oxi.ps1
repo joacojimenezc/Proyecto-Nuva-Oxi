@@ -23,6 +23,7 @@ $RepoPath        = Join-Path $Escritorio 'Proyecto-Nuva-Oxi'
 $LogDir          = Join-Path $env:USERPROFILE 'NuvaOxi-Sync'
 if (-not (Test-Path $LogDir)) { New-Item -ItemType Directory -Path $LogDir -Force | Out-Null }
 $LogPath         = Join-Path $LogDir 'nuva-oxi-sync.log'
+$RefreshScript   = Join-Path $LogDir 'refresh-web-data.ps1'  # regenera 7 web\data.js cuando cambia el CRM
 $Branch          = 'main'
 $DebounceSeconds = 5    # espera de "silencio" antes de sincronizar un lote de cambios locales
 $PollSeconds     = 30   # cada cuanto se consulta el remoto por cambios nuevos
