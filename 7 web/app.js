@@ -378,6 +378,47 @@ const REPORTES = {
       ...(D.sellin||[]).map(s=>({Tipo:'Venta', Fecha:s.Fecha, Doc:'Factura venta', Parte:nameCliente(s.ID_Cliente), Neto:s.Venta_Neta, IVA:ivaDe(s.Venta_Neta), Total:totDe(s.Venta_Neta)})),
       ...(D.compras||[]).map(c=>({Tipo:'Compra', Fecha:c.Fecha, Doc:(c.Tipo_Doc||'Factura')+' compra', Parte:c.Proveedor, Neto:c.Neto, IVA:c.IVA, Total:c.Total}))
     ].sort((a,b)=> String(a.Fecha).localeCompare(String(b.Fecha)))
+  },
+  canal: {
+    icon:'🏷️', titulo:'Reporte de Ventas por Canal',
+    desc:'Ventas agrupadas por canal (segmento del cliente): clientes, PDV, unidades, venta y margen.',
+    cols:[
+      {t:'Canal', raw:r=>r.canal},
+      {t:'Clientes', num:1, raw:r=>r.cli},
+      {t:'PDV', num:1, raw:r=>r.pdv},
+      {t:'Uds', num:1, raw:r=>r.uds},
+      {t:'Venta Neta', num:1, raw:r=>r.venta, web:r=>clp(r.venta)},
+      {t:'Margen', num:1, raw:r=>r.margen, web:r=>clp(r.margen)},
+      {t:'% Venta', num:1, raw:r=>Math.round(r.venta/(K.venta||1)*100), web:r=>pct(r.venta/(K.venta||1))}
+    ],
+    rows:()=> porCanal
+  },
+  cxc: {
+    icon:'💳', titulo:'Reporte de Cuentas por Cobrar',
+    desc:'Facturas emitidas pendientes de pago, por cliente.',
+    cols:[
+      {t:'Cliente', raw:r=>nameCliente(r.cli)},
+      {t:'Facturas', num:1, raw:r=>r.docs},
+      {t:'Plazo (d)', num:1, raw:r=>r.plazo},
+      {t:'Por cobrar', num:1, raw:r=>r.monto, web:r=>clp(r.monto)}
+    ],
+    rows:()=> porCxC
+  },
+  productos: {
+    icon:'🍫', titulo:'Reporte de Productos (SKU)',
+    desc:'Unidades, venta, margen y participación por SKU.',
+    cols:[
+      {t:'SKU', raw:r=>r.sku},
+      {t:'Producto', raw:r=>skuInfo(r.sku).Descripcion||''},
+      {t:'Sabor', raw:r=>skuInfo(r.sku).Sabor||''},
+      {t:'Formato', raw:r=>skuInfo(r.sku).Formato||''},
+      {t:'PVP c/IVA', num:1, raw:r=>skuInfo(r.sku).PVP_cIVA, web:r=>clp(skuInfo(r.sku).PVP_cIVA)},
+      {t:'Uds', num:1, raw:r=>r.uds},
+      {t:'Venta Neta', num:1, raw:r=>r.venta, web:r=>clp(r.venta)},
+      {t:'Margen', num:1, raw:r=>r.margen, web:r=>clp(r.margen)},
+      {t:'% Venta', num:1, raw:r=>Math.round(r.part*100), web:r=>pct(r.part)}
+    ],
+    rows:()=> porSKU
   }
 };
 
