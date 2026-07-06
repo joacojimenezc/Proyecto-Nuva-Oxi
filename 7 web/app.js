@@ -222,6 +222,108 @@ function barsChart(){
     <div class="legend"><span><i style="background:var(--green-l)"></i>Sell-In</span><span><i style="background:var(--lime)"></i>Sell-Out</span></div>`;
 }
 
+/* ---- Reportes descargables (Excel .xls y PDF via impresion del navegador) ----
+   Cada columna: {t:titulo, num:bool, raw:(r)=>valor crudo (Excel), web:(r)=>texto formateado (web/PDF)} */
+const IVA = 0.19;
+const ivaDe = n => Math.round(Number(n||0) * IVA);
+const totDe = n => Math.round(Number(n||0) * (1 + IVA));
+const descSKU = sku => (D.sku.find(s => s.SKU === sku) || {}).Descripcion || '';
+const cellWeb = (c, r) => c.web ? c.web(r) : (c.raw(r) ?? '');
+const cellRaw = (c, r) => { const v = c.raw(r); return v == null ? '' : v; };
+const esc = s => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const stamp = () => new Date().toLocaleDateString('es-CL');
+
+const REPORTES = {
+  ventas: {
+    icon:'🧾', titulo:'Reporte de Ventas — Detalle de Facturación',
+    desc:'Cada venta (sell-in) con neto, IVA (19%), total, margen y estado de factura.',
+    cols:[
+      {t:'Fecha', raw:r=>r.Fecha},
+      {t:'Cliente', raw:r=>nameCliente(r.ID_Cliente)},
+      {t:'PDV', raw:r=>namePDV(r.ID_PDV)},
+      {t:'SKU', raw:r=>r.SKU},
+      {t:'Descripción', raw:r=>descSKU(r.SKU)},
+      {t:'Uds', num:1, raw:r=>r.Uds},
+      {t:'Neto', num:1, raw:r=>r.Venta_Neta, web:r=>clp(r.Venta_Neta)},
+      {t:'IVA', num:1, raw:r=>ivaDe(r.Venta_Neta), web:r=>clp(ivaDe(r.Venta_Neta))},
+      {t:'Total', num:1, raw:r=>totDe(r.Venta_Neta), web:r=>clp(totDe(r.Venta_Neta))},
+      {t:'Margen', num:1, raw:r=>r.Margen, web:r=>clp(r.Margen)},
+      {t:'Estado Factura', raw:r=>r.Estado_Factura}
+    ],
+    rows:()=> D.sellin || []
+  },
+  compras: {
+    icon:'📥', titulo:'Reporte de Compras',
+    desc:'Facturas de compra a proveedores (se alimenta de la base "compras" en data.js).',
+    cols:[
+      {t:'Fecha', raw:r=>r.Fecha},
+      {t:'Proveedor', raw:r=>r.Proveedor},
+      {t:'RUT', raw:r=>r.RUT},
+      {t:'Tipo Doc', raw:r=>r.Tipo_Doc},
+      {t:'Folio', raw:r=>r.Folio},
+      {t:'Neto', num:1, raw:r=>r.Neto, web:r=>clp(r.Neto)},
+      {t:'IVA', num:1, raw:r=>r.IVA, web:r=>clp(r.IVA)},
+      {t:'Total', num:1, raw:r=>r.Total, web:r=>clp(r.Total)},
+      {t:'Estado', raw:r=>r.Estado}
+    ],
+    rows:()=> D.compras || []
+  },
+  rcv: {
+    icon:'📚', titulo:'Registro de Compras y Ventas',
+    desc:'Registro tipo SII: documentos de venta y de compra con neto, IVA y total.',
+    cols:[
+      {t:'Tipo', raw:r=>r.Tipo},
+      {t:'Fecha', raw:r=>r.Fecha},
+      {t:'Documento', raw:r=>r.Doc},
+      {t:'Contraparte', raw:r=>r.Parte},
+      {t:'Neto', num:1, raw:r=>r.Neto, web:r=>clp(r.Neto)},
+      {t:'IVA', num:1, raw:r=>r.IVA, web:r=>clp(r.IVA)},
+      {t:'Total', num:1, raw:r=>r.Total, web:r=>clp(r.Total)}
+    ],
+    rows:()=> [
+      ...(D.sellin||[]).map(s=>({Tipo:'Venta', Fecha:s.Fecha, Doc:'Factura venta', Parte:nameCliente(s.ID_Cliente), Neto:s.Venta_Neta, IVA:ivaDe(s.Venta_Neta), Total:totDe(s.Venta_Neta)})),
+      ...(D.compras||[]).map(c=>({Tipo:'Compra', Fecha:c.Fecha, Doc:(c.Tipo_Doc||'Factura')+' compra', Parte:c.Proveedor, Neto:c.Neto, IVA:c.IVA, Total:c.Total}))
+    ].sort((a,b)=> String(a.Fecha).localeCompare(String(b.Fecha)))
+  }
+};
+
+function dlFile(name, mime, content){
+  const blob = new Blob([content], {type:mime});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1500);
+}
+
+function repExcel(id){
+  const R = REPORTES[id]; const rows = R.rows();
+  const th = R.cols.map(c=>`<th>${esc(c.t)}</th>`).join('');
+  const body = rows.map(r=>'<tr>'+R.cols.map(c=>`<td>${esc(cellRaw(c,r))}</td>`).join('')+'</tr>').join('');
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"></head><body><table border="1"><thead><tr>${th}</tr></thead><tbody>${body}</tbody></table></body></html>`;
+  dlFile(`${id}_nuvaoxi_${stamp()}.xls`, 'application/vnd.ms-excel', '﻿'+html);
+}
+
+function repPdf(id){
+  const R = REPORTES[id]; const rows = R.rows();
+  const th = R.cols.map(c=>`<th class="${c.num?'num':''}">${esc(c.t)}</th>`).join('');
+  const body = rows.length
+    ? rows.map(r=>'<tr>'+R.cols.map(c=>`<td class="${c.num?'num':''}">${esc(cellWeb(c,r))}</td>`).join('')+'</tr>').join('')
+    : `<tr><td colspan="${R.cols.length}" style="text-align:center;color:#888">Sin registros</td></tr>`;
+  const w = window.open('', '_blank');
+  if(!w){ alert('Permite las ventanas emergentes para generar el PDF.'); return; }
+  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>${esc(R.titulo)}</title>
+    <style>body{font-family:'Segoe UI',system-ui,sans-serif;color:#1c2b26;padding:26px}
+    h1{color:#14503b;font-size:18px;margin:0 0 3px} .meta{color:#6b7d76;font-size:11px;margin-bottom:14px}
+    table{width:100%;border-collapse:collapse;font-size:11.5px} th,td{border:1px solid #cfdad4;padding:6px 8px;text-align:left}
+    th{background:#eef4f0;color:#14503b} td.num,th.num{text-align:right}
+    @media print{@page{size:landscape;margin:12mm}}</style></head>
+    <body><h1>NUVA OXI · ${esc(R.titulo)}</h1>
+    <div class="meta">Generado ${esc(stamp())} · ${rows.length} registro(s)</div>
+    <table><thead><tr>${th}</tr></thead><tbody>${body}</tbody></table>
+    <scr`+`ipt>window.onload=function(){setTimeout(function(){window.print();},250);};<\/scr`+`ipt></body></html>`);
+  w.document.close();
+}
+
 /* ---- sub-pestañas de Contabilidad ---- */
 const contaTabs=[
   {k:'sellin',  t:'🧾 Facturas Sell-In'},
