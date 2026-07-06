@@ -15,7 +15,7 @@ const namePDV = id => (D.pdv.find(p => p.ID_PDV === id) || {}).Nombre_PDV || id;
    codigo del cliente. Si no hay coincidencia, no muestra boton. */
 const FACTURAS = window.NUVA_FACTURAS || [];
 const FAC_BASE = '../4 finanzas/contabilidad/1 facturas sell in/';
-const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,'');
+const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[^a-z0-9]/g,'');
 function facturasDe(idCliente){
   const c = D.clientes.find(x => x.ID_Cliente === idCliente) || {};
   const keys = new Set([norm(idCliente), norm(c.Cadena)]);
