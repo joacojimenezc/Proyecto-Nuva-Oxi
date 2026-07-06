@@ -174,11 +174,20 @@ const views = {
     return table(cols, D.clientes);
   },
   pdv(){
+    const segs = ['Todos', ...new Set((D.pdv||[]).map(p=>segCliente(p.ID_Cliente)))];
+    const chips = segs.map(s=>`<button class="chip ${pdvSeg===s?'active':''}" onclick="pdvFiltro('${s}')">${s}</button>`).join('');
+    const rows = pdvFiltrados();
     const cols=[
       {k:'ID_PDV',t:'ID'},{k:'Nombre_PDV',t:'Punto de venta'},{k:'ID_Cliente',t:'Cliente',render:r=>nameCliente(r.ID_Cliente)},
+      {k:'Segmento',t:'Segmento',render:r=>segCliente(r.ID_Cliente)},
       {k:'Comuna',t:'Comuna'},{k:'Formato_Recom',t:'Formato'},{k:'Frecuencia_Visita',t:'Frecuencia'},
       {k:'Resp',t:'Resp'},{k:'Estado',t:'Estado',render:r=>badge(r.Estado)}];
-    return table(cols, D.pdv);
+    return `<div class="filterbar">
+        <div class="chips">${chips}</div>
+        <div class="repbtns"><button class="btnrep xls" onclick="exportarPdv('xls')">⬇ Excel</button><button class="btnrep pdf" onclick="exportarPdv('pdf')">⬇ PDF</button></div>
+      </div>
+      <p class="hint">${rows.length} punto(s) de venta${pdvSeg==='Todos'?'':' · '+pdvSeg}.</p>
+      ${table(cols, rows)}`;
   },
   sellin(){
     const cols=[
