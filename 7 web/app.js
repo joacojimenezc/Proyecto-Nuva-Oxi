@@ -61,6 +61,50 @@ const rotacion = (() => {
   return Object.values(map).map(r=>({...r, rot: r.si? r.so/r.si : 0})).sort((a,b)=>b.vn-a.vn);
 })();
 
+/* ---- resumen por canal de venta (Segmento del cliente) ---- */
+const segCliente = id => (D.clientes.find(c=>c.ID_Cliente===id)||{}).Segmento || 'Sin canal';
+const porCanal = (()=>{
+  const m={};
+  (D.sellin||[]).forEach(v=>{
+    const seg=segCliente(v.ID_Cliente);
+    m[seg]=m[seg]||{canal:seg,uds:0,venta:0,margen:0,cli:new Set(),pdv:new Set()};
+    m[seg].uds+=Number(v.Uds)||0; m[seg].venta+=Number(v.Venta_Neta)||0; m[seg].margen+=Number(v.Margen)||0;
+    m[seg].cli.add(v.ID_Cliente); m[seg].pdv.add(v.ID_PDV);
+  });
+  return Object.values(m).map(x=>({...x, cli:x.cli.size, pdv:x.pdv.size})).sort((a,b)=>b.venta-a.venta);
+})();
+
+/* ---- analitica por SKU (incluye SKU sin ventas) ---- */
+const porSKU = (()=>{
+  const m={};
+  (D.sellin||[]).forEach(v=>{
+    m[v.SKU]=m[v.SKU]||{sku:v.SKU,uds:0,venta:0,margen:0};
+    m[v.SKU].uds+=Number(v.Uds)||0; m[v.SKU].venta+=Number(v.Venta_Neta)||0; m[v.SKU].margen+=Number(v.Margen)||0;
+  });
+  (D.sku||[]).forEach(s=>{ if(!m[s.SKU]) m[s.SKU]={sku:s.SKU,uds:0,venta:0,margen:0}; });
+  const tot = sum(Object.values(m),x=>x.venta) || 1;
+  return Object.values(m).map(x=>({...x, part:x.venta/tot})).sort((a,b)=>b.venta-a.venta);
+})();
+const skuInfo = sku => D.sku.find(s=>s.SKU===sku) || {};
+
+/* ---- cuentas por cobrar (facturas emitidas sin pagar) por cliente ---- */
+const porCxC = (()=>{
+  const m={};
+  (D.sellin||[]).filter(v=>v.Estado_Factura==='Emitida').forEach(v=>{
+    m[v.ID_Cliente]=m[v.ID_Cliente]||{cli:v.ID_Cliente,monto:0,docs:0};
+    m[v.ID_Cliente].monto+=Number(v.Venta_Neta)||0; m[v.ID_Cliente].docs++;
+  });
+  return Object.values(m).map(x=>{
+    const c=D.clientes.find(k=>k.ID_Cliente===x.cli)||{};
+    return {...x, plazo:c.Plazo_Pago||0};
+  }).sort((a,b)=>b.monto-a.monto);
+})();
+
+/* ---- N° OC (cruce con pedidos) y N° factura (del PDF) por cliente ---- */
+const ocDe = idCliente => (D.pedidos||[]).filter(p=>p.ID_Cliente===idCliente).map(p=>p.N_OC).filter(Boolean);
+const facturaNumDe = idCliente => facturasDe(idCliente)
+  .map(f=>{ const m=String(f).match(/(\d{2,})/); return m?m[1]:''; }).filter(Boolean);
+
 /* ---- render helpers ---- */
 function table(cols, rows, foot){
   const th = cols.map(c=>`<th class="${c.num?'num':''}" data-k="${c.k}">${c.t}</th>`).join('');
