@@ -179,9 +179,18 @@ function barsChart(){
     <div class="legend"><span><i style="background:var(--green-l)"></i>Sell-In</span><span><i style="background:var(--lime)"></i>Sell-Out</span></div>`;
 }
 
+/* ---- sub-pestañas de Contabilidad ---- */
+const contaTabs=[
+  {k:'sellin',  t:'🧾 Facturas Sell-In'},
+  {k:'pedidos', t:'📦 Pedidos y OC'},
+  {k:'sellout', t:'📤 Sell-Out'}
+];
+let contaSub='sellin';
+function contaGo(s){ contaSub=s; render(); }
+
 /* ---- router + search + sort ---- */
 let current='dashboard', sortState={};
-const titles={dashboard:'Dashboard',rotacion:'Rotación · Sell-in vs Sell-out',clientes:'Clientes',pdv:'Puntos de venta',sellin:'Sell-In (ventas al canal)',pedidos:'Pedidos / OC',finanzas:'Finanzas',decisiones:'Decisiones pendientes'};
+const titles={dashboard:'Dashboard',rotacion:'Rotación · Sell-in vs Sell-out',clientes:'Clientes',pdv:'Puntos de venta',contabilidad:'Contabilidad',finanzas:'Finanzas',decisiones:'Decisiones pendientes'};
 
 function render(){
   $('#app').innerHTML = views[current]();

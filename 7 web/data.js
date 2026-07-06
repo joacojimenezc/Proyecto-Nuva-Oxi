@@ -450,14 +450,16 @@ window.NUVA_DATA = {
                         "ID_Cliente":  "CL-CEN",
                         "N_OC":  "OC-88231",
                         "Monto_OC":  295000,
-                        "Estado":  "Facturado"
+                        "Estado":  "Facturado",
+                        "Estado_Despacho":  "Despachado"
                     },
                     {
                         "ID_Pedido":  "PED002",
                         "ID_Cliente":  "CL-RITZ",
                         "N_OC":  "OC-RC-19",
                         "Monto_OC":  47200,
-                        "Estado":  "Pagado"
+                        "Estado":  "Pagado",
+                        "Estado_Despacho":  "Entregado"
                     },
                     {
                         "ID_Pedido":  "PED003",
