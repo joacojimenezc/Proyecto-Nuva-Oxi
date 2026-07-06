@@ -39,8 +39,8 @@ function Emit-Array($varName, $files) {
 
 $all = New-Object System.Collections.Generic.List[string]
 $all.Add('/* Generado por gen-facturas.ps1 - NO editar a mano. Listas de PDFs disponibles. */')
-$all.AddRange((Emit-Array 'NUVA_FACTURAS' (Get-Pdfs $dirSellIn)))
-$all.AddRange((Emit-Array 'NUVA_COMPRAS'  (Get-Pdfs $dirCompras)))
+$all.AddRange([string[]](Emit-Array 'NUVA_FACTURAS' (Get-Pdfs $dirSellIn)))
+$all.AddRange([string[]](Emit-Array 'NUVA_COMPRAS'  (Get-Pdfs $dirCompras)))
 $new = ($all -join "`r`n") + "`r`n"
 
 $utf8 = New-Object System.Text.UTF8Encoding($false)
