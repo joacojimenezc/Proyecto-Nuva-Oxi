@@ -386,7 +386,8 @@ window.NUVA_DATA = {
                        "Uds":  12,
                        "Venta_Neta":  19160,
                        "Margen":  16160,
-                       "Estado_Factura":  "Pagada"
+                       "Estado_Factura":  "Pagada",
+                       "Factura_PDF":  "../4 finanzas/contabilidad/1 facturas sell in/FACTURA-148-Dellanatura.pdf"
                    },
                    {
                        "ID_Venta":  2,

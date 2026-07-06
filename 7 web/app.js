@@ -103,8 +103,9 @@ const views = {
       {k:'ID_PDV',t:'PDV',render:r=>namePDV(r.ID_PDV)},{k:'SKU',t:'SKU'},{k:'Uds',t:'Uds',num:1},
       {k:'Venta_Neta',t:'Venta Neta',num:1,render:r=>clp(r.Venta_Neta)},
       {k:'Margen',t:'Margen',num:1,render:r=>clp(r.Margen)},
-      {k:'Estado_Factura',t:'Factura',render:r=>badge(r.Estado_Factura)}];
-    const foot={ID_Venta:'',Fecha:'',ID_Cliente:'',ID_PDV:'',SKU:'TOTAL',Uds:K.uds,Venta_Neta:clp(K.venta),Margen:clp(K.margen),Estado_Factura:''};
+      {k:'Estado_Factura',t:'Factura',render:r=>badge(r.Estado_Factura)},
+      {k:'Factura_PDF',t:'PDF',render:r=> r.Factura_PDF ? `<a class="btnpdf" href="${encodeURI(r.Factura_PDF)}" target="_blank" rel="noopener">📄 Ver / Descargar</a>` : ''}];
+    const foot={ID_Venta:'',Fecha:'',ID_Cliente:'',ID_PDV:'',SKU:'TOTAL',Uds:K.uds,Venta_Neta:clp(K.venta),Margen:clp(K.margen),Estado_Factura:'',Factura_PDF:''};
     return table(cols, D.sellin, foot);
   },
   pedidos(){
