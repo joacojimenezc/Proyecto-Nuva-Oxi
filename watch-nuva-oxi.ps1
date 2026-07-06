@@ -45,6 +45,12 @@ function Write-Log($msg) {
 function Invoke-Sync {
     Push-Location $RepoPath
     try {
+        # --- 0) Si cambio el CRM, regenerar data.js de la web app ---
+        $pre = git status --porcelain
+        if (($pre -match 'CRM_NUVA_OXI') -and (Test-Path $RefreshScript)) {
+            try { & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $RefreshScript 2>&1 | Out-Null; Write-Log "data.js regenerado por cambio en CRM." }
+            catch { Write-Log "fallo refresh data.js: $($_.Exception.Message)" }
+        }
         # --- 1) Commit de cambios locales ---
         git add -A | Out-Null
         $status = git status --porcelain
