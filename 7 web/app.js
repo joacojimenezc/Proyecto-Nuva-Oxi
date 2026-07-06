@@ -274,7 +274,7 @@ const REPORTES = {
   },
   compras: {
     icon:'📥', titulo:'Reporte de Compras',
-    desc:'Facturas de compra a proveedores (se alimenta de la base "compras" en data.js).',
+    desc:'Facturas de compra a proveedores. Se alimenta de los PDFs en "2 facturas compras" (y de la base "compras" en data.js si registras montos).',
     cols:[
       {t:'Fecha', raw:r=>r.Fecha},
       {t:'Proveedor', raw:r=>r.Proveedor},
@@ -284,9 +284,21 @@ const REPORTES = {
       {t:'Neto', num:1, raw:r=>r.Neto, web:r=>clp(r.Neto)},
       {t:'IVA', num:1, raw:r=>r.IVA, web:r=>clp(r.IVA)},
       {t:'Total', num:1, raw:r=>r.Total, web:r=>clp(r.Total)},
-      {t:'Estado', raw:r=>r.Estado}
+      {t:'Estado', raw:r=>r.Estado},
+      {t:'Factura PDF', raw:r=>(r._pdf||[]).join(', '), web:r=>compraBtns(r._pdf)}
     ],
-    rows:()=> D.compras || []
+    rows:()=>{
+      // 1) Filas registradas en data.js (con sus PDFs emparejados por folio/proveedor)
+      const structured = (D.compras||[]).map(r => ({ ...r, _pdf: comprasPdfDe(r) }));
+      const usados = new Set(structured.flatMap(r => r._pdf));
+      // 2) PDFs de compra que aún no están registrados en data.js -> se muestran solos
+      const orphans = COMPRAS_PDF.filter(f => !usados.has(f)).map(f => {
+        const m = parseCompra(f);
+        return { Fecha:'', Proveedor:m.Proveedor, RUT:'', Tipo_Doc:'Factura', Folio:m.Folio,
+                 Neto:'', IVA:'', Total:'', Estado:'Sin registrar', _pdf:[f] };
+      });
+      return [...structured, ...orphans];
+    }
   },
   rcv: {
     icon:'📚', titulo:'Registro de Compras y Ventas',
