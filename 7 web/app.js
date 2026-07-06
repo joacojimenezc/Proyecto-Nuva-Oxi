@@ -233,6 +233,26 @@ const cellRaw = (c, r) => { const v = c.raw(r); return v == null ? '' : v; };
 const esc = s => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const stamp = () => new Date().toLocaleDateString('es-CL');
 
+/* ---- Facturas de COMPRA: manifiesto NUVA_COMPRAS (generado por gen-facturas.ps1) ----
+   Convencion de nombre: COMPRA-<folio>-<Proveedor>.pdf (ASCII, proveedor en un token). */
+const COMPRAS_PDF = window.NUVA_COMPRAS || [];
+const COMP_BASE = '../4 finanzas/contabilidad/2 facturas compras/';
+function parseCompra(file){
+  const base = String(file).replace(/\.pdf$/i,'');
+  const parts = base.split('-');
+  if(parts[0] && parts[0].toUpperCase()==='COMPRA' && parts.length>=3)
+    return { Folio: parts[1], Proveedor: parts.slice(2).join(' ') };
+  return { Folio:'', Proveedor: base };
+}
+function comprasPdfDe(row){
+  const keys = [String(row.Folio||''), row.Proveedor].filter(Boolean).map(norm).filter(Boolean);
+  return COMPRAS_PDF.filter(f => { const nf = norm(f); return keys.some(k => nf.includes(k)); });
+}
+function compraBtns(files){
+  if(!files || !files.length) return '';
+  return files.map(f => `<a class="btnpdf" href="${encodeURI(COMP_BASE + f)}" target="_blank" rel="noopener" title="${f}">📄 Ver / Descargar</a>`).join(' ');
+}
+
 const REPORTES = {
   ventas: {
     icon:'🧾', titulo:'Reporte de Ventas — Detalle de Facturación',
