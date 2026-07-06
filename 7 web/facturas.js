@@ -1,6 +1,7 @@
 /* Generado por gen-facturas.ps1 - NO editar a mano. Listas de PDFs disponibles. */
 window.NUVA_FACTURAS = [
-  "F"
+  "FACTURA-148-Dellanatura.pdf"
 ];
 window.NUVA_COMPRAS = [
+  ""
 ];

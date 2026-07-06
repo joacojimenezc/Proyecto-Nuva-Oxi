@@ -26,6 +26,7 @@ function Get-Pdfs($dir) {
 }
 
 function Emit-Array($varName, $files) {
+    $files = @($files)   # forzar array (PS desenvuelve arrays de 1 elemento)
     $lines = New-Object System.Collections.Generic.List[string]
     $lines.Add('window.' + $varName + ' = [')
     for ($i = 0; $i -lt $files.Count; $i++) {
