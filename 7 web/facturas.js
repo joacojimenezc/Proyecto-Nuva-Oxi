@@ -3,5 +3,4 @@ window.NUVA_FACTURAS = [
   "FACTURA-148-Dellanatura.pdf"
 ];
 window.NUVA_COMPRAS = [
-  ""
 ];
