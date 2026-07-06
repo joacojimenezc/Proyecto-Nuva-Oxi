@@ -12,10 +12,10 @@ const namePDV = id => (D.pdv.find(p => p.ID_PDV === id) || {}).Nombre_PDV || id;
 function badge(estado){
   const e = String(estado || '').toLowerCase();
   let cls = 'b-gray';
-  if(/activo|pagad|cerrado|aprobado/.test(e)) cls='b-green';
-  else if(/emitida|seguimiento|negociac|facturado|despach/.test(e)) cls='b-blue';
+  if(/activo|pagad|cerrado|aprobado|entregad/.test(e)) cls='b-green';
+  else if(/emitida|seguimiento|negociac|facturado|despach|transito/.test(e)) cls='b-blue';
   else if(/vencid|quiebre|perdid|abierta|reponer/.test(e)) cls='b-red';
-  else if(/prospecto|stand|pendiente|contactado|borrador/.test(e)) cls='b-amber';
+  else if(/prospecto|stand|pendiente|contactado|borrador|preparac/.test(e)) cls='b-amber';
   return `<span class="badge ${cls}">${estado||''}</span>`;
 }
 
@@ -109,10 +109,29 @@ const views = {
   },
   pedidos(){
     const cols=[
-      {k:'ID_Pedido',t:'ID'},{k:'ID_Cliente',t:'Cliente',render:r=>nameCliente(r.ID_Cliente)},
-      {k:'N_OC',t:'N° OC'},{k:'Monto_OC',t:'Monto',num:1,render:r=>clp(r.Monto_OC)},
-      {k:'Estado',t:'Estado',render:r=>badge(r.Estado)}];
-    return table(cols, D.pedidos);
+      {k:'ID_Pedido',t:'ID Pedido'},{k:'ID_Cliente',t:'Cliente',render:r=>nameCliente(r.ID_Cliente)},
+      {k:'N_OC',t:'N° OC'},{k:'Monto_OC',t:'Monto OC',num:1,render:r=>clp(r.Monto_OC)},
+      {k:'Estado',t:'Estado OC',render:r=>badge(r.Estado)},
+      {k:'Estado_Despacho',t:'Status Despacho',render:r=>badge(r.Estado_Despacho)}];
+    return `<p class="hint">Pedidos y Órdenes de Compra (OC) con su estado y seguimiento de despacho.</p>${table(cols, D.pedidos)}`;
+  },
+  sellout(){
+    const rows = (D.sellout||[]).map(s=>{
+      const p = D.pdv.find(x=>x.ID_PDV===s.ID_PDV) || {};
+      return {...s, ID_Cliente: p.ID_Cliente};
+    });
+    const cols=[
+      {k:'ID_PDV',t:'PDV',render:r=>namePDV(r.ID_PDV)},
+      {k:'ID_Cliente',t:'Cliente',render:r=>nameCliente(r.ID_Cliente)},
+      {k:'Uds',t:'Uds Sell-Out',num:1}];
+    const foot={ID_PDV:'TOTAL',ID_Cliente:'',Uds:K.selloutTot};
+    return `<p class="hint">Sell-Out = unidades vendidas al consumidor final por punto de venta.</p>${table(cols, rows, foot)}`;
+  },
+  contabilidad(){
+    const bar = contaTabs.map(t=>
+      `<button class="subtab ${contaSub===t.k?'active':''}" onclick="contaGo('${t.k}')">${t.t}</button>`
+    ).join('');
+    return `<div class="subtabs">${bar}</div>${views[contaSub]()}`;
   },
   finanzas(){
     const f=D.finanzas;
