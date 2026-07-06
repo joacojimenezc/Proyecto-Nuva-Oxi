@@ -466,7 +466,8 @@ window.NUVA_DATA = {
                         "ID_Cliente":  "CL-DEL",
                         "N_OC":  "OC-DL-03",
                         "Monto_OC":  22800,
-                        "Estado":  "Cerrado"
+                        "Estado":  "Cerrado",
+                        "Estado_Despacho":  "Pendiente"
                     }
                 ],
     "decisiones":  [
