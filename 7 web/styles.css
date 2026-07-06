@@ -57,6 +57,17 @@ a{cursor:pointer;text-decoration:none;color:inherit}
 .subtab:hover{background:var(--card);color:var(--green-d)}
 .subtab.active{color:var(--green-d);border-bottom-color:var(--green-l);background:var(--card)}
 
+/* Reportes */
+.repcard{margin-bottom:18px}
+.rephead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+.rephead h2{margin:0}
+.repbtns{display:flex;gap:8px}
+.btnrep{border:none;cursor:pointer;font-weight:600;font-size:13px;padding:8px 14px;border-radius:9px;font-family:inherit;transition:.15s}
+.btnrep.xls{background:#e2f3ea;color:#1f7a5a}
+.btnrep.xls:hover{background:#cdeadb}
+.btnrep.pdf{background:#fbe0df;color:#b5352f}
+.btnrep.pdf:hover{background:#f6cbc9}
+
 /* Tables */
 .tablewrap{background:var(--card);border-radius:14px;box-shadow:var(--shadow);overflow:auto}
 table{width:100%;border-collapse:collapse;font-size:13.5px}

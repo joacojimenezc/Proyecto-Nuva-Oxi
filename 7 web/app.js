@@ -335,7 +335,7 @@ function contaGo(s){ contaSub=s; $('#search').value=''; render(); }
 
 /* ---- router + search + sort ---- */
 let current='dashboard', sortState={};
-const titles={dashboard:'Dashboard',rotacion:'Rotación · Sell-in vs Sell-out',clientes:'Clientes',pdv:'Puntos de venta',contabilidad:'Contabilidad',finanzas:'Finanzas',decisiones:'Decisiones pendientes'};
+const titles={dashboard:'Dashboard',rotacion:'Rotación · Sell-in vs Sell-out',clientes:'Clientes',pdv:'Puntos de venta',contabilidad:'Contabilidad',finanzas:'Finanzas',reportes:'Reportes',decisiones:'Decisiones pendientes'};
 
 function render(){
   $('#app').innerHTML = views[current]();
