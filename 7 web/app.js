@@ -134,6 +134,24 @@ const views = {
         <div class="panel"><h2>🚨 Alertas del piloto</h2>${alerts||'<p class="hint">Sin alertas.</p>'}
           <p class="hint" style="margin-top:14px">Resultado operativo estimado: <b>${clp(D.finanzas.resultado)}</b> · caja hoy ${clp(D.finanzas.cobrado)} (falta cobrar ${clp(D.finanzas.cxc)}).</p>
         </div>
+      </div>
+      <div class="grid2">
+        <div class="panel"><h2>🏷️ Resumen por canal de venta</h2>${table([
+          {k:'canal',t:'Canal'},
+          {k:'cli',t:'Clientes',num:1},
+          {k:'pdv',t:'PDV',num:1},
+          {k:'uds',t:'Uds',num:1},
+          {k:'venta',t:'Venta Neta',num:1,render:r=>clp(r.venta)},
+          {k:'part',t:'% Venta',num:1,render:r=>pct(r.venta/(K.venta||1))}
+        ], porCanal, {canal:'TOTAL',cli:'',pdv:'',uds:K.uds,venta:clp(K.venta),part:'100%'})}</div>
+        <div class="panel"><h2>🍫 Top SKU · venta neta</h2>${table([
+          {k:'sku',t:'SKU'},
+          {k:'desc',t:'Producto',render:r=>skuInfo(r.sku).Descripcion||''},
+          {k:'uds',t:'Uds',num:1},
+          {k:'venta',t:'Venta',num:1,render:r=>clp(r.venta)},
+          {k:'part',t:'% Part.',num:1,render:r=>pct(r.part)}
+        ], porSKU.slice(0,6))}
+          <p class="hint" style="margin-top:10px">Detalle completo en la sección <b>🍫 Productos</b>.</p></div>
       </div>`;
   },
   rotacion(){
