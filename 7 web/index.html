@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NUVA OXI · CRM Comercial</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">N<span>O</span></div>
+      <div class="brand-txt"><strong>NUVA OXI</strong><small>CRM Comercial · Piloto</small></div>
+    </div>
+    <nav id="nav">
+      <a data-view="dashboard" class="active">📊 Dashboard</a>
+      <a data-view="rotacion">🔄 Rotación (Sell-in/out)</a>
+      <a data-view="clientes">🤝 Clientes</a>
+      <a data-view="pdv">📍 Puntos de venta</a>
+      <a data-view="sellin">🧾 Sell-In</a>
+      <a data-view="pedidos">📦 Pedidos / OC</a>
+      <a data-view="finanzas">💰 Finanzas</a>
+      <a data-view="decisiones">✅ Decisiones</a>
+    </nav>
+    <div class="side-foot">
+      <span id="genfecha"></span>
+      <small>Datos del CRM Excel</small>
+    </div>
+  </aside>
+
+  <main class="content">
+    <header class="topbar">
+      <h1 id="viewTitle">Dashboard</h1>
+      <input id="search" type="search" placeholder="Buscar…" />
+    </header>
+    <section id="app"></section>
+    <footer class="foot">Proyecto NUVA OXI · sistema de gestión del piloto comercial · vista web (solo lectura, se alimenta del CRM)</footer>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
