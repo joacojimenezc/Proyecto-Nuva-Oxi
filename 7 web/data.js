@@ -540,6 +540,19 @@ window.NUVA_DATA = {
                          "Tipo_Doc":"Factura", "Folio":"1234",
                          "Neto":100000, "IVA":19000, "Total":119000, "Estado":"Pendiente" } */
                 ],
+    "logistica":  [
+                    /* Ventanas de despacho / recepcion por cliente. Estructura de cada fila:
+                       { "ID_Cliente":"CL-CEN", "Dias_Recepcion":"Lun a Vie",
+                         "Horario":"08:00 - 13:00", "Direccion_Entrega":"CD Cencosud, ...",
+                         "Contacto":"Recepcion Jumbo", "Notas":"Cita previa 24h" } */
+                ],
+    "marketing":  [
+                    /* Acciones de trade marketing planificadas. Estructura de cada fila:
+                       { "Fecha":"2026-02-01", "Tipo":"Degustacion", "ID_Cliente":"CL-CEN",
+                         "ID_PDV":"J001", "Descripcion":"Degustacion fin de semana",
+                         "Costo":80000, "Estado":"Planificada" }
+                       Tipos sugeridos: Degustacion, Promocion, Activacion, Campana, Material POP. */
+                ],
     "finanzas":  {
                      "ingresos":  358656,
                      "costo":  70250,
