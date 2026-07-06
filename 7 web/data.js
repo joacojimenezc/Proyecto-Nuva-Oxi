@@ -534,6 +534,12 @@ window.NUVA_DATA = {
                         "Uds":  5
                     }
                 ],
+    "compras":  [
+                    /* Facturas de compra a proveedores. Estructura de cada fila:
+                       { "Fecha":"2026-01-15", "Proveedor":"...", "RUT":"76.xxx.xxx-x",
+                         "Tipo_Doc":"Factura", "Folio":"1234",
+                         "Neto":100000, "IVA":19000, "Total":119000, "Estado":"Pendiente" } */
+                ],
     "finanzas":  {
                      "ingresos":  358656,
                      "costo":  70250,
