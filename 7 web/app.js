@@ -230,21 +230,38 @@ const views = {
   },
   finanzas(){
     const f=D.finanzas;
+    const mExpl = f.ingresos ? f.margen_bruto/f.ingresos : 0;   // margen de explotacion
+    const mOper = f.ingresos ? f.resultado/f.ingresos : 0;      // margen operacional
     const row=(l,v,cls='')=>`<div class="stmt-row ${cls}"><span>${l}</span><span>${clp(v)}</span></div>`;
+    const cxcTot = sum(porCxC, x=>x.monto);
+    const cxcRows = porCxC.map(x=>({...x, cliente:nameCliente(x.cli)}));
+    const cxcCols=[
+      {k:'cliente',t:'Cliente'},
+      {k:'docs',t:'Facturas',num:1},
+      {k:'plazo',t:'Plazo (días)',num:1},
+      {k:'monto',t:'Por cobrar',num:1,render:r=>clp(r.monto)}
+    ];
+    const cxcFoot={cliente:'TOTAL',docs:sum(porCxC,x=>x.docs),plazo:'',monto:clp(cxcTot)};
     return `
       <div class="kpis">
-        <div class="kpi"><div class="lbl">Ingresos</div><div class="val">${clp(f.ingresos)}</div></div>
-        <div class="kpi blue"><div class="lbl">Margen bruto</div><div class="val">${clp(f.margen_bruto)}</div></div>
-        <div class="kpi"><div class="lbl">Resultado operativo</div><div class="val">${clp(f.resultado)}</div></div>
-        <div class="kpi red"><div class="lbl">CxC por cobrar</div><div class="val">${clp(f.cxc)}</div></div>
+        <div class="kpi"><div class="lbl">Ingresos (neto)</div><div class="val">${clp(f.ingresos)}</div></div>
+        <div class="kpi blue"><div class="lbl">Margen de explotación</div><div class="val">${clp(f.margen_bruto)}</div><div class="sub">${pct(mExpl)} sobre ventas</div></div>
+        <div class="kpi"><div class="lbl">Resultado · margen operacional</div><div class="val">${clp(f.resultado)}</div><div class="sub">${pct(mOper)} sobre ventas</div></div>
+        <div class="kpi red"><div class="lbl">Cuentas por cobrar</div><div class="val">${clp(f.cxc)}</div><div class="sub">${porCxC.length} cliente(s)</div></div>
+      </div>
+      <div class="panel" style="border-left:4px solid var(--red)">
+        <h2>💳 Gestión de Cuentas por Cobrar</h2>
+        <p class="hint">Facturas emitidas pendientes de pago — foco de cobranza. Total por cobrar: <b>${clp(cxcTot)}</b> · caja cobrada a hoy ${clp(f.cobrado)}.</p>
+        ${porCxC.length ? table(cxcCols, cxcRows, cxcFoot) : '<p class="hint">Sin cuentas por cobrar pendientes 🎉</p>'}
       </div>
       <div class="grid2">
         <div class="panel statement"><h2>📄 Estado de Resultados</h2>
           ${row('Ingresos por ventas (neto)', f.ingresos)}
           ${row('(-) Costo de ventas', -f.costo, 'neg')}
-          ${row('= Margen bruto', f.margen_bruto, 'total')}
+          ${row('= Margen de explotación', f.margen_bruto, 'total')}
           ${row('(-) Gastos operativos', -f.gastos, 'neg')}
           ${row('= Resultado operativo', f.resultado, 'total')}
+          <p class="hint" style="margin-top:8px">Margen de explotación <b>${pct(mExpl)}</b> · Margen operacional <b>${pct(mOper)}</b>.</p>
         </div>
         <div class="panel statement"><h2>💵 Flujo de Caja</h2>
           ${row('Cobrado (facturas pagadas)', f.cobrado)}
