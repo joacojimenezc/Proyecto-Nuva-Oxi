@@ -189,7 +189,7 @@ const views = {
   reportes(){
     const card = id => {
       const R = REPORTES[id]; const rows = R.rows(); const n = rows.length;
-      const prevCols = R.cols.slice(0,7).map(c=>({k:c.t, t:c.t, num:c.num, render:r=>cellWeb(c,r)}));
+      const prevCols = R.cols.map(c=>({k:c.t, t:c.t, num:c.num, render:r=>cellWeb(c,r)}));
       const prev = n ? table(prevCols, rows.slice(0,5))
                      : '<p class="hint">Sin registros aún — el archivo se descargará como plantilla con solo los encabezados.</p>';
       return `<div class="panel repcard">
