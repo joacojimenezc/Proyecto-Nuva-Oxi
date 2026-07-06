@@ -73,6 +73,9 @@ tfoot td{font-weight:700;background:#f0f5f2}
 .b-green{background:#e2f3ea;color:#1f7a5a}.b-amber{background:#fbeed5;color:#a5701c}
 .b-red{background:#fbe0df;color:#b5352f}.b-gray{background:#eceeed;color:#5a6b64}.b-blue{background:#e2ecfb;color:#2c5aa0}
 
+.btnpdf{display:inline-block;padding:5px 12px;border-radius:8px;background:var(--green-l);color:#fff;font-size:12.5px;font-weight:600;white-space:nowrap;transition:.15s}
+.btnpdf:hover{background:var(--green-d)}
+
 .hint{font-size:12.5px;color:var(--muted);margin:2px 0 16px}
 .alert{padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:8px;border-left:4px solid}
 .alert.warn{background:#fdf6e9;border-color:var(--amber)}
