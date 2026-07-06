@@ -212,7 +212,7 @@ const views = {
 function barsChart(){
   const max = Math.max(...rotacion.map(r=>r.si), 1);
   const rows = rotacion.map(r=>`
-    <div class="barrow"><span>${r.pdv}</span>
+    <div class="barrow"><span class="barlbl" title="${namePDV(r.pdv)}">${namePDV(r.pdv)}</span>
       <div class="track">
         <div class="fill si" style="width:${r.si/max*100}%"></div>
       </div><span>${r.si}</span></div>
