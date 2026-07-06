@@ -9,6 +9,27 @@ const pct = n => (Math.round(Number(n) * 100)) + '%';
 const nameCliente = id => (D.clientes.find(c => c.ID_Cliente === id) || {}).Cadena || id;
 const namePDV = id => (D.pdv.find(p => p.ID_PDV === id) || {}).Nombre_PDV || id;
 
+/* ---- Facturas PDF: emparejamiento automatico por cliente ----
+   Lee window.NUVA_FACTURAS (generado por gen-facturas.ps1) y asocia
+   cada venta con las facturas cuyo nombre contiene el nombre o el
+   codigo del cliente. Si no hay coincidencia, no muestra boton. */
+const FACTURAS = window.NUVA_FACTURAS || [];
+const FAC_BASE = '../4 finanzas/contabilidad/1 facturas sell in/';
+const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,'');
+function facturasDe(idCliente){
+  const c = D.clientes.find(x => x.ID_Cliente === idCliente) || {};
+  const keys = new Set([norm(idCliente), norm(c.Cadena)]);
+  const fw = norm(String(c.Cadena||'').split(' ')[0]);   // primera palabra del nombre (ej. "Pirque")
+  if(fw.length >= 4) keys.add(fw);
+  const ks = [...keys].filter(Boolean);
+  return FACTURAS.filter(f => { const nf = norm(f); return ks.some(k => nf.includes(k)); });
+}
+function pdfBtns(idCliente){
+  const fs = facturasDe(idCliente);
+  if(!fs.length) return '';
+  return fs.map(f => `<a class="btnpdf" href="${encodeURI(FAC_BASE + f)}" target="_blank" rel="noopener" title="${f}">📄 Ver / Descargar</a>`).join(' ');
+}
+
 function badge(estado){
   const e = String(estado || '').toLowerCase();
   let cls = 'b-gray';
