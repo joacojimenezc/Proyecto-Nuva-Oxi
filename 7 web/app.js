@@ -295,7 +295,61 @@ const views = {
       </div>`;
     };
     return `<p class="hint">Descarga cada reporte en Excel (.xls) o PDF. La vista previa muestra las primeras filas.</p>
-      ${card('ventas')}${card('compras')}${card('rcv')}`;
+      ${Object.keys(REPORTES).map(card).join('')}`;
+  },
+  productos(){
+    const cols=[
+      {k:'sku',t:'SKU'},
+      {k:'desc',t:'Producto',render:r=>skuInfo(r.sku).Descripcion||''},
+      {k:'sabor',t:'Sabor',render:r=>skuInfo(r.sku).Sabor||''},
+      {k:'formato',t:'Formato',render:r=>skuInfo(r.sku).Formato||''},
+      {k:'pvp',t:'PVP c/IVA',num:1,render:r=>clp(skuInfo(r.sku).PVP_cIVA)},
+      {k:'costo',t:'Costo Unit',num:1,render:r=>clp(skuInfo(r.sku).Costo_Unit)},
+      {k:'uds',t:'Uds vend.',num:1},
+      {k:'venta',t:'Venta Neta',num:1,render:r=>clp(r.venta)},
+      {k:'margen',t:'Margen',num:1,render:r=>clp(r.margen)},
+      {k:'part',t:'% Venta',num:1,render:r=>pct(r.part)},
+      {k:'estado',t:'Estado',render:r=>badge(r.uds>0?'Activo':'Sin ventas')}
+    ];
+    const foot={sku:'TOTAL',desc:'',sabor:'',formato:'',pvp:'',costo:'',uds:sum(porSKU,x=>x.uds),venta:clp(sum(porSKU,x=>x.venta)),margen:clp(sum(porSKU,x=>x.margen)),part:'100%',estado:''};
+    return `<p class="hint">Analítica por producto (SKU): ventas, margen, participación y estado — base para decisiones de surtido y precio.</p>
+      <p class="hint">Nota: habrá un 3er precio futuro (estuche ~$6.490) y descuentos 20–30% — a versionar con Vigente_Desde/Hasta.</p>
+      ${table(cols, porSKU, foot)}`;
+  },
+  logistica(){
+    const pend = (D.pedidos||[]).filter(p=> String(p.Estado_Despacho||'').toLowerCase() !== 'entregado');
+    const pcols=[
+      {k:'ID_Pedido',t:'Pedido'},{k:'ID_Cliente',t:'Cliente',render:r=>nameCliente(r.ID_Cliente)},
+      {k:'N_OC',t:'N° OC'},{k:'Estado',t:'Estado OC',render:r=>badge(r.Estado)},
+      {k:'Estado_Despacho',t:'Despacho',render:r=>badge(r.Estado_Despacho)}];
+    const lrows = (D.logistica||[]).map(l=>({...l, cliente:nameCliente(l.ID_Cliente)}));
+    const lcols=[
+      {k:'cliente',t:'Cliente'},{k:'Dias_Recepcion',t:'Días recepción'},{k:'Horario',t:'Horario'},
+      {k:'Direccion_Entrega',t:'Dirección entrega'},{k:'Contacto',t:'Contacto'},{k:'Notas',t:'Notas'}];
+    return `<p class="hint">Seguimiento de despachos y ventanas horarias de entrega por cliente.</p>
+      <div class="panel"><h2>🚚 Despachos pendientes</h2>
+        ${pend.length ? table(pcols, pend) : '<p class="hint">Sin despachos pendientes.</p>'}</div>
+      <div class="panel"><h2>🕒 Ventanas de despacho / recepción por cliente</h2>
+        <p class="hint">Días, horario, dirección y contacto de recepción de cada cliente. Se llena en <b>data.js → "logistica"</b>.</p>
+        ${lrows.length ? table(lcols, lrows) : '<p class="hint">Aún sin horarios registrados — agrégalos en data.js → "logistica".</p>'}</div>`;
+  },
+  marketing(){
+    const al=[];
+    rotacion.filter(r=>r.si>0 && r.rot<0.35).forEach(r=>al.push({t:'Baja rotación',ref:namePDV(r.pdv),cls:'warn',msg:`Rotación ${pct(r.rot)} (sell-in ${r.si} / sell-out ${r.so}) — evaluar degustación o promoción para acelerar salida.`}));
+    (D.pdv||[]).filter(p=>p.Estado==='Activo' && !(D.sellout||[]).some(s=>s.ID_PDV===p.ID_PDV))
+      .forEach(p=>al.push({t:'Sin sell-out',ref:p.Nombre_PDV,cls:'warn',msg:'PDV activo sin registro de sell-out — visitar y activar el punto.'}));
+    porSKU.filter(s=>s.uds===0).forEach(s=>al.push({t:'SKU sin ventas',ref:skuInfo(s.sku).Descripcion||s.sku,cls:'bad',msg:'Producto sin ventas — considerar campaña o material POP.'}));
+    (D.clientes||[]).filter(c=>/prospecto|contactado/i.test(c.Estado)).forEach(c=>al.push({t:'Oportunidad cliente',ref:c.Cadena,cls:'warn',msg:`Cliente en estado "${c.Estado}" — apoyar cierre con propuesta de activación.`}));
+    const alerts = al.length ? al.map(a=>`<div class="alert ${a.cls}"><b>${a.t} · ${a.ref}</b> — ${a.msg}</div>`).join('') : '<p class="hint">Sin alertas de marketing.</p>';
+    const mrows=(D.marketing||[]).map(m=>({...m, cliente: m.ID_Cliente?nameCliente(m.ID_Cliente):'', pdv: m.ID_PDV?namePDV(m.ID_PDV):''}));
+    const mcols=[
+      {k:'Fecha',t:'Fecha'},{k:'Tipo',t:'Tipo',render:r=>badge(r.Tipo)},{k:'cliente',t:'Cliente'},{k:'pdv',t:'PDV'},
+      {k:'Descripcion',t:'Descripción'},{k:'Costo',t:'Costo',num:1,render:r=>clp(r.Costo)},{k:'Estado',t:'Estado',render:r=>badge(r.Estado)}];
+    return `<p class="hint">Alineación con trade marketing: alertas para activar promociones, degustaciones o campañas que apoyen la venta.</p>
+      <div class="panel"><h2>🎯 Alertas de trade marketing</h2>${alerts}</div>
+      <div class="panel"><h2>📣 Acciones planificadas</h2>
+        <p class="hint">Registra degustaciones, promociones, activaciones y campañas en <b>data.js → "marketing"</b>.</p>
+        ${mrows.length ? table(mcols, mrows) : '<p class="hint">Aún sin acciones registradas.</p>'}</div>`;
   }
 };
 
