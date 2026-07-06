@@ -186,7 +186,7 @@ const contaTabs=[
   {k:'sellout', t:'📤 Sell-Out'}
 ];
 let contaSub='sellin';
-function contaGo(s){ contaSub=s; render(); }
+function contaGo(s){ contaSub=s; $('#search').value=''; render(); }
 
 /* ---- router + search + sort ---- */
 let current='dashboard', sortState={};
