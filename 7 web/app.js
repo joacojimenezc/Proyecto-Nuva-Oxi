@@ -430,33 +430,55 @@ function dlFile(name, mime, content){
   setTimeout(()=>URL.revokeObjectURL(url), 1500);
 }
 
-function repExcel(id){
-  const R = REPORTES[id]; const rows = R.rows();
-  const th = R.cols.map(c=>`<th>${esc(c.t)}</th>`).join('');
-  const body = rows.map(r=>'<tr>'+R.cols.map(c=>`<td>${esc(cellRaw(c,r))}</td>`).join('')+'</tr>').join('');
+// Exportadores genericos: cols = [{t, num, raw:(r)=>valor, web?:(r)=>texto}]
+function expExcel(fname, cols, rows){
+  const th = cols.map(c=>`<th>${esc(c.t)}</th>`).join('');
+  const body = rows.map(r=>'<tr>'+cols.map(c=>`<td>${esc(cellRaw(c,r))}</td>`).join('')+'</tr>').join('');
   const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"></head><body><table border="1"><thead><tr>${th}</tr></thead><tbody>${body}</tbody></table></body></html>`;
-  dlFile(`${id}_nuvaoxi_${stamp()}.xls`, 'application/vnd.ms-excel', '﻿'+html);
+  dlFile(fname, 'application/vnd.ms-excel', '﻿'+html);
 }
-
-function repPdf(id){
-  const R = REPORTES[id]; const rows = R.rows();
-  const th = R.cols.map(c=>`<th class="${c.num?'num':''}">${esc(c.t)}</th>`).join('');
+function expPdf(titulo, cols, rows){
+  const th = cols.map(c=>`<th class="${c.num?'num':''}">${esc(c.t)}</th>`).join('');
   const body = rows.length
-    ? rows.map(r=>'<tr>'+R.cols.map(c=>`<td class="${c.num?'num':''}">${esc(cellWeb(c,r))}</td>`).join('')+'</tr>').join('')
-    : `<tr><td colspan="${R.cols.length}" style="text-align:center;color:#888">Sin registros</td></tr>`;
+    ? rows.map(r=>'<tr>'+cols.map(c=>`<td class="${c.num?'num':''}">${esc(cellWeb(c,r))}</td>`).join('')+'</tr>').join('')
+    : `<tr><td colspan="${cols.length}" style="text-align:center;color:#888">Sin registros</td></tr>`;
   const w = window.open('', '_blank');
   if(!w){ alert('Permite las ventanas emergentes para generar el PDF.'); return; }
-  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>${esc(R.titulo)}</title>
+  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>${esc(titulo)}</title>
     <style>body{font-family:'Segoe UI',system-ui,sans-serif;color:#1c2b26;padding:26px}
     h1{color:#14503b;font-size:18px;margin:0 0 3px} .meta{color:#6b7d76;font-size:11px;margin-bottom:14px}
     table{width:100%;border-collapse:collapse;font-size:11.5px} th,td{border:1px solid #cfdad4;padding:6px 8px;text-align:left}
     th{background:#eef4f0;color:#14503b} td.num,th.num{text-align:right}
     @media print{@page{size:landscape;margin:12mm}}</style></head>
-    <body><h1>NUVA OXI · ${esc(R.titulo)}</h1>
+    <body><h1>NUVA OXI · ${esc(titulo)}</h1>
     <div class="meta">Generado ${esc(stamp())} · ${rows.length} registro(s)</div>
     <table><thead><tr>${th}</tr></thead><tbody>${body}</tbody></table>
     <scr`+`ipt>window.onload=function(){setTimeout(function(){window.print();},250);};<\/scr`+`ipt></body></html>`);
   w.document.close();
+}
+function repExcel(id){ const R=REPORTES[id]; expExcel(`${id}_nuvaoxi_${stamp()}.xls`, R.cols, R.rows()); }
+function repPdf(id){ const R=REPORTES[id]; expPdf(R.titulo, R.cols, R.rows()); }
+
+/* ---- PDV: filtro por segmento + exportacion ---- */
+let pdvSeg = 'Todos';
+function pdvFiltro(s){ pdvSeg = s; render(); }
+const pdvExpCols = [
+  {t:'ID', raw:r=>r.ID_PDV},
+  {t:'Punto de venta', raw:r=>r.Nombre_PDV},
+  {t:'Cliente', raw:r=>nameCliente(r.ID_Cliente)},
+  {t:'Segmento', raw:r=>segCliente(r.ID_Cliente)},
+  {t:'Comuna', raw:r=>r.Comuna},
+  {t:'Formato', raw:r=>r.Formato_Recom},
+  {t:'Frecuencia', raw:r=>r.Frecuencia_Visita},
+  {t:'Responsable', raw:r=>r.Resp},
+  {t:'Estado', raw:r=>r.Estado}
+];
+function pdvFiltrados(){ return (D.pdv||[]).filter(p => pdvSeg==='Todos' || segCliente(p.ID_Cliente)===pdvSeg); }
+function exportarPdv(fmt){
+  const rows = pdvFiltrados();
+  const suf = pdvSeg==='Todos' ? '' : ' · '+pdvSeg;
+  if(fmt==='xls') expExcel(`pdv_${stamp()}.xls`, pdvExpCols, rows);
+  else expPdf('Puntos de venta'+suf, pdvExpCols, rows);
 }
 
 /* ---- sub-pestañas de Contabilidad ---- */
