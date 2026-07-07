@@ -60,6 +60,14 @@ a{cursor:pointer;text-decoration:none;color:inherit}
 .subtab:hover{background:var(--card);color:var(--green-d)}
 .subtab.active{color:var(--green-d);border-bottom-color:var(--green-l);background:var(--card)}
 
+/* Mapa de PDV (SVG) */
+.mapa{width:100%;max-width:680px;height:auto;display:block;border:1px solid var(--line);border-radius:12px}
+.mp-lbl{font-size:9.5px;fill:#4f6157;text-anchor:middle;font-weight:600}
+.mp-cardinal{font-size:12px;fill:#8aa398;font-weight:700}
+.mp-hint{color:var(--muted);font-size:11.5px}
+.mapa circle{cursor:pointer;transition:r .1s}
+.mapa circle:hover{r:7}
+
 /* Barra de filtros + chips (PDV) */
 .filterbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
 .chips{display:flex;gap:6px;flex-wrap:wrap}

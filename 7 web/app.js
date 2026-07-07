@@ -216,6 +216,7 @@ const views = {
         <div class="repbtns"><button class="btnrep xls" onclick="exportarPdv('xls')">⬇ Excel</button><button class="btnrep pdf" onclick="exportarPdv('pdf')">⬇ PDF</button></div>
       </div>
       <p class="hint">${rows.length} punto(s) de venta${pdvSeg==='Todos'?'':' · '+pdvSeg}.</p>
+      <div class="panel"><h2>🗺️ Mapa de puntos de venta</h2>${mapaPDV(rows)}</div>
       ${table(cols, rows)}`;
   },
   sellin(){
