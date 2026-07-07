@@ -770,3 +770,22 @@ document.querySelectorAll('#nav a').forEach(a=>a.onclick=()=>go(a.dataset.view))
 $('#search').addEventListener('input', applySearch);
 $('#genfecha').textContent = 'Generado ' + (D.generado||'');
 render();
+
+/* ---- Portada de confidencialidad con clave ----
+   NOTA: es un DISUASIVO visual, no cifrado. La clave va codificada (base64),
+   pero los datos siguen en data.js; cualquiera con el archivo puede leerlos.
+   Para proteccion real se necesita servidor con login o cifrar los archivos. */
+(function(){
+  const g = document.getElementById('gate'); if(!g) return;
+  const HASH = 'MDIwNzI1';                       // clave codificada (base64 de la clave)
+  const enc = s => btoa(unescape(encodeURIComponent(String(s))));
+  if(sessionStorage.getItem('nuvaoxi_ok')==='1'){ g.style.display='none'; return; }
+  const inp = document.getElementById('gateInput'), err = document.getElementById('gateErr');
+  const attempt = () => {
+    if(enc((inp.value||'').trim()) === HASH){ sessionStorage.setItem('nuvaoxi_ok','1'); g.style.display='none'; }
+    else { err.textContent = 'Clave incorrecta.'; inp.select(); }
+  };
+  document.getElementById('gateBtn').onclick = attempt;
+  inp.addEventListener('keydown', e => { if(e.key==='Enter') attempt(); });
+  inp.focus();
+})();

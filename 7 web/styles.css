@@ -8,6 +8,22 @@
 body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);display:flex;min-height:100vh}
 a{cursor:pointer;text-decoration:none;color:inherit}
 
+/* Portada de confidencialidad (gate) */
+.gate{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,var(--green-d),var(--green));display:flex;align-items:center;justify-content:center;padding:20px}
+.gate-box{background:var(--card);border-radius:18px;box-shadow:0 14px 44px rgba(0,0,0,.38);padding:30px 34px;max-width:340px;width:100%;text-align:center}
+.gate-logo{width:92px;border-radius:14px;margin-bottom:12px}
+.gate-lock{font-weight:800;color:var(--green-d);font-size:16px;margin-bottom:4px}
+.gate-box p{color:var(--muted);font-size:13px;margin:0 0 16px;line-height:1.4}
+.gate-box input{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font-size:16px;text-align:center;letter-spacing:4px;margin-bottom:10px;background:var(--bg)}
+.gate-box input:focus{outline:2px solid var(--green-l);border-color:transparent}
+.gate-box button{width:100%;padding:11px;border:none;border-radius:10px;background:var(--green);color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;transition:.15s}
+.gate-box button:hover{background:var(--green-d)}
+.gate-err{color:var(--red);font-size:12.5px;margin-top:8px;min-height:16px}
+
+/* Sello confidencial en topbar */
+.topbar-left{display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-width:0}
+.conf-badge{display:inline-flex;align-items:center;gap:5px;background:#fbe0df;color:#b5352f;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;text-transform:uppercase;letter-spacing:.3px}
+
 /* Sidebar */
 .sidebar{width:205px;background:linear-gradient(180deg,var(--green-d),var(--green));color:#eaf4ef;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;flex-shrink:0}
 .brand{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 16px;border-bottom:1px solid rgba(255,255,255,.12);flex-shrink:0}
