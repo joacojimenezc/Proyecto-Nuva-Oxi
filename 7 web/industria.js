@@ -80,6 +80,11 @@ window.NUVA_INDUSTRIA = {
       { titulo: "Trade inteligente vía programas de proveedores locales", detalle: "Explorar 'Mundo Saludable' de Jumbo y apoyos a emprendedores para bajar barreras y validar rotación antes de escalar fees." },
       { titulo: "Muestreo en universidades y gimnasios", detalle: "Canal ideal para generar prueba, boca-a-boca y contenido a bajo costo — ataca directamente la baja huella digital y la falta de recordación." }
     ],
+    historias: [
+      { nombre: "Factory Nine (Chile)", detalle: "Empresa chilena de pastelería/alimentos que escaló rápido — modelo de crecimiento local que inspira.", url: "https://www.emol.com/noticias/Economia/2025/12/11/1185499/factory-nine-empresa-chilena-pasteleria.html" },
+      { nombre: "NotCo", detalle: "Foodtech chilena global; el relato del fundador y su enfoque de marca/comunicación (protagonismo en redes) es un norte a imitar.", url: "https://www.youtube.com/watch?v=ovdIC9lcwJs&t=7380s" },
+      { nombre: "Tika", detalle: "Snacks chilenos premium (chips de vegetales) con fuerte identidad de marca y presencia en retail — caso de posicionamiento y ejecución de góndola." }
+    ],
     fuentes: [
       "https://www.nuvaoxi.com/",
       "https://fitia.app/calories-nutritional-information/barra-de-orujo-de-uva-natural-F656kh7vgi/",
