@@ -412,6 +412,37 @@ const views = {
       ${alerts?`<div class="panel"><h2>🚚 Sugerencia de reposición (ruta)</h2>${alerts}</div>`:''}
       <div class="panel"><h2>📦 Stock y reposición por punto de venta</h2>${table(cols, inventarioPDV, foot)}
         <p class="hint" style="margin-top:8px">Objetivo/reorden por defecto son <b>sugeridos</b> (máx = sell-in del PDV, mín = 30%). Ajústalos por PDV en <b>data.js → "asignacion"</b>. "Sin sell-out" = sin venta al consumidor registrada (fuera de Jumbo es parcial).</p></div>`;
+  },
+  mercado(){
+    const m = D.marca || {};
+    const vid = m.Youtube || '';
+    const vidId = (vid.match(/[?&]v=([\w-]+)/)||[])[1] || (vid.match(/youtu\.be\/([\w-]+)/)||[])[1] || '';
+    const comp = D.competencia || [];
+    const buscar = marca => `https://www.google.com/search?q=${encodeURIComponent(marca+' marca chile pricing formatos instagram')}`;
+    const ccols=[
+      {k:'Marca',t:'Marca'},
+      {k:'Categoria',t:'Categoría / relato'},
+      {k:'Formatos',t:'Formatos',render:r=>r.Formatos||'—'},
+      {k:'Pricing',t:'Pricing ref.',render:r=>r.Pricing||'—'},
+      {k:'Instagram',t:'Redes',render:r=> r.Instagram?`<a class="lnk" href="${r.Instagram}" target="_blank" rel="noopener">Instagram</a>`:'—'},
+      {k:'Notas',t:'Notas / a analizar'},
+      {k:'_a',t:'',render:r=>`<a class="btnrep xls" style="text-decoration:none" href="${buscar(r.Marca)}" target="_blank" rel="noopener">🔎 Analizar</a>`}
+    ];
+    const dims = ['Línea de producto','Formatos y gramajes','Pricing y promociones','Redes sociales y contenido','Relato / historia de marca','Benchmark funcional: antioxidantes ↔ proteína'];
+    return `
+      <div class="panel"><h2>🧭 Posicionamiento</h2><p class="hint">${m.Posicionamiento||''}</p></div>
+      <div class="grid2">
+        <div class="panel"><h2>📣 Nuestros canales</h2>
+          <p style="margin-bottom:10px"><a class="lnk" href="${m.Instagram||'#'}" target="_blank" rel="noopener">📸 Instagram NUVA OXI</a> — monitorear alcance, contenido y respuesta de la audiencia.</p>
+          ${vidId?`<a class="ytcard" href="${vid}" target="_blank" rel="noopener" title="Ver en YouTube"><img src="https://img.youtube.com/vi/${vidId}/hqdefault.jpg" alt="Video NUVA OXI" loading="lazy"/><span class="ytplay">▶</span></a>`:''}
+        </div>
+        <div class="panel"><h2>📋 Dimensiones a comparar</h2>
+          <ul class="dims">${dims.map(d=>`<li>${d}</li>`).join('')}</ul>
+          <p class="hint">Guía para el benchmark de cada competidor.</p></div>
+      </div>
+      <div class="panel"><h2>🔍 Benchmark de competencia</h2>
+        <p class="hint">Referentes a estudiar. Completa formatos, pricing y redes en <b>data.js → "competencia"</b>; usa <b>🔎 Analizar</b> para buscar cada marca.</p>
+        ${comp.length? table(ccols, comp) : '<p class="hint">Sin competidores cargados.</p>'}</div>`;
   }
 };
 
@@ -725,7 +756,7 @@ function contaGo(s){ contaSub=s; $('#search').value=''; render(); }
 
 /* ---- router + search + sort ---- */
 let current='dashboard', sortState={};
-const titles={dashboard:'Dashboard',rotacion:'Rotación · Sell-in vs Sell-out',clientes:'Clientes',pdv:'Puntos de venta',productos:'Productos · SKU',inventario:'Control de Inventario',contabilidad:'Contabilidad',logistica:'Logística y Despachos',finanzas:'Finanzas',reportes:'Reportes',marketing:'Marketing y Trade',decisiones:'Decisiones pendientes'};
+const titles={dashboard:'Dashboard',rotacion:'Rotación · Sell-in vs Sell-out',clientes:'Clientes',pdv:'Puntos de venta',productos:'Productos · SKU',inventario:'Control de Inventario',contabilidad:'Contabilidad',logistica:'Logística y Despachos',finanzas:'Finanzas',reportes:'Reportes',marketing:'Marketing y Trade',mercado:'Mercado y Competencia',decisiones:'Decisiones pendientes'};
 
 function render(){
   $('#app').innerHTML = views[current]();
