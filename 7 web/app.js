@@ -876,6 +876,7 @@ function render(){
 function go(v){
   current=v;
   document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('active',a.dataset.view===v));
+  const act=document.querySelector('#nav a.active'); const grp=act&&act.closest('.navgroup'); if(grp) grp.classList.remove('collapsed');
   $('#search').value='';
   render();
 }
@@ -906,6 +907,7 @@ function wireSort(){
 }
 
 document.querySelectorAll('#nav a').forEach(a=>a.onclick=()=>go(a.dataset.view));
+document.querySelectorAll('#nav .navhead').forEach(h=>h.onclick=()=>h.parentElement.classList.toggle('collapsed'));
 $('#search').addEventListener('input', applySearch);
 $('#genfecha').textContent = 'Generado ' + (D.generado||'');
 render();
