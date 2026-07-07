@@ -366,6 +366,34 @@ const views = {
       <div class="panel"><h2>📣 Acciones planificadas</h2>
         <p class="hint">Registra degustaciones, promociones, activaciones y campañas en <b>data.js → "marketing"</b>.</p>
         ${mrows.length ? table(mcols, mrows) : '<p class="hint">Aún sin acciones registradas.</p>'}</div>`;
+  },
+  inventario(){
+    const cols=[
+      {k:'pdv',t:'PDV',render:r=>namePDV(r.pdv)},
+      {k:'cli',t:'Cliente',render:r=>nameCliente(cliDePDV(r.pdv))},
+      {k:'si',t:'Sell-In',num:1},
+      {k:'so',t:'Sell-Out',num:1},
+      {k:'stock',t:'Stock teórico',num:1},
+      {k:'rot',t:'Rotación',num:1,render:r=>pct(r.rot)},
+      {k:'estado',t:'Estado',render:r=>`<span class="badge ${r.cls}">${r.estado}</span>`}
+    ];
+    const totSi=sum(inventarioPDV,x=>x.si), totSo=sum(inventarioPDV,x=>x.so), totStock=sum(inventarioPDV,x=>x.stock);
+    const foot={pdv:'TOTAL',cli:'',si:totSi,so:totSo,stock:totStock,rot:pct(totSi?totSo/totSi:0),estado:''};
+    const quiebre=inventarioPDV.filter(r=>r.estado==='Riesgo de quiebre');
+    const sobre=inventarioPDV.filter(r=>r.estado==='Sobre-stock');
+    const alerts=[
+      ...quiebre.map(r=>`<div class="alert bad">🔴 <b>${namePDV(r.pdv)}</b>: riesgo de quiebre — stock teórico ${r.stock}u, rotación ${pct(r.rot)}. Priorizar reposición.</div>`),
+      ...sobre.map(r=>`<div class="alert warn">🟠 <b>${namePDV(r.pdv)}</b>: sobre-stock — ${r.stock}u en tienda, rotación ${pct(r.rot)}. Frenar reposición / activar salida.</div>`)
+    ].join('');
+    return `<p class="hint">Stock teórico en tienda = <b>Sell-In − Sell-Out</b> (despachado menos vendido al consumidor). Es una estimación de gestión; el stock real requiere conteo físico.</p>
+      <div class="kpis">
+        <div class="kpi"><div class="lbl">Stock teórico en canal</div><div class="val">${totStock} u</div><div class="sub">de ${totSi}u despachadas</div></div>
+        <div class="kpi red"><div class="lbl">PDV en riesgo de quiebre</div><div class="val">${quiebre.length}</div></div>
+        <div class="kpi amber"><div class="lbl">PDV con sobre-stock</div><div class="val">${sobre.length}</div></div>
+      </div>
+      ${alerts?`<div class="panel"><h2>🚨 Alertas de inventario</h2>${alerts}</div>`:''}
+      <div class="panel"><h2>📦 Stock teórico por punto de venta</h2>${table(cols, inventarioPDV, foot)}
+        <p class="hint" style="margin-top:8px">"Sin sell-out" = no hay venta al consumidor registrada de ese PDV (fuera de Jumbo el dato es parcial), por lo que el stock mostrado equivale a lo despachado.</p></div>`;
   }
 };
 
@@ -590,7 +618,7 @@ function contaGo(s){ contaSub=s; $('#search').value=''; render(); }
 
 /* ---- router + search + sort ---- */
 let current='dashboard', sortState={};
-const titles={dashboard:'Dashboard',rotacion:'Rotación · Sell-in vs Sell-out',clientes:'Clientes',pdv:'Puntos de venta',productos:'Productos · SKU',contabilidad:'Contabilidad',logistica:'Logística y Despachos',finanzas:'Finanzas',reportes:'Reportes',marketing:'Marketing y Trade',decisiones:'Decisiones pendientes'};
+const titles={dashboard:'Dashboard',rotacion:'Rotación · Sell-in vs Sell-out',clientes:'Clientes',pdv:'Puntos de venta',productos:'Productos · SKU',inventario:'Control de Inventario',contabilidad:'Contabilidad',logistica:'Logística y Despachos',finanzas:'Finanzas',reportes:'Reportes',marketing:'Marketing y Trade',decisiones:'Decisiones pendientes'};
 
 function render(){
   $('#app').innerHTML = views[current]();
