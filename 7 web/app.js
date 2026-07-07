@@ -548,8 +548,22 @@ const views = {
       {k:'Prioridad',t:'Prioridad',render:r=>badge(r.Prioridad)},
       {k:'Estado',t:'Estado',render:r=>badge(r.Estado)}
     ];
-    return `<p class="hint">Roadmap del piloto: iniciativas por área, responsable, período y estado. Edita en <b>extra.js → "planning"</b>.</p>
-      ${rows.length ? table(cols, rows) : '<p class="hint">Sin iniciativas cargadas aún.</p>'}`;
+    const pilares=[
+      {ic:'🎯',t:'Planificación Estratégica',def:'Define metas y objetivos, alineando recursos y esfuerzos con la visión del negocio.',
+       sug:['Meta del piloto (ago–oct): validar rotación y elegir 2 canales ganadores con <b>datos</b>, no intuición.','Norte de marca: ser el referente de <b>wellness funcional con antioxidantes</b> — el espacio blanco frente a Wild (proteína) y Mizos (familia).','3 KPIs de éxito: rotación (sell-out/sell-in), cobertura con venta y margen por canal.']},
+      {ic:'🗺️',t:'Distribución de Espacios',def:'Optimiza la distribución de tiendas y productos para mejorar la experiencia del cliente y la rentabilidad.',
+       sug:['Priorizar PDV por score (calce + rotación + margen); no robar el stock de seguridad de Jumbo.','Góndola: buscar el pasillo "Mundo Saludable" y el punto de caja para el formato unitario (impulso).','Multicanal: Jumbo (volumen) + HORECA / tiendas saludables / universidades (margen y menor competencia).']},
+      {ic:'📦',t:'Planificación de Mercancías',def:'Asegura que los productos estén disponibles en la cantidad y momento adecuados, minimizando costos y maximizando ventas.',
+       sug:['Par-level por PDV (máx/mín) para reponer antes del quiebre — ya modelado en <b>Inventario</b>.','Mix por sabor y formato según rotación real: frenar el que no rota, empujar el que sí.','Sincronizar producción con la demanda del piloto para no sobre-stockear ni quebrar.']}
+    ];
+    const cards = pilares.map(p=>`<div class="panel"><h2>${p.ic} ${p.t}</h2>
+      <p class="hint">${p.def}</p>
+      <ul class="dims">${p.sug.map(s=>`<li>${s}</li>`).join('')}</ul></div>`).join('');
+    return `<p class="hint">Planificación estratégica del piloto: hacia dónde vamos, cómo distribuimos el espacio y cómo aseguramos producto disponible.</p>
+      ${cards}
+      <div class="panel"><h2>🗓️ Roadmap de iniciativas</h2>
+        <p class="hint">Iniciativas por área, responsable, período y estado. Edita en <b>extra.js → "planning"</b>.</p>
+        ${rows.length ? table(cols, rows) : '<p class="hint">Sin iniciativas cargadas aún.</p>'}</div>`;
   },
   pnl(){
     const f = D.finanzas || {};
