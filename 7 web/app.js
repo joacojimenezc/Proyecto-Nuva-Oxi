@@ -1077,6 +1077,8 @@ function gerenciaPdf(){
 /* ---- PDV: filtro por segmento + exportacion ---- */
 let pdvSeg = 'Todos';
 function pdvFiltro(s){ pdvSeg = s; render(); }
+let invSeg = 'Todos';
+function invFiltro(s){ invSeg = s; render(); }
 const pdvExpCols = [
   {t:'ID', raw:r=>r.ID_PDV},
   {t:'Punto de venta', raw:r=>r.Nombre_PDV},
