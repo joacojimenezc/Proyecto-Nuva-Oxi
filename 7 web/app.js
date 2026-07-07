@@ -383,7 +383,18 @@ const views = {
     ];
     const foot={sku:'TOTAL',desc:'',sabor:'',formato:'',pvp:'',costo:'',uds:sum(porSKU,x=>x.uds),venta:clp(sum(porSKU,x=>x.venta)),margen:clp(sum(porSKU,x=>x.margen)),part:'100%',estado:''};
     return `<p class="hint">Analítica por producto (SKU): ventas, margen, participación y estado — base para decisiones de surtido y precio.</p>
-      <p class="hint">Nota: habrá un 3er precio futuro (estuche ~$6.490) y descuentos 20–30% — a versionar con Vigente_Desde/Hasta.</p>
+      <div class="grid2">
+        <div class="panel"><h2>🍫 Los productos</h2>
+          <div class="imgslot"><img src="img/productos.jpg" alt="productos NUVA OXI" onerror="this.parentElement.classList.add('empty');this.remove();"><span class="imgslot-hint">🖼️ Espacio para la imagen de los 2 productos — guarda <b>img/productos.jpg</b> en <b>7 web</b>.</span></div>
+        </div>
+        <div class="panel"><h2>🏷️ Precios y formatos</h2>
+          <ul class="dims">
+            <li><b>Barra unitaria 35g</b> — PVP c/IVA <b>$1.990</b> · precio premium <b>$2.190</b></li>
+            <li><b>Estuche 4×35g</b> — PVP c/IVA <b>$5.990</b> · precio premium <b>$6.490</b></li>
+            <li>3 sabores: <b>Cacao · Maní · Frutal</b> (a base de orujo de uva)</li>
+          </ul>
+          <p class="hint">El <b>precio premium</b> aplica a clientes donde se puede vender más caro. Estos valores se versionan en el maestro de SKU (CRM).</p></div>
+      </div>
       ${table(cols, porSKU, foot)}`;
   },
   logistica(){
