@@ -25,7 +25,7 @@ if (-not (Test-Path $LogDir)) { New-Item -ItemType Directory -Path $LogDir -Forc
 $LogPath         = Join-Path $LogDir 'nuva-oxi-sync.log'
 $RefreshScript   = Join-Path $LogDir 'refresh-web-data.ps1'  # regenera 7 web\data.js cuando cambia el CRM
 $Branch          = 'main'
-$DebounceSeconds = 5    # espera de "silencio" antes de sincronizar un lote de cambios locales
+$DebounceSeconds = 90   # espera de "silencio" antes de sincronizar: agrupa una rafaga de ediciones en 1 solo commit/deploy
 $PollSeconds     = 30   # cada cuanto se consulta el remoto por cambios nuevos
 
 # Que git nunca se quede colgado pidiendo credenciales de forma interactiva:
