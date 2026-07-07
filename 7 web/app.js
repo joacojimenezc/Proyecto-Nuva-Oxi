@@ -434,7 +434,7 @@ const views = {
       <div class="grid2">
         <div class="panel"><h2>📣 Nuestros canales</h2>
           <p style="margin-bottom:10px"><a class="lnk" href="${m.Instagram||'#'}" target="_blank" rel="noopener">📸 Instagram NUVA OXI</a> — monitorear alcance, contenido y respuesta de la audiencia.</p>
-          ${vidId?`<a class="ytcard" href="${vid}" target="_blank" rel="noopener" title="Ver en YouTube"><img src="https://img.youtube.com/vi/${vidId}/hqdefault.jpg" alt="Video NUVA OXI" loading="lazy"/><span class="ytplay">▶</span></a>`:''}
+          ${vidId?`<a class="ytcard" href="${vid}" target="_blank" rel="noopener" title="Ver en YouTube"><img src="https://img.youtube.com/vi/${vidId}/hqdefault.jpg" alt="Video NUVA OXI" loading="lazy" onerror="this.style.display='none'"/><span class="ytplay">▶ Ver video</span></a>`:''}
         </div>
         <div class="panel"><h2>📋 Dimensiones a comparar</h2>
           <ul class="dims">${dims.map(d=>`<li>${d}</li>`).join('')}</ul>
