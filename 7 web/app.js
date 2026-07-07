@@ -168,6 +168,8 @@ function table(cols, rows, foot){
 /* ---- views ---- */
 const views = {
   dashboard(){
+    const _mesAct = mesesVenta().slice(-1)[0] || 'Todo';
+    const cobD = coberturaPeriodo(_mesAct);
     const al=[];
     // 1) Rotación / sobre-stock
     rotacion.filter(r=>r.si>0 && r.rot<0.35).forEach(r=>
