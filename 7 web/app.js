@@ -482,6 +482,12 @@ function barsChart(){
     <div class="legend"><span><i style="background:var(--green-l)"></i>Sell-In</span><span><i style="background:var(--lime)"></i>Sell-Out</span></div>`;
 }
 
+/* barras simples de una serie de periodos (venta) */
+function miniBars(per){
+  const max = Math.max(...per.map(p=>Number(p.Venta)||0), 1);
+  return `<div class="bars">${per.map(p=>`<div class="barrow"><span class="barlbl" title="${p.Periodo}">${p.Periodo}</span><div class="track"><div class="fill si" style="width:${(Number(p.Venta)||0)/max*100}%"></div></div><span>${clp(p.Venta)}</span></div>`).join('')}</div>`;
+}
+
 /* ---- Mapa simple de PDV (SVG offline, sin librerias ni internet) ----
    Ubica cada PDV por el centroide aprox. de su comuna (Region Metropolitana).
    Las comunas en data.js vienen sin tildes/ñ, asi que basta lowercase+trim. */
