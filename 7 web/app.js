@@ -484,6 +484,7 @@ const views = {
       ...sobre.map(r=>`<div class="alert warn">🟠 <b>${namePDV(r.pdv)}</b>: sobre-stock — ${r.stock}u en tienda, rotación ${pct(r.rot)}. Frenar reposición / activar salida.</div>`)
     ].join('');
     return `<p class="hint">Modelo de <b>ruta propia</b>: stock teórico = Sell-In − Sell-Out. Cuando cae al <b>reorden (mín)</b>, se sugiere reponer hasta el <b>objetivo (máx)</b>. Es una estimación; el stock real requiere conteo físico.</p>
+      <div class="filterbar"><div class="chips">${chips}</div><p class="hint" style="margin:0">${rows.length} PDV${invSeg==='Todos'?'':' · '+invSeg}</p></div>
       <div class="kpis">
         <div class="kpi"><div class="lbl">Stock teórico en canal</div><div class="val">${totStock} u</div><div class="sub">de ${totSi}u despachadas</div></div>
         <div class="kpi red"><div class="lbl">Unidades a reponer</div><div class="val">${totRep} u</div><div class="sub">${aRep.length} PDV bajo mínimo</div></div>
