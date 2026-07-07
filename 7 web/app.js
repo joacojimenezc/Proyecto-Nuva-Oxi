@@ -732,6 +732,7 @@ function render(){
   $('#viewTitle').textContent = titles[current];
   applySearch();
   wireSort();
+  if(current==='pdv') initLeafletMap();
 }
 function go(v){
   current=v;
