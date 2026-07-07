@@ -429,6 +429,11 @@ const views = {
       {k:'_a',t:'',render:r=>`<a class="btnrep xls" style="text-decoration:none" href="${buscar(r.Marca)}" target="_blank" rel="noopener">🔎 Analizar</a>`}
     ];
     const dims = ['Línea de producto','Formatos y gramajes','Pricing y promociones','Redes sociales y contenido','Relato / historia de marca','Benchmark funcional: antioxidantes ↔ proteína'];
+    const nx = D.nuvaoxi || {}, ind = D.industria || {};
+    const tendHtml = (ind.tendencias||[]).map(t=>`<div class="alert" style="border-color:var(--green-l);background:#f1f8f4"><b>${t.titulo}</b><br><span class="hint" style="margin:2px 0 0">${t.detalle}</span></div>`).join('');
+    const desaf = h => (ind.desafios||[]).filter(d=>d.horizonte===h).map(d=>`<div class="alert ${h==='actual'?'warn':'bad'}"><b>${d.titulo}</b><br><span class="hint" style="margin:4px 0">${d.detalle}</span>${d.respuesta_nuvaoxi?`<div style="margin-top:6px"><span class="badge b-green">✅ Cómo lo aborda la plataforma</span> <span class="hint" style="margin:2px 0 0">${d.respuesta_nuvaoxi}</span></div>`:''}</div>`).join('');
+    const oport = (ind.oportunidades||[]).map(o=>`<div class="alert" style="border-color:var(--lime);background:#f7faef"><b>${o.titulo}</b><br><span class="hint" style="margin:2px 0 0">${o.detalle}</span></div>`).join('');
+    const fuentes = (ind.fuentes||[]).map(u=>`<a class="lnk" href="${u}" target="_blank" rel="noopener">${u.replace(/^https?:\/\//,'').split('/')[0]}</a>`).join(' · ');
     return `
       <div class="panel"><h2>🧭 Posicionamiento</h2><p class="hint">${m.Posicionamiento||''}</p></div>
       <div class="grid2">
@@ -441,8 +446,18 @@ const views = {
           <p class="hint">Guía para el benchmark de cada competidor.</p></div>
       </div>
       <div class="panel"><h2>🔍 Benchmark de competencia</h2>
-        <p class="hint">Referentes a estudiar. Completa formatos, pricing y redes en <b>data.js → "competencia"</b>; usa <b>🔎 Analizar</b> para buscar cada marca.</p>
-        ${comp.length? table(ccols, comp) : '<p class="hint">Sin competidores cargados.</p>'}</div>`;
+        <p class="hint">Barrido 2026 de referentes en Chile (Jumbo/Líder). Editable en <b>industria.js → "competencia"</b>; usa <b>🔎 Analizar</b> para profundizar cada marca.</p>
+        ${comp.length? table(ccols, comp) : '<p class="hint">Sin competidores cargados.</p>'}</div>
+      ${nx.resumen?`<div class="panel" style="border-left:4px solid var(--green-l)"><h2>🎯 Nuestra posición · el "espacio blanco"</h2>
+        <p class="hint">${nx.resumen}</p>
+        ${nx.diferenciadores?`<ul class="dims">${nx.diferenciadores.map(d=>`<li>${d}</li>`).join('')}</ul>`:''}</div>`:''}
+      ${tendHtml?`<div class="panel"><h2>📈 Tendencias de la industria</h2>${tendHtml}</div>`:''}
+      ${(ind.desafios&&ind.desafios.length)?`<div class="grid2">
+        <div class="panel"><h2>⚠️ Desafíos actuales</h2>${desaf('actual')||'<p class="hint">—</p>'}</div>
+        <div class="panel"><h2>🔮 Desafíos futuros</h2>${desaf('futuro')||'<p class="hint">—</p>'}</div>
+      </div>`:''}
+      ${oport?`<div class="panel"><h2>🚀 Oportunidades para NUVA OXI</h2>${oport}</div>`:''}
+      ${fuentes?`<div class="panel"><h2>🔗 Fuentes del barrido</h2><p class="hint" style="line-height:1.9">${fuentes}</p></div>`:''}`;
   }
 };
 

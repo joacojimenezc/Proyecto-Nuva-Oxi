@@ -9,3 +9,6 @@ desktop.ini
 # Temporales
 *.tmp
 ~$*
+
+# Memoria del bot de WhatsApp "Secretaria Nuva Oxi" (local; NO va al repo)
+_bot-memoria/

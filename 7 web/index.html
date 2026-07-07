@@ -60,6 +60,17 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="data.js"></script>
   <script src="facturas.js"></script>
+  <script src="industria.js"></script>
+  <script>
+  /* Fusiona la inteligencia de industria (industria.js, durable) en NUVA_DATA
+     sin depender del refresh del CRM. */
+  (function(){
+    var D = window.NUVA_DATA = window.NUVA_DATA || {}, I = window.NUVA_INDUSTRIA || {};
+    if (I.competencia && I.competencia.length) D.competencia = I.competencia;
+    if (I.industria) D.industria = I.industria;
+    if (I.nuvaoxi)   D.nuvaoxi   = I.nuvaoxi;
+  })();
+  </script>
   <script src="app.js"></script>
 </body>
 </html>
