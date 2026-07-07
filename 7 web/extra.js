@@ -40,6 +40,30 @@ window.NUVA_EXTRA = {
        (Max = sell-in del PDV; Min/reorden = 30% del Max, minimo 2).
        Estructura de cada fila:
        { "ID_PDV":"J001", "Stock_Max":60, "Stock_Min":18 } */
+  ],
+
+  /* Serie de ventas por periodo — EJEMPLO (para ver crecimiento/variacion). Reemplazar por real. */
+  "periodos": [
+    { "Periodo": "Oct 2025", "Uds": 180, "Venta": 295000 },
+    { "Periodo": "Nov 2025", "Uds": 240, "Venta": 392000 },
+    { "Periodo": "Dic 2025", "Uds": 320, "Venta": 523000 },
+    { "Periodo": "Ene 2026", "Uds": 410, "Venta": 671000 }
+  ],
+
+  /* Iniciativas de planificacion (roadmap del piloto) — EJEMPLO, editar. */
+  "planning": [
+    { "Iniciativa": "Cerrar listado y OC con Jumbo", "Area": "Comercial", "Responsable": "Jose Ignacio", "Periodo": "Q1 2026", "Prioridad": "Alta", "Estado": "En curso" },
+    { "Iniciativa": "Definir costo unitario real (reemplazar supuesto $250)", "Area": "Finanzas", "Responsable": "Jose Ignacio", "Periodo": "Q1 2026", "Prioridad": "Alta", "Estado": "Abierta" },
+    { "Iniciativa": "Ruta HORECA / tiendas saludables (canal premium)", "Area": "Comercial", "Responsable": "Ana Barra", "Periodo": "Q2 2026", "Prioridad": "Media", "Estado": "Abierta" },
+    { "Iniciativa": "Unificar ficha de producto (orujo 35g vs 40g x4)", "Area": "Marca", "Responsable": "Equipo", "Periodo": "Q1 2026", "Prioridad": "Alta", "Estado": "Abierta" },
+    { "Iniciativa": "Plan de muestreo (universidades / gimnasios)", "Area": "Marketing", "Responsable": "Ana Barra", "Periodo": "Q2 2026", "Prioridad": "Media", "Estado": "Abierta" }
+  ],
+
+  /* Desglose de gastos operativos para el P&L — EJEMPLO (suma = finanzas.gastos). */
+  "pnl_gastos": [
+    { "Concepto": "Marketing y trade", "Monto": 120000 },
+    { "Concepto": "Logistica y despacho", "Monto": 65000 },
+    { "Concepto": "Administracion y otros", "Monto": 90000 }
   ]
 
 };
