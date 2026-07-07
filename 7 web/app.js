@@ -99,8 +99,9 @@ const skuInfo = sku => D.sku.find(s=>s.SKU===sku) || {};
 const porCxC = (()=>{
   const m={};
   (D.sellin||[]).filter(v=>v.Estado_Factura==='Emitida').forEach(v=>{
-    m[v.ID_Cliente]=m[v.ID_Cliente]||{cli:v.ID_Cliente,monto:0,docs:0};
+    m[v.ID_Cliente]=m[v.ID_Cliente]||{cli:v.ID_Cliente,monto:0,docs:0,vence:''};
     m[v.ID_Cliente].monto+=Number(v.Venta_Neta)||0; m[v.ID_Cliente].docs++;
+    if(v.Fecha_Venc && (!m[v.ID_Cliente].vence || v.Fecha_Venc < m[v.ID_Cliente].vence)) m[v.ID_Cliente].vence = v.Fecha_Venc;
   });
   return Object.values(m).map(x=>{
     const c=D.clientes.find(k=>k.ID_Cliente===x.cli)||{};
