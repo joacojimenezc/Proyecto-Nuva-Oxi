@@ -53,6 +53,17 @@ const K = {
   selloutTot: sum(D.sellout,x=>x.Uds)
 };
 
+/* ---- Cobertura por periodo (mes YYYY-MM) ---- */
+function mesesVenta(){ return [...new Set((D.sellin||[]).map(v=>String(v.Fecha||'').slice(0,7)).filter(Boolean))].sort(); }
+function coberturaPeriodo(mes){
+  const ven = (D.sellin||[]).filter(v=> mes==='Todo' || String(v.Fecha||'').slice(0,7)===mes);
+  const cliSet = new Set(ven.map(v=>v.ID_Cliente));
+  const pdvSet = new Set(ven.map(v=>v.ID_PDV));
+  const cliTot = (D.clientes||[]).length, pdvTot = (D.pdv||[]).length;
+  return { mes, cliCon:cliSet.size, cliTot, pdvCon:pdvSet.size, pdvTot, cliSet, pdvSet,
+           pctCli: cliTot? cliSet.size/cliTot : 0, pctPdv: pdvTot? pdvSet.size/pdvTot : 0 };
+}
+
 /* ---- rotación por PDV ---- */
 const rotacion = (() => {
   const map = {};
