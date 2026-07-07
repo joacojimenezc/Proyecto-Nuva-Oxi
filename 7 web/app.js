@@ -498,13 +498,12 @@ const views = {
     return `
       <div class="panel"><h2>🧭 Posicionamiento</h2><p class="hint">${m.Posicionamiento||''}</p></div>
       <div class="grid2">
-        <div class="panel"><h2>📣 Nuestros canales</h2>
-          <p style="margin-bottom:10px"><a class="lnk" href="${m.Instagram||'#'}" target="_blank" rel="noopener">📸 Instagram NUVA OXI</a> — monitorear alcance, contenido y respuesta de la audiencia.</p>
-          ${vidId?`<a class="ytcard" href="${vid}" target="_blank" rel="noopener" title="Ver en YouTube"><img src="https://img.youtube.com/vi/${vidId}/hqdefault.jpg" alt="Video NUVA OXI" loading="lazy" onerror="this.style.display='none'"/><span class="ytplay">▶ Ver video</span></a>`:''}
-        </div>
         <div class="panel"><h2>📋 Dimensiones a comparar</h2>
           <ul class="dims">${dims.map(d=>`<li>${d}</li>`).join('')}</ul>
           <p class="hint">Guía para el benchmark de cada competidor.</p></div>
+        <div class="panel"><h2>🖼️ Referencia visual del mercado</h2>
+          <div class="imgslot"><img src="img/benchmark.jpg" alt="benchmark mercado" onerror="this.parentElement.classList.add('empty');this.remove();"><span class="imgslot-hint">🖼️ Espacio para imagen — guarda <b>img/benchmark.jpg</b> en la carpeta <b>7 web</b> y aparece aquí.</span></div>
+        </div>
       </div>
       <div class="panel"><h2>🔍 Benchmark de competencia</h2>
         <p class="hint">Barrido 2026 de referentes en Chile (Jumbo/Líder). Editable en <b>industria.js → "competencia"</b>; usa <b>🔎 Analizar</b> para profundizar cada marca.</p>
