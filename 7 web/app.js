@@ -1021,9 +1021,9 @@ function gerenciaSecciones(){
       {t:'Status Factura', raw:r=>r.Estado_Factura}
     ]},
     { titulo:'Órdenes de compra', rows: D.pedidos||[], cols:[
-      {t:'Pedido', raw:r=>r.ID_Pedido}, {t:'Cliente', raw:r=>nameCliente(r.ID_Cliente)}, {t:'N° OC', raw:r=>r.N_OC},
+      {t:'Pedido', raw:r=>r.ID_Pedido}, {t:'Fecha OC', raw:r=>r.Fecha_OC}, {t:'Cliente', raw:r=>nameCliente(r.ID_Cliente)}, {t:'N° OC', raw:r=>r.N_OC},
       {t:'Monto OC ($)', num:1, raw:r=>Math.round(r.Monto_OC||0), web:r=>clp(r.Monto_OC)},
-      {t:'Estado OC', raw:r=>r.Estado}, {t:'Despacho', raw:r=>r.Estado_Despacho}
+      {t:'Estado OC', raw:r=>r.Estado}
     ]},
     { titulo:'Inventario por punto de venta', rows: inventarioPDV, cols:[
       {t:'PDV', raw:r=>namePDV(r.pdv)},
