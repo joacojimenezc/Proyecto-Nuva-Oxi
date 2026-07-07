@@ -553,6 +553,13 @@ window.NUVA_DATA = {
                          "Costo":80000, "Estado":"Planificada" }
                        Tipos sugeridos: Degustacion, Promocion, Activacion, Campana, Material POP. */
                 ],
+    "asignacion":  [
+                    /* Parametros de reposicion (par-level) por PDV para venta en ruta.
+                       Si no se define un PDV aqui, el sistema usa un default SUGERIDO
+                       (Max = sell-in del PDV; Min/reorden = 30% del Max, minimo 2).
+                       Estructura de cada fila:
+                       { "ID_PDV":"J001", "Stock_Max":60, "Stock_Min":18 } */
+                ],
     "finanzas":  {
                      "ingresos":  358656,
                      "costo":  70250,
