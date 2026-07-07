@@ -675,7 +675,7 @@ const views = {
     ];
     const cxcRows=(porCxC||[]).map(x=>({...x, cliente:nameCliente(x.cli)}));
     const cxcCols=[
-      {k:'cliente',t:'Cliente'},{k:'docs',t:'Facturas',num:1},{k:'plazo',t:'Plazo (días)',num:1},
+      {k:'cliente',t:'Cliente'},{k:'docs',t:'Facturas',num:1},{k:'vence',t:'Vence (próx.)'},{k:'plazo',t:'Plazo (días)',num:1},
       {k:'monto',t:'Por cobrar ($)',num:1,render:r=>clp(r.monto)}
     ];
     const cxcTot=sum(porCxC||[],x=>x.monto);
