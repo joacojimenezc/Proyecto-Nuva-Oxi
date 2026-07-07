@@ -561,23 +561,27 @@ const views = {
   flujo(){
     const b=(x,y,t,s,fill)=>`<rect x="${x}" y="${y}" width="155" height="58" rx="10" fill="${fill||'var(--green)'}" stroke="#fff" stroke-width="1.5"/><text x="${x+77}" y="${y+27}" class="fx-t">${t}</text><text x="${x+77}" y="${y+43}" class="fx-s">${s}</text>`;
     const ar=(x1,y1,x2,y2,d)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#7fae9c" stroke-width="2" marker-end="url(#ar)" ${d?'stroke-dasharray="4 4"':''}/>`;
-    return `<p class="hint">Flujo de control del negocio: del plan a la reposición, con el CRM como capa de datos y decisiones. Simplificado.</p>
-      <div class="panel"><div class="fxwrap"><svg viewBox="0 0 920 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flujo operacional">
+    return `<p class="hint">Flujo de control del negocio: del plan a la reposición, con la dirección comercial y el CRM como centro de datos y decisiones. Simplificado.</p>
+      <div class="panel"><div class="fxwrap"><svg viewBox="0 0 960 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flujo operacional">
         <defs><marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#7fae9c"/></marker></defs>
-        ${b(18,60,'Planificación','& compras')}
-        ${b(200,60,'Inventario','bodega')}
-        ${b(382,60,'Despacho','ruta propia')}
-        ${b(564,60,'Punto de venta','sell-in')}
-        ${b(746,60,'Consumidor','sell-out','var(--green-l)')}
-        ${ar(173,89,199,89)}${ar(355,89,381,89)}${ar(537,89,563,89)}${ar(719,89,745,89)}
-        <path d="M 823 60 C 823 20, 95 20, 95 58" fill="none" stroke="var(--amber)" stroke-width="2" marker-end="url(#ar)"/>
-        <text x="459" y="14" class="fx-lbl">Reposición (par-level según stock y rotación)</text>
-        ${b(18,235,'Finanzas','cobranza · P&L · caja','#2b6b52')}
-        <rect x="300" y="233" width="320" height="62" rx="11" fill="var(--green-d)" stroke="var(--lime)" stroke-width="2"/><text x="460" y="260" class="fx-t">CRM NUVA OXI</text><text x="460" y="277" class="fx-s">datos → control, alertas y decisiones</text>
-        ${b(747,235,'Marketing','activaciones · trade','#2b6b52')}
-        ${ar(370,233,290,120,1)}${ar(460,233,460,120,1)}${ar(550,233,635,120,1)}
+        ${b(18,54,'Planificación','y compras')}
+        ${b(205,54,'Inventario','bodega')}
+        ${b(392,54,'Despacho','ruta propia')}
+        ${b(579,54,'Punto de venta','sell-in')}
+        ${b(766,54,'Consumidor','sell-out','var(--green-l)')}
+        ${ar(173,83,204,83)}${ar(360,83,391,83)}${ar(547,83,578,83)}${ar(734,83,765,83)}
+        <path d="M 843 54 C 843 16, 95 16, 95 52" fill="none" stroke="var(--amber)" stroke-width="2" marker-end="url(#ar)"/>
+        <text x="469" y="12" class="fx-lbl">Reposición (par-level según stock y rotación)</text>
+        ${b(18,205,'Finanzas','cobranza · P&amp;L','#2b6b52')}
+        <rect x="300" y="200" width="360" height="66" rx="12" fill="var(--green-d)" stroke="var(--lime)" stroke-width="2.5"/><text x="480" y="228" class="fx-t">Dirección comercial (tú) · CRM</text><text x="480" y="246" class="fx-s">datos → control, alertas y decisiones</text>
+        ${b(766,205,'Marketing y trade','alineado a la venta','#2b6b52')}
+        ${ar(400,200,300,113,1)}${ar(480,200,470,113,1)}${ar(560,200,650,113,1)}
+        ${ar(173,235,299,235)}${ar(765,235,661,235)}
+        ${ar(830,205,845,113,1)}<text x="808" y="160" class="fx-lbl">empuja venta</text>
+        <rect x="300" y="320" width="360" height="54" rx="12" fill="#8a5a1c" stroke="#fff" stroke-width="1.5"/><text x="480" y="343" class="fx-t">Estudio permanente de industria</text><text x="480" y="360" class="fx-s">oportunidades · riesgos · amenazas</text>
+        ${ar(480,320,480,267,1)}
       </svg></div>
-      <p class="hint" style="margin-top:6px">🟢 cadena física · 🟠 retorno de reposición · el CRM monitorea stock, rotación, cobranza y activaciones para decidir.</p></div>`;
+      <p class="hint" style="margin-top:6px">🟢 cadena física · 🟠 reposición · punteadas = control/estudio del CRM · <b>Marketing empuja la venta</b> y estudiamos la industria de forma <b>permanente</b> para detectar oportunidades, riesgos y amenazas.</p></div>`;
   }
 };
 
