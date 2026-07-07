@@ -105,6 +105,22 @@ const ocDe = idCliente => (D.pedidos||[]).filter(p=>p.ID_Cliente===idCliente).ma
 const facturaNumDe = idCliente => facturasDe(idCliente)
   .map(f=>{ const m=String(f).match(/(\d{2,})/); return m?m[1]:''; }).filter(Boolean);
 
+/* ---- control de inventario por PDV ----
+   Stock teorico en tienda = Sell-In - Sell-Out (unidades despachadas menos vendidas al
+   consumidor). Es una ESTIMACION de gestion; el stock real requiere conteo fisico.
+   El sell-out es confiable en Jumbo; en otros PDV puede ser parcial (soKnown=false). */
+const soKnownSet = new Set((D.sellout||[]).map(s=>s.ID_PDV));
+const cliDePDV = idPDV => (D.pdv.find(p=>p.ID_PDV===idPDV)||{}).ID_Cliente;
+const inventarioPDV = rotacion.map(r=>{
+  const stock = Math.max(r.si - r.so, 0);
+  const known = soKnownSet.has(r.pdv);
+  let estado='Equilibrado', cls='b-green';
+  if(!known){ estado='Sin sell-out'; cls='b-gray'; }
+  else if(r.rot>=0.8 && stock<=r.si*0.2){ estado='Riesgo de quiebre'; cls='b-red'; }
+  else if(r.rot<0.35){ estado='Sobre-stock'; cls='b-amber'; }
+  return {...r, stock, known, estado, cls};
+}).sort((a,b)=>b.stock-a.stock);
+
 /* ---- render helpers ---- */
 function table(cols, rows, foot){
   const th = cols.map(c=>`<th class="${c.num?'num':''}" data-k="${c.k}">${c.t}</th>`).join('');
