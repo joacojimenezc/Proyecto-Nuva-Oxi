@@ -977,12 +977,17 @@ render();
    Para proteccion real se necesita servidor con login o cifrar los archivos. */
 (function(){
   const g = document.getElementById('gate'); if(!g) return;
-  const HASH = 'MDIwNzI1';                       // clave codificada (base64 de la clave)
   const enc = s => btoa(unescape(encodeURIComponent(String(s))));
-  if(sessionStorage.getItem('nuvaoxi_ok')==='1'){ g.style.display='none'; return; }
+  const FULL = 'MDIwNzI1';            // 020725      -> acceso completo
+  const JEFA = 'bnV2YW94aTIwMjY=';    // nuvaoxi2026 -> vista Gerencia (solo lectura)
+  function applyRole(role){ if(role==='jefa'){ document.body.classList.add('role-jefa'); if(typeof go==='function') go('gerencia'); } }
+  const saved = sessionStorage.getItem('nuvaoxi_role');
+  if(saved){ applyRole(saved); g.style.display='none'; return; }
   const inp = document.getElementById('gateInput'), err = document.getElementById('gateErr');
   const attempt = () => {
-    if(enc((inp.value||'').trim()) === HASH){ sessionStorage.setItem('nuvaoxi_ok','1'); g.style.display='none'; }
+    const v = enc((inp.value||'').trim());
+    if(v===FULL){ sessionStorage.setItem('nuvaoxi_role','full'); g.style.display='none'; }
+    else if(v===JEFA){ sessionStorage.setItem('nuvaoxi_role','jefa'); applyRole('jefa'); g.style.display='none'; }
     else { err.textContent = 'Clave incorrecta.'; inp.select(); }
   };
   document.getElementById('gateBtn').onclick = attempt;
