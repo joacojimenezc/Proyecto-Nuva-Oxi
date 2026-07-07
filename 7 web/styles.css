@@ -3,7 +3,7 @@
   --bg:#f4f6f5; --card:#ffffff; --ink:#1c2b26; --muted:#6b7d76; --line:#e3e9e6;
   --amber:#e8a33d; --red:#d9534f; --blue:#3a7bd5;
   /* Sidebar / chrome: morado vino (antioxidantes / uva) */
-  --side1:#34142e; --side2:#5f2749; --side-tx:#ead9e4; --side-mut:#caa9c1; --wine:#7a2e5c; --wine-d:#4a1e3f;
+  --side1:#34142e; --side2:#5f2749; --side-tx:#2b3a34; --side-mut:#6b7d76; --wine:#7a2e5c; --wine-d:#4a1e3f;
   --shadow:0 1px 3px rgba(20,60,45,.08),0 6px 18px rgba(20,60,45,.06);
 }
 *{box-sizing:border-box;margin:0;padding:0}
