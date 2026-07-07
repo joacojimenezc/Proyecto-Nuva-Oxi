@@ -1,5 +1,5 @@
 window.NUVA_DATA = {
-    "generado":  "2026-07-06 22:57",
+    "generado":  "2026-07-07 14:06",
     "clientes":  [
                      {
                          "ID_Cliente":  "CL-CEN",
@@ -314,60 +314,69 @@ window.NUVA_DATA = {
     "sku":  [
                 {
                     "SKU":  "SKU-CAC-U",
-                    "Descripcion":  "Barra Cacao 40g",
+                    "Descripcion":  "Barra Cacao 35g",
                     "Sabor":  "Cacao",
                     "Formato":  "Unitaria",
-                    "PVP_cIVA":  1900,
-                    "PVP_Neto":  1596.6386554621849,
+                    "PVP_cIVA":  1990,
+                    "PVP_Neto":  1672.2689075630253,
                     "Costo_Unit":  250
                 },
                 {
                     "SKU":  "SKU-MAN-U",
-                    "Descripcion":  "Barra Mani 40g",
+                    "Descripcion":  "Barra Mani 35g",
                     "Sabor":  "Mani",
                     "Formato":  "Unitaria",
-                    "PVP_cIVA":  1900,
-                    "PVP_Neto":  1596.6386554621849,
+                    "PVP_cIVA":  1990,
+                    "PVP_Neto":  1672.2689075630253,
                     "Costo_Unit":  250
                 },
                 {
                     "SKU":  "SKU-FRU-U",
-                    "Descripcion":  "Barra Frutal 40g",
+                    "Descripcion":  "Barra Frutal 35g",
                     "Sabor":  "Frutal",
                     "Formato":  "Unitaria",
-                    "PVP_cIVA":  1900,
-                    "PVP_Neto":  1596.6386554621849,
+                    "PVP_cIVA":  1990,
+                    "PVP_Neto":  1672.2689075630253,
                     "Costo_Unit":  250
                 },
                 {
                     "SKU":  "SKU-CAC-4",
-                    "Descripcion":  "Estuche Cacao x4",
+                    "Descripcion":  "Estuche Cacao 4x35g",
                     "Sabor":  "Cacao",
                     "Formato":  "Estuche x4",
-                    "PVP_cIVA":  5900,
-                    "PVP_Neto":  4957.9831932773113,
+                    "PVP_cIVA":  5990,
+                    "PVP_Neto":  5033.6134453781515,
                     "Costo_Unit":  1000
                 },
                 {
                     "SKU":  "SKU-MAN-4",
-                    "Descripcion":  "Estuche Mani x4",
+                    "Descripcion":  "Estuche Mani 4x35g",
                     "Sabor":  "Mani",
                     "Formato":  "Estuche x4",
-                    "PVP_cIVA":  5900,
-                    "PVP_Neto":  4957.9831932773113,
+                    "PVP_cIVA":  5990,
+                    "PVP_Neto":  5033.6134453781515,
                     "Costo_Unit":  1000
                 },
                 {
                     "SKU":  "SKU-FRU-4",
-                    "Descripcion":  "Estuche Frutal x4",
+                    "Descripcion":  "Estuche Frutal 4x35g",
                     "Sabor":  "Frutal",
                     "Formato":  "Estuche x4",
-                    "PVP_cIVA":  5900,
-                    "PVP_Neto":  4957.9831932773113,
+                    "PVP_cIVA":  5990,
+                    "PVP_Neto":  5033.6134453781515,
                     "Costo_Unit":  1000
                 },
                 {
                     "SKU":  "Nota: habra 3er precio futuro (estuche ~6490) y descuentos 20-30%. Versionar con Vigente_Desde/Hasta.",
+                    "Descripcion":  null,
+                    "Sabor":  null,
+                    "Formato":  null,
+                    "PVP_cIVA":  null,
+                    "PVP_Neto":  null,
+                    "Costo_Unit":  null
+                },
+                {
+                    "SKU":  "Precio premium (clientes que pagan mas): unitaria 2190 / estuche 6490. Aplicar por cliente/canal.",
                     "Descripcion":  null,
                     "Sabor":  null,
                     "Formato":  null,
@@ -469,7 +478,7 @@ window.NUVA_DATA = {
                 ],
     "decisiones":  [
                        {
-                           "Tema":  "Modelo BCT/VCT",
+                           "Tema":  "Modelo integracion VCT",
                            "Decision":  "Definir si opera full, parcial o solo apoyo",
                            "Responsable":  "Jose Ignacio",
                            "Estado":  "Abierta"
