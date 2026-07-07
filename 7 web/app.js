@@ -608,7 +608,7 @@ const views = {
         ${b(766,54,'Consumidor','sell-out','var(--green-l)')}
         ${ar(173,83,204,83)}${ar(360,83,391,83)}${ar(547,83,578,83)}${ar(734,83,765,83)}
         <path d="M 843 54 C 843 16, 95 16, 95 52" fill="none" stroke="var(--amber)" stroke-width="2" marker-end="url(#ar)"/>
-        <text x="469" y="12" class="fx-lbl">Reposición (par-level según stock y rotación)</text>
+        <text x="469" y="12" class="fx-lbl">Reposición: cuando el stock cae al mínimo, se repone hasta el objetivo</text>
         ${b(18,205,'Finanzas','cobranza · P&amp;L','#2b6b52')}
         <rect x="300" y="200" width="360" height="66" rx="12" fill="var(--green-d)" stroke="var(--lime)" stroke-width="2.5"/><text x="480" y="228" class="fx-t">Dirección comercial (tú) · CRM</text><text x="480" y="246" class="fx-s">datos → control, alertas y decisiones</text>
         ${b(766,205,'Marketing y trade','alineado a la venta','#2b6b52')}
