@@ -412,6 +412,8 @@ const views = {
     (D.clientes||[]).filter(c=>/prospecto|contactado/i.test(c.Estado)).forEach(c=>al.push({t:'Oportunidad cliente',ref:c.Cadena,cls:'warn',msg:`Cliente en estado "${c.Estado}" — apoyar cierre con propuesta de activación.`}));
     const alerts = al.length ? al.map(a=>`<div class="alert ${a.cls}"><b>${a.t} · ${a.ref}</b> — ${a.msg}</div>`).join('') : '<p class="hint">Sin alertas.</p>';
     const m = D.marca || {};
+    const vid = m.Youtube || '';
+    const vidId = (vid.match(/[?&]v=([\w-]+)/)||[])[1] || (vid.match(/youtu\.be\/([\w-]+)/)||[])[1] || '';
     const mrows=(D.marketing||[]).map(x=>({...x, cliente: x.ID_Cliente?nameCliente(x.ID_Cliente):'', pdv: x.ID_PDV?namePDV(x.ID_PDV):''}));
     const mcols=[
       {k:'Fecha',t:'Fecha'},{k:'Tipo',t:'Tipo',render:r=>badge(r.Tipo)},{k:'cliente',t:'Cliente'},{k:'pdv',t:'PDV'},
