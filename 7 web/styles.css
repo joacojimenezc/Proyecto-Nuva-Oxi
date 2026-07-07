@@ -93,6 +93,15 @@ a{cursor:pointer;text-decoration:none;color:inherit}
 .chip:hover{border-color:var(--green-l);color:var(--green-d)}
 .chip.active{background:var(--green);color:#fff;border-color:var(--green)}
 
+/* Mercado / Competencia */
+.lnk{color:var(--green);font-weight:600}
+.lnk:hover{text-decoration:underline}
+.ytcard{position:relative;display:block;max-width:360px;border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.ytcard img{width:100%;display:block}
+.ytplay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:38px;color:#fff;background:rgba(0,0,0,.22);transition:.15s}
+.ytcard:hover .ytplay{background:rgba(0,0,0,.36)}
+.dims{margin:2px 0 0;padding-left:20px;font-size:13.5px;line-height:1.95;color:var(--ink)}
+
 /* Reportes */
 .repcard{margin-bottom:18px}
 .rephead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:4px}
