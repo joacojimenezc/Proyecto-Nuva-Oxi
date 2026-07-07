@@ -156,8 +156,20 @@ function table(cols, rows, foot){
 /* ---- views ---- */
 const views = {
   dashboard(){
-    const alerts = rotacion.filter(r=>r.si>0 && r.rot<0.35).map(r=>
-      `<div class="alert warn">⚠️ <b>${namePDV(r.pdv)}</b>: rotación ${pct(r.rot)} (sell-in ${r.si} / sell-out ${r.so}) — posible sobre-stock en tienda.</div>`).join('');
+    const al=[];
+    // 1) Rotación / sobre-stock
+    rotacion.filter(r=>r.si>0 && r.rot<0.35).forEach(r=>
+      al.push(`<div class="alert warn">⚠️ <b>${namePDV(r.pdv)}</b>: rotación ${pct(r.rot)} (sell-in ${r.si} / sell-out ${r.so}) — posible sobre-stock en tienda.</div>`));
+    // 2) Cuentas por cobrar / factura por vencer
+    if(porCxC.length){ const t=porCxC[0], tot=sum(porCxC,x=>x.monto), n=sum(porCxC,x=>x.docs);
+      al.push(`<div class="alert bad">💸 <b>Factura por cobrar</b>: ${clp(tot)} en ${n} factura(s) emitida(s). Mayor: <b>${nameCliente(t.cli)}</b> ${clp(t.monto)} (plazo ${t.plazo}d) — gestionar cobranza antes del vencimiento.</div>`); }
+    // 3) Marketing / activaciones
+    const mkt=(D.marketing||[]);
+    if(!mkt.length) al.push(`<div class="alert warn">📣 <b>Marketing sin plan</b>: no hay campañas ni activaciones cargadas — crear activaciones en PDV y campañas de redes para empujar el sell-out.</div>`);
+    else al.push(`<div class="alert warn">📣 <b>Marketing</b>: ${mkt.length} acción(es) planificada(s) — verificar ejecución y su efecto en sell-out.</div>`);
+    // 4) Redes / autenticidad de marca
+    al.push(`<div class="alert warn">📸 <b>Instagram @nuva_oxi</b>: dar protagonismo a la fundadora para hacer la cuenta más auténtica (las imágenes se notan generadas por IA). Sumar rostro, relato y detrás de escena.</div>`);
+    const alerts = al.join('');
     return `
       <div class="kpis">
         <div class="kpi"><div class="lbl">Venta neta (sell-in)</div><div class="val">${clp(K.venta)}</div><div class="sub">${K.uds} unidades</div></div>
