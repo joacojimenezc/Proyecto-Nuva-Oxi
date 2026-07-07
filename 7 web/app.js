@@ -427,6 +427,48 @@ function barsChart(){
     <div class="legend"><span><i style="background:var(--green-l)"></i>Sell-In</span><span><i style="background:var(--lime)"></i>Sell-Out</span></div>`;
 }
 
+/* ---- Mapa simple de PDV (SVG offline, sin librerias ni internet) ----
+   Ubica cada PDV por el centroide aprox. de su comuna (Region Metropolitana).
+   Las comunas en data.js vienen sin tildes/ñ, asi que basta lowercase+trim. */
+const cnorm = s => String(s||'').toLowerCase().trim();
+const COMUNA_COORD = {
+  'las condes':[-33.409,-70.567], 'providencia':[-33.430,-70.617], 'vitacura':[-33.380,-70.575],
+  'la reina':[-33.443,-70.535], 'la florida':[-33.522,-70.599], 'maipu':[-33.510,-70.758],
+  'penalolen':[-33.487,-70.545], 'nunoa':[-33.456,-70.597], 'puente alto':[-33.611,-70.575],
+  'san bernardo':[-33.592,-70.700], 'pirque':[-33.663,-70.548]
+};
+function mapaPDV(rows){
+  const W=660, H=460, pad=50;
+  const pts = rows.map(p=>{ const c=COMUNA_COORD[cnorm(p.Comuna)]; return c?{p,lat:c[0],lng:c[1]}:null; }).filter(Boolean);
+  const sinCoord = rows.length - pts.length;
+  if(!pts.length) return '<p class="hint">Sin comunas mapeables para este filtro.</p>';
+  const lats=pts.map(x=>x.lat), lngs=pts.map(x=>x.lng);
+  const latMin=Math.min(...lats), latMax=Math.max(...lats), lngMin=Math.min(...lngs), lngMax=Math.max(...lngs);
+  const spanLat=(latMax-latMin)||0.02, spanLng=(lngMax-lngMin)||0.02;
+  const X=lng=> pad + (lng-lngMin)/spanLng*(W-2*pad);
+  const Y=lat=> pad + (latMax-lat)/spanLat*(H-2*pad);   // norte arriba
+  const byComuna={};
+  pts.forEach(x=>{ const k=cnorm(x.p.Comuna); (byComuna[k]=byComuna[k]||[]).push(x); });
+  let dots='', labels='';
+  Object.values(byComuna).forEach(arr=>{
+    const cx=X(arr[0].lng), cy=Y(arr[0].lat);
+    labels+=`<text x="${cx.toFixed(0)}" y="${(cy-13).toFixed(0)}" class="mp-lbl">${arr[0].p.Comuna} (${arr.length})</text>`;
+    const r = arr.length>1 ? Math.min(9+arr.length*1.4, 24) : 0;
+    arr.forEach((x,i)=>{
+      const ang=i/arr.length*2*Math.PI;
+      const dx=cx+Math.cos(ang)*r, dy=cy+Math.sin(ang)*r;
+      const activo = x.p.Estado==='Activo';
+      dots+=`<circle cx="${dx.toFixed(1)}" cy="${dy.toFixed(1)}" r="5" fill="${activo?'var(--green-l)':'var(--amber)'}" stroke="#fff" stroke-width="1.3"><title>${x.p.Nombre_PDV} — ${nameCliente(x.p.ID_Cliente)} · ${x.p.Comuna} (${x.p.Estado})</title></circle>`;
+    });
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" class="mapa" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mapa de puntos de venta">
+    <rect x="0" y="0" width="${W}" height="${H}" fill="#eef4f0" rx="12"/>
+    <text x="${pad}" y="26" class="mp-cardinal">N ↑</text>
+    ${labels}${dots}
+  </svg>
+  <div class="legend"><span><i style="background:var(--green-l)"></i>Activo</span><span><i style="background:var(--amber)"></i>Otro estado</span><span class="mp-hint">Posición geográfica aproximada por comuna (RM). Pasa el cursor sobre un punto para ver el PDV.${sinCoord?` · ${sinCoord} PDV sin comuna mapeable.`:''}</span></div>`;
+}
+
 /* ---- Reportes descargables (Excel .xls y PDF via impresion del navegador) ----
    Cada columna: {t:titulo, num:bool, raw:(r)=>valor crudo (Excel), web:(r)=>texto formateado (web/PDF)} */
 const IVA = 0.19;
