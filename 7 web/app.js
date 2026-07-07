@@ -604,7 +604,69 @@ const views = {
              <p class="hint" style="max-width:520px">Para verlo embebido aquí, pon tu correo o ID de calendario en <b>extra.js → "google" → "calendar_src"</b>. Mientras tanto, ábrelo directo e inicia sesión:</p>
              <a class="btn-google" href="${openCal}" target="_blank" rel="noopener">Abrir Google Calendar →</a></div>`}`;
   },
-  correo(){ return (typeof gmailView==='function') ? gmailView() : '<p class="hint">Cargando módulo de correo…</p>'; }
+  correo(){ return (typeof gmailView==='function') ? gmailView() : '<p class="hint">Cargando módulo de correo…</p>'; },
+  gerencia(){
+    const pdvRec = id => (D.pdv||[]).find(p=>p.ID_PDV===id) || {};
+    const agg = {};
+    (D.sellin||[]).forEach(v=>{ const k=v.ID_PDV; (agg[k]=agg[k]||{pdv:k,uds:0,venta:0,margen:0}); agg[k].uds+=Number(v.Uds)||0; agg[k].venta+=Number(v.Venta_Neta)||0; agg[k].margen+=Number(v.Margen)||0; });
+    const pdvRows = Object.values(agg).sort((a,b)=>b.venta-a.venta);
+    const pdvCols=[
+      {k:'pdv',t:'Punto de venta',render:r=>namePDV(r.pdv)},
+      {k:'cli',t:'Cliente',render:r=>nameCliente(pdvRec(r.pdv).ID_Cliente)},
+      {k:'seg',t:'Segmento',render:r=>segCliente(pdvRec(r.pdv).ID_Cliente)},
+      {k:'uds',t:'Unidades',num:1},
+      {k:'venta',t:'Venta Sell-In ($)',num:1,render:r=>clp(r.venta)},
+      {k:'margen',t:'Margen ($)',num:1,render:r=>clp(r.margen)}
+    ];
+    const pdvFoot={pdv:'TOTAL',cli:'',seg:'',uds:K.uds,venta:clp(K.venta),margen:clp(K.margen)};
+    const siCols=[
+      {k:'Fecha',t:'Fecha'},
+      {k:'ID_Cliente',t:'Cliente',render:r=>nameCliente(r.ID_Cliente)},
+      {k:'ID_PDV',t:'PDV',render:r=>namePDV(r.ID_PDV)},
+      {k:'SKU',t:'SKU',render:r=>r.SKU+' · '+(skuInfo(r.SKU).Descripcion||'')},
+      {k:'Uds',t:'Uds',num:1},
+      {k:'Venta_Neta',t:'Venta Neta',num:1,render:r=>clp(r.Venta_Neta)},
+      {k:'Estado_Factura',t:'Status Factura',render:r=>badge(r.Estado_Factura)}
+    ];
+    const siFoot={Fecha:'',ID_Cliente:'',ID_PDV:'',SKU:'TOTAL',Uds:K.uds,Venta_Neta:clp(K.venta),Estado_Factura:''};
+    const ocCols=[
+      {k:'ID_Pedido',t:'Pedido'},{k:'ID_Cliente',t:'Cliente',render:r=>nameCliente(r.ID_Cliente)},
+      {k:'N_OC',t:'N° OC'},{k:'Monto_OC',t:'Monto OC',num:1,render:r=>clp(r.Monto_OC)},
+      {k:'Estado',t:'Estado OC',render:r=>badge(r.Estado)},
+      {k:'Estado_Despacho',t:'Despacho',render:r=>badge(r.Estado_Despacho)}
+    ];
+    const invCols=[
+      {k:'pdv',t:'PDV',render:r=>namePDV(r.pdv)},
+      {k:'si',t:'Sell-In',num:1},{k:'so',t:'Sell-Out',num:1},
+      {k:'stock',t:'Stock teórico',num:1},{k:'rot',t:'Rotación',num:1,render:r=>pct(r.rot)},
+      {k:'estado',t:'Estado',render:r=>`<span class="badge ${r.cls}">${r.estado}</span>`}
+    ];
+    const cxcRows=(porCxC||[]).map(x=>({...x, cliente:nameCliente(x.cli)}));
+    const cxcCols=[
+      {k:'cliente',t:'Cliente'},{k:'docs',t:'Facturas',num:1},{k:'plazo',t:'Plazo (días)',num:1},
+      {k:'monto',t:'Por cobrar ($)',num:1,render:r=>clp(r.monto)}
+    ];
+    const cxcTot=sum(porCxC||[],x=>x.monto);
+    const cxcFoot={cliente:'TOTAL',docs:sum(porCxC||[],x=>x.docs),plazo:'',monto:clp(cxcTot)};
+    const cliCols=[
+      {k:'ID_Cliente',t:'ID'},{k:'Cadena',t:'Cliente'},{k:'Segmento',t:'Segmento'},
+      {k:'Condicion',t:'Condición'},{k:'Resp',t:'Responsable'},{k:'Estado',t:'Estado',render:r=>badge(r.Estado)}
+    ];
+    return `
+      <p class="hint">Vista ejecutiva de solo lectura · Gerencia · piloto NUVA OXI.</p>
+      <div class="kpis">
+        <div class="kpi"><div class="lbl">Venta Sell-In</div><div class="val">${clp(K.venta)}</div><div class="sub">${K.uds} unidades</div></div>
+        <div class="kpi blue"><div class="lbl">Margen bruto</div><div class="val">${clp(K.margen)}</div></div>
+        <div class="kpi red"><div class="lbl">Cobranzas pendientes</div><div class="val">${clp(cxcTot)}</div><div class="sub">${(porCxC||[]).length} cliente(s)</div></div>
+        <div class="kpi"><div class="lbl">Cobertura PDV</div><div class="val">${K.pdvAct}/${K.pdvTot}</div><div class="sub">${K.cli} clientes</div></div>
+      </div>
+      <div class="panel"><h2>📍 Puntos de venta · Venta Sell-In (pesos y unidades)</h2>${table(pdvCols, pdvRows, pdvFoot)}</div>
+      <div class="panel"><h2>🧾 Detalle Sell-In por SKU · status de facturación</h2>${table(siCols, D.sellin||[], siFoot)}</div>
+      <div class="panel"><h2>📦 Órdenes de compra</h2>${(D.pedidos&&D.pedidos.length)?table(ocCols, D.pedidos):'<p class="hint">Sin órdenes de compra registradas.</p>'}</div>
+      <div class="panel"><h2>📦 Inventario por punto de venta</h2>${table(invCols, inventarioPDV)}</div>
+      <div class="panel" style="border-left:4px solid var(--red)"><h2>💳 Cobranzas (cuentas por cobrar)</h2>${(porCxC&&porCxC.length)?table(cxcCols, cxcRows, cxcFoot):'<p class="hint">Sin cuentas por cobrar pendientes 🎉</p>'}</div>
+      <div class="panel"><h2>🤝 Estado de clientes</h2>${table(cliCols, D.clientes||[])}</div>`;
+  }
 };
 
 function barsChart(){
