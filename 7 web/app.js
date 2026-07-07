@@ -486,6 +486,65 @@ const views = {
       </div>`:''}
       ${oport?`<div class="panel"><h2>🚀 Oportunidades para NUVA OXI</h2>${oport}</div>`:''}
       ${fuentes?`<div class="panel"><h2>🔗 Fuentes del barrido</h2><p class="hint" style="line-height:1.9">${fuentes}</p></div>`:''}`;
+  },
+  planning(){
+    const rows = D.planning || [];
+    const cols=[
+      {k:'Iniciativa',t:'Iniciativa'},
+      {k:'Area',t:'Área'},
+      {k:'Responsable',t:'Responsable'},
+      {k:'Periodo',t:'Período'},
+      {k:'Prioridad',t:'Prioridad',render:r=>badge(r.Prioridad)},
+      {k:'Estado',t:'Estado',render:r=>badge(r.Estado)}
+    ];
+    return `<p class="hint">Roadmap del piloto: iniciativas por área, responsable, período y estado. Edita en <b>extra.js → "planning"</b>.</p>
+      ${rows.length ? table(cols, rows) : '<p class="hint">Sin iniciativas cargadas aún.</p>'}`;
+  },
+  pnl(){
+    const f = D.finanzas || {};
+    const gastos = D.pnl_gastos || [];
+    const ing = f.ingresos || 0;
+    const costo = f.costo || 0;
+    const mb = f.margen_bruto != null ? f.margen_bruto : (ing - costo);
+    const totG = gastos.length ? sum(gastos, x=>x.Monto) : (f.gastos || 0);
+    const res = mb - totG;
+    const p = v => ing ? pct(v/ing) : '—';
+    const line = (l,v,cls='',showP=true)=>`<div class="stmt-row ${cls}"><span>${l}</span><span>${clp(v)}${showP&&ing?` · <span class="pct">${p(Math.abs(v))}</span>`:''}</span></div>`;
+    return `
+      <div class="kpis">
+        <div class="kpi"><div class="lbl">Ingresos (neto)</div><div class="val">${clp(ing)}</div></div>
+        <div class="kpi blue"><div class="lbl">Margen bruto</div><div class="val">${clp(mb)}</div><div class="sub">${p(mb)} de ventas</div></div>
+        <div class="kpi"><div class="lbl">Resultado operativo</div><div class="val">${clp(res)}</div><div class="sub">${p(res)} de ventas</div></div>
+      </div>
+      <div class="panel statement" style="max-width:660px"><h2>📄 Estado de Resultados · P&amp;L (piloto)</h2>
+        ${line('Ingresos por ventas (neto)', ing, '', false)}
+        ${line('(-) Costo de ventas', -costo, 'neg')}
+        ${line('= Margen bruto', mb, 'total')}
+        ${gastos.map(g=>line('(-) '+g.Concepto, -g.Monto, 'neg')).join('')}
+        ${line('= Resultado operativo (EBITDA)', res, 'total')}
+        <p class="hint" style="margin-top:8px">Costo unitario $250/u es <b>supuesto</b> (a validar). Desglose de gastos de <b>ejemplo</b> en <b>extra.js → "pnl_gastos"</b>. Los % son sobre ventas.</p>
+      </div>`;
+  },
+  flujo(){
+    const b=(x,y,t,s,fill)=>`<rect x="${x}" y="${y}" width="155" height="58" rx="10" fill="${fill||'var(--green)'}" stroke="#fff" stroke-width="1.5"/><text x="${x+77}" y="${y+27}" class="fx-t">${t}</text><text x="${x+77}" y="${y+43}" class="fx-s">${s}</text>`;
+    const ar=(x1,y1,x2,y2,d)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#7fae9c" stroke-width="2" marker-end="url(#ar)" ${d?'stroke-dasharray="4 4"':''}/>`;
+    return `<p class="hint">Flujo de control del negocio: del plan a la reposición, con el CRM como capa de datos y decisiones. Simplificado.</p>
+      <div class="panel"><div class="fxwrap"><svg viewBox="0 0 920 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flujo operacional">
+        <defs><marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#7fae9c"/></marker></defs>
+        ${b(18,60,'Planificación','& compras')}
+        ${b(200,60,'Inventario','bodega')}
+        ${b(382,60,'Despacho','ruta propia')}
+        ${b(564,60,'Punto de venta','sell-in')}
+        ${b(746,60,'Consumidor','sell-out','var(--green-l)')}
+        ${ar(173,89,199,89)}${ar(355,89,381,89)}${ar(537,89,563,89)}${ar(719,89,745,89)}
+        <path d="M 823 60 C 823 20, 95 20, 95 58" fill="none" stroke="var(--amber)" stroke-width="2" marker-end="url(#ar)"/>
+        <text x="459" y="14" class="fx-lbl">Reposición (par-level según stock y rotación)</text>
+        ${b(18,235,'Finanzas','cobranza · P&L · caja','#2b6b52')}
+        <rect x="300" y="233" width="320" height="62" rx="11" fill="var(--green-d)" stroke="var(--lime)" stroke-width="2"/><text x="460" y="260" class="fx-t">CRM NUVA OXI</text><text x="460" y="277" class="fx-s">datos → control, alertas y decisiones</text>
+        ${b(747,235,'Marketing','activaciones · trade','#2b6b52')}
+        ${ar(370,233,290,120,1)}${ar(460,233,460,120,1)}${ar(550,233,635,120,1)}
+      </svg></div>
+      <p class="hint" style="margin-top:6px">🟢 cadena física · 🟠 retorno de reposición · el CRM monitorea stock, rotación, cobranza y activaciones para decidir.</p></div>`;
   }
 };
 
