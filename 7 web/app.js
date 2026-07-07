@@ -864,7 +864,7 @@ function contaGo(s){ contaSub=s; $('#search').value=''; render(); }
 
 /* ---- router + search + sort ---- */
 let current='dashboard', sortState={};
-const titles={dashboard:'Dashboard',rotacion:'Rotación · Sell-in vs Sell-out',clientes:'Clientes',pdv:'Puntos de venta',productos:'Productos · SKU',inventario:'Control de Inventario',contabilidad:'Contabilidad',logistica:'Logística y Despachos',finanzas:'Finanzas',reportes:'Reportes',marketing:'Marketing y Trade',mercado:'Mercado y Competencia',decisiones:'Decisiones pendientes'};
+const titles={dashboard:'Dashboard',rotacion:'Rotación · Sell-in vs Sell-out',clientes:'Clientes',pdv:'Puntos de venta',productos:'Productos · SKU',inventario:'Control de Inventario',contabilidad:'Contabilidad',logistica:'Logística y Despachos',planning:'Planning · Roadmap',finanzas:'Finanzas',pnl:'P&L · Estado de Resultados',reportes:'Reportes',marketing:'Marketing y Trade',mercado:'Mercado y Competencia',flujo:'Flujo operacional',decisiones:'Decisiones pendientes'};
 
 function render(){
   $('#app').innerHTML = views[current]();
