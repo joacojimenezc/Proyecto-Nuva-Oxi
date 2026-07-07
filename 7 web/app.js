@@ -173,7 +173,7 @@ const views = {
     const alerts = al.join('');
     return `
       <div class="kpis">
-        <div class="kpi"><div class="lbl">Venta neta (sell-in)</div><div class="val">${clp(K.venta)}</div><div class="sub">${K.uds} unidades</div></div>
+        <div class="kpi"><div class="lbl">Venta neta (sell-in)</div><div class="val">${clp(K.venta)}</div><div class="sub">${K.uds} u · <b>bruto c/IVA ${clp(K.venta*1.19)}</b></div></div>
         <div class="kpi blue"><div class="lbl">Margen bruto</div><div class="val">${clp(K.margen)}</div><div class="sub">costo $250/u (no validado)</div></div>
         <div class="kpi red"><div class="lbl">CxC pendiente</div><div class="val">${clp(K.cxc)}</div><div class="sub">facturas emitidas</div></div>
         <div class="kpi"><div class="lbl">Cobertura PDV</div><div class="val">${K.pdvAct}/${K.pdvTot}</div><div class="sub">${K.cli} clientes</div></div>
