@@ -9,6 +9,16 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div id="gate" class="gate">
+    <div class="gate-box">
+      <img class="gate-logo" src="logo nuva oxi.jpeg" alt="NUVA OXI" />
+      <div class="gate-lock">🔒 Documento confidencial</div>
+      <p>Información de uso interno de NUVA OXI. Ingresa la clave para continuar.</p>
+      <input id="gateInput" type="password" inputmode="numeric" placeholder="Clave" autocomplete="off" />
+      <button id="gateBtn">Ingresar</button>
+      <div id="gateErr" class="gate-err"></div>
+    </div>
+  </div>
   <aside class="sidebar">
     <div class="brand">
       <img class="brand-logo-img" src="logo nuva oxi.jpeg" alt="NUVA OXI" />
@@ -36,7 +46,10 @@
 
   <main class="content">
     <header class="topbar">
-      <h1 id="viewTitle">Dashboard</h1>
+      <div class="topbar-left">
+        <h1 id="viewTitle">Dashboard</h1>
+        <span class="conf-badge">🔒 Confidencial · uso interno</span>
+      </div>
       <input id="search" type="search" placeholder="Buscar…" />
     </header>
     <section id="app"></section>
