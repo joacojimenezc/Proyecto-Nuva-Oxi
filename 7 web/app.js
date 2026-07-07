@@ -665,10 +665,10 @@ const views = {
         <div class="repbtns"><button class="btnrep xls" onclick="gerenciaExcel()">⬇ Excel</button><button class="btnrep pdf" onclick="gerenciaPdf()">⬇ PDF</button></div>
       </div>
       <div class="kpis">
-        <div class="kpi"><div class="lbl">Venta Sell-In</div><div class="val">${clp(K.venta)}</div><div class="sub">${K.uds} unidades</div></div>
-        <div class="kpi blue"><div class="lbl">Margen bruto</div><div class="val">${clp(K.margen)}</div></div>
+        <div class="kpi"><div class="lbl">Venta Sell-In (neto)</div><div class="val">${clp(K.venta)}</div><div class="sub">${K.uds} u · bruto c/IVA ${clp(K.venta*1.19)}</div></div>
+        <div class="kpi blue"><div class="lbl">Margen bruto</div><div class="val">${clp(K.margen)}</div><div class="sub">${pct(K.margen/(K.venta||1))} s/ venta neta</div></div>
         <div class="kpi red"><div class="lbl">Cobranzas pendientes</div><div class="val">${clp(cxcTot)}</div><div class="sub">${(porCxC||[]).length} cliente(s)</div></div>
-        <div class="kpi"><div class="lbl">Cobertura PDV</div><div class="val">${K.pdvAct}/${K.pdvTot}</div><div class="sub">${K.cli} clientes</div></div>
+        <div class="kpi"><div class="lbl">Cobertura (con venta)</div><div class="val">${new Set((D.sellin||[]).map(v=>v.ID_PDV)).size}/${K.pdvTot} · ${Math.round(new Set((D.sellin||[]).map(v=>v.ID_PDV)).size/(K.pdvTot||1)*100)}%</div><div class="sub">${new Set((D.sellin||[]).map(v=>v.ID_Cliente)).size}/${K.cli} clientes con venta</div></div>
       </div>
       <div class="panel"><h2>📍 Puntos de venta · Venta Sell-In (pesos y unidades)</h2>${table(pdvCols, pdvRows, pdvFoot)}</div>
       <div class="panel"><h2>🧾 Detalle Sell-In por SKU · status de facturación</h2>${table(siCols, D.sellin||[], siFoot)}</div>
