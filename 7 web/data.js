@@ -1,5 +1,5 @@
 window.NUVA_DATA = {
-    "generado":  "2026-07-06 15:50",
+    "generado":  "2026-07-06 22:57",
     "clientes":  [
                      {
                          "ID_Cliente":  "CL-CEN",
@@ -450,30 +450,27 @@ window.NUVA_DATA = {
                         "ID_Cliente":  "CL-CEN",
                         "N_OC":  "OC-88231",
                         "Monto_OC":  295000,
-                        "Estado":  "Facturado",
-                        "Estado_Despacho":  "Despachado"
+                        "Estado":  "Facturado"
                     },
                     {
                         "ID_Pedido":  "PED002",
                         "ID_Cliente":  "CL-RITZ",
                         "N_OC":  "OC-RC-19",
                         "Monto_OC":  47200,
-                        "Estado":  "Pagado",
-                        "Estado_Despacho":  "Entregado"
+                        "Estado":  "Pagado"
                     },
                     {
                         "ID_Pedido":  "PED003",
                         "ID_Cliente":  "CL-DEL",
                         "N_OC":  "OC-DL-03",
                         "Monto_OC":  22800,
-                        "Estado":  "Cerrado",
-                        "Estado_Despacho":  "Pendiente"
+                        "Estado":  "Cerrado"
                     }
                 ],
     "decisiones":  [
                        {
-                           "Tema":  "Modelo VCT",
-                           "Decision":  "Definir rol de VCT (distribuidora de Concha y Toro): opera full, parcial o solo apoyo",
+                           "Tema":  "Modelo BCT/VCT",
+                           "Decision":  "Definir si opera full, parcial o solo apoyo",
                            "Responsable":  "Jose Ignacio",
                            "Estado":  "Abierta"
                        },
@@ -532,57 +529,6 @@ window.NUVA_DATA = {
                     {
                         "ID_PDV":  "J001",
                         "Uds":  5
-                    }
-                ],
-    "compras":  [
-                    /* Facturas de compra a proveedores. Estructura de cada fila:
-                       { "Fecha":"2026-01-15", "Proveedor":"...", "RUT":"76.xxx.xxx-x",
-                         "Tipo_Doc":"Factura", "Folio":"1234",
-                         "Neto":100000, "IVA":19000, "Total":119000, "Estado":"Pendiente" } */
-                ],
-    "logistica":  [
-                    /* Ventanas de despacho / recepcion por cliente. Estructura de cada fila:
-                       { "ID_Cliente":"CL-CEN", "Dias_Recepcion":"Lun a Vie",
-                         "Horario":"08:00 - 13:00", "Direccion_Entrega":"CD Cencosud, ...",
-                         "Contacto":"Recepcion Jumbo", "Notas":"Cita previa 24h" } */
-                ],
-    "marketing":  [
-                    /* Acciones de trade marketing planificadas. Estructura de cada fila:
-                       { "Fecha":"2026-02-01", "Tipo":"Degustacion", "ID_Cliente":"CL-CEN",
-                         "ID_PDV":"J001", "Descripcion":"Degustacion fin de semana",
-                         "Costo":80000, "Estado":"Planificada" }
-                       Tipos sugeridos: Degustacion, Promocion, Activacion, Campana, Material POP. */
-                ],
-    "asignacion":  [
-                    /* Parametros de reposicion (par-level) por PDV para venta en ruta.
-                       Si no se define un PDV aqui, el sistema usa un default SUGERIDO
-                       (Max = sell-in del PDV; Min/reorden = 30% del Max, minimo 2).
-                       Estructura de cada fila:
-                       { "ID_PDV":"J001", "Stock_Max":60, "Stock_Min":18 } */
-                ],
-    "marca":  {
-                    "Instagram":  "https://www.instagram.com/nuva_oxi/",
-                    "Youtube":  "https://www.youtube.com/watch?v=6Uz_1QtVUcQ",
-                    "Posicionamiento":  "NUVA OXI se centra en funcionalidad ANTIOXIDANTE. Aspiracion: llegar a ser un 'wild food', aprovechando el aprendizaje del boom de la proteina, buscando una equivalencia en funcionalidad de antioxidantes. Reto clave: culturizar a la audiencia sobre el valor de los antioxidantes."
-                },
-    "competencia":  [
-                    {
-                        "Marca":  "Wild Foods",
-                        "Categoria":  "Wild food / alimentacion funcional (referente)",
-                        "Formatos":  "",
-                        "Pricing":  "",
-                        "Instagram":  "",
-                        "Web":  "",
-                        "Notas":  "Referente de relato 'wild food'. Analizar linea de producto, formatos, pricing y contenido de redes."
-                    },
-                    {
-                        "Marca":  "Ruta",
-                        "Categoria":  "Barras / snacks saludables",
-                        "Formatos":  "",
-                        "Pricing":  "",
-                        "Instagram":  "",
-                        "Web":  "",
-                        "Notas":  "Comparar posicionamiento, formatos, precio en canal y estrategia de marca."
                     }
                 ],
     "finanzas":  {
