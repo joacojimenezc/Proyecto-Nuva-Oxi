@@ -111,15 +111,28 @@ const facturaNumDe = idCliente => facturasDe(idCliente)
    El sell-out es confiable en Jumbo; en otros PDV puede ser parcial (soKnown=false). */
 const soKnownSet = new Set((D.sellout||[]).map(s=>s.ID_PDV));
 const cliDePDV = idPDV => (D.pdv.find(p=>p.ID_PDV===idPDV)||{}).ID_Cliente;
+// Parametros de reposicion (par-level) por PDV. Override en data.js -> "asignacion";
+// si no, default sugerido: Max = sell-in del PDV, Min (reorden) = 30% del Max (minimo 2).
+function asignacionDe(pdv, si){
+  const c = (D.asignacion||[]).find(a=>a.ID_PDV===pdv);
+  if(c && c.Stock_Max!=null){
+    const max=Number(c.Stock_Max);
+    return {max, min:(c.Stock_Min!=null?Number(c.Stock_Min):Math.max(2,Math.ceil(max*0.3))), fuente:'config'};
+  }
+  const max=Math.max(si,1);
+  return {max, min:Math.max(2,Math.ceil(max*0.3)), fuente:'sugerido'};
+}
 const inventarioPDV = rotacion.map(r=>{
   const stock = Math.max(r.si - r.so, 0);
   const known = soKnownSet.has(r.pdv);
+  const a = asignacionDe(r.pdv, r.si);
+  const reponer = stock <= a.min ? Math.max(a.max - stock, 0) : 0;
   let estado='Equilibrado', cls='b-green';
   if(!known){ estado='Sin sell-out'; cls='b-gray'; }
-  else if(r.rot>=0.8 && stock<=r.si*0.2){ estado='Riesgo de quiebre'; cls='b-red'; }
+  else if(stock <= a.min){ estado='Reponer'; cls='b-red'; }
   else if(r.rot<0.35){ estado='Sobre-stock'; cls='b-amber'; }
-  return {...r, stock, known, estado, cls};
-}).sort((a,b)=>b.stock-a.stock);
+  return {...r, stock, known, max:a.max, min:a.min, reponer, fuente:a.fuente, estado, cls};
+}).sort((x,y)=> y.reponer-x.reponer || y.stock-x.stock);
 
 /* ---- render helpers ---- */
 function table(cols, rows, foot){
