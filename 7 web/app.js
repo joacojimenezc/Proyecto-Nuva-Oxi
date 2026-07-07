@@ -252,7 +252,27 @@ const views = {
       {k:'ID_Cliente',t:'ID'},{k:'Cadena',t:'Cliente'},{k:'Segmento',t:'Segmento'},
       {k:'Condicion',t:'Condición'},{k:'Plazo_Pago',t:'Plazo (d)',num:1},{k:'Resp',t:'Responsable'},
       {k:'Estado',t:'Estado',render:r=>badge(r.Estado)}];
-    return table(cols, D.clientes);
+    const meses = ['Todo', ...mesesVenta()];
+    const chips = meses.map(m=>`<button class="chip ${cobMes===m?'active':''}" onclick="cobFiltro('${m}')">${m==='Todo'?'Acumulado':m}</button>`).join('');
+    const cob = coberturaPeriodo(cobMes);
+    const covRows = (D.clientes||[]).map(c=>{
+      const ven = (D.sellin||[]).filter(v=> (cobMes==='Todo'||String(v.Fecha||'').slice(0,7)===cobMes) && v.ID_Cliente===c.ID_Cliente);
+      return { Cadena:c.Cadena, Segmento:c.Segmento, con:cob.cliSet.has(c.ID_Cliente),
+               pdvs:new Set(ven.map(x=>x.ID_PDV)).size, uds:sum(ven,x=>x.Uds), venta:sum(ven,x=>x.Venta_Neta) };
+    }).sort((a,b)=> (b.con-a.con) || (b.venta-a.venta));
+    const covCols=[
+      {k:'Cadena',t:'Cliente'},{k:'Segmento',t:'Segmento'},
+      {k:'con',t:'¿Con venta?',render:r=> r.con?'<span class="badge b-green">Con venta</span>':'<span class="badge b-red">Sin venta</span>'},
+      {k:'pdvs',t:'Locales',num:1},{k:'uds',t:'Uds',num:1},
+      {k:'venta',t:'Venta Neta',num:1,render:r=>clp(r.venta)}
+    ];
+    return `
+      <div class="panel"><h2>📊 Cobertura comercial del período</h2>
+        <div class="filterbar"><div class="chips">${chips}</div>
+          <p class="hint" style="margin:0"><b>${pct(cob.pctCli)}</b> clientes con venta (${cob.cliCon}/${cob.cliTot}) · <b>${pct(cob.pctPdv)}</b> PDV (${cob.pdvCon}/${cob.pdvTot})</p></div>
+        ${table(covCols, covRows)}
+        <p class="hint" style="margin-top:6px">Cobertura = clientes/PDV a los que se les vendió en el período. Cambia el mes con los filtros.</p></div>
+      <div class="panel"><h2>🤝 Ficha de clientes</h2>${table(cols, D.clientes)}</div>`;
   },
   pdv(){
     const segs = ['Todos', ...new Set((D.pdv||[]).map(p=>segCliente(p.ID_Cliente)))];
