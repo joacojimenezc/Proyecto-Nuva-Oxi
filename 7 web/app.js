@@ -189,6 +189,26 @@ const views = {
           {k:'part',t:'% Part.',num:1,render:r=>pct(r.part)}
         ], porSKU.slice(0,6))}
           <p class="hint" style="margin-top:10px">Detalle completo en la sección <b>🍫 Productos</b>.</p></div>
+      </div>
+      <div class="grid2">
+        <div class="panel"><h2>🥇 Participación por cliente (share)</h2>${table([
+          {k:'cli',t:'Cliente',render:r=>nameCliente(r.cli)},
+          {k:'uds',t:'Uds',num:1},
+          {k:'shareU',t:'% Uds',num:1,render:r=>pct(r.shareU)},
+          {k:'venta',t:'Venta Neta',num:1,render:r=>clp(r.venta)},
+          {k:'shareV',t:'% $',num:1,render:r=>pct(r.shareV)}
+        ], porCliente, {cli:'TOTAL',uds:K.uds,shareU:'100%',venta:clp(K.venta),shareV:'100%'})}</div>
+        <div class="panel"><h2>📈 Crecimiento por período <span class="tag-ej">ejemplo</span></h2>
+          ${(()=>{ const per=D.periodos||[]; if(!per.length) return '<p class="hint">Carga períodos en extra.js → "periodos".</p>';
+            const pr=per.map((p,i)=>{ const pv=per[i-1]; return {...p, varV:(pv&&pv.Venta)?(p.Venta-pv.Venta)/pv.Venta:null}; });
+            return miniBars(per)+table([
+              {k:'Periodo',t:'Período'},
+              {k:'Uds',t:'Uds',num:1},
+              {k:'Venta',t:'Venta',num:1,render:r=>clp(r.Venta)},
+              {k:'varV',t:'Var. $',num:1,render:r=> r.varV==null?'—':`<span style="color:${r.varV>=0?'var(--green)':'var(--red)'};font-weight:700">${r.varV>=0?'▲':'▼'} ${pct(Math.abs(r.varV))}</span>`}
+            ], pr); })()}
+          <p class="hint" style="margin-top:6px">Montos de <b>ejemplo</b> — reemplazar por venta real en <b>extra.js → "periodos"</b>.</p>
+        </div>
       </div>`;
   },
   rotacion(){
