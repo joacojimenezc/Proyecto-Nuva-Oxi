@@ -60,7 +60,9 @@ a{cursor:pointer;text-decoration:none;color:inherit}
 .subtab:hover{background:var(--card);color:var(--green-d)}
 .subtab.active{color:var(--green-d);border-bottom-color:var(--green-l);background:var(--card)}
 
-/* Mapa de PDV (SVG) */
+/* Mapa de PDV */
+.mapa-real{height:440px;width:100%;max-width:680px;border:1px solid var(--line);border-radius:12px;z-index:0}
+.mapa-real .leaflet-popup-content{font-size:12.5px;line-height:1.4}
 .mapa{width:100%;max-width:680px;height:auto;display:block;border:1px solid var(--line);border-radius:12px}
 .mp-lbl{font-size:9.5px;fill:#4f6157;text-anchor:middle;font-weight:600}
 .mp-cardinal{font-size:12px;fill:#8aa398;font-weight:700}
