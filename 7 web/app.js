@@ -517,6 +517,10 @@ const views = {
         <div class="panel"><h2>🔮 Desafíos futuros</h2>${desaf('futuro')||'<p class="hint">—</p>'}</div>
       </div>`:''}
       ${oport?`<div class="panel"><h2>🚀 Oportunidades para NUVA OXI</h2>${oport}</div>`:''}
+      ${(ind.historias&&ind.historias.length)?`<div class="panel"><h2>💡 Historias que inspiran · casos de éxito a estudiar</h2>
+        <p class="hint">Referentes dignos de estudio para el enfoque de marca, el relato y el crecimiento.</p>
+        <div class="imgslot"><img src="img/inspiracion.jpg" alt="historias que inspiran" onerror="this.parentElement.classList.add('empty');this.remove();"><span class="imgslot-hint">🖼️ Espacio para imagen — guarda <b>img/inspiracion.jpg</b> en <b>7 web</b>.</span></div>
+        ${ind.historias.map(h=>`<div class="alert" style="border-color:var(--blue);background:#eef3fb"><b>${h.nombre}</b> — ${h.detalle} ${h.url?`<a class="lnk" href="${h.url}" target="_blank" rel="noopener">${/youtube|youtu\.be/.test(h.url)?'▶ ver video':'ver más'} ↗</a>`:''}</div>`).join('')}</div>`:''}
       ${fuentes?`<div class="panel"><h2>🔗 Fuentes del barrido</h2><p class="hint" style="line-height:1.9">${fuentes}</p></div>`:''}`;
   },
   planning(){
