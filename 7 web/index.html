@@ -88,6 +88,7 @@
   <script src="facturas.js"></script>
   <script src="extra.js"></script>
   <script src="industria.js"></script>
+  <script src="sku-extra.js"></script>
   <script>
   /* Fusiona datos DURABLES sobre NUVA_DATA (el refresh del CRM solo regenera data.js):
      - extra.js  -> marca, logistica, marketing, compras, asignacion (edítalos ahí)
@@ -99,6 +100,8 @@
     if (I.competencia && I.competencia.length) D.competencia = I.competencia;
     if (I.industria) D.industria = I.industria;
     if (I.nuvaoxi)   D.nuvaoxi   = I.nuvaoxi;
+    var S = window.NUVA_SKU_EXTRA || [];   // SKUs premium (no retail) — se AGREGAN al maestro
+    if (S.length) D.sku = (D.sku || []).concat(S);
   })();
   </script>
   <script src="gmail.js"></script>
