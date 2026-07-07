@@ -387,26 +387,30 @@ const views = {
       {k:'si',t:'Sell-In',num:1},
       {k:'so',t:'Sell-Out',num:1},
       {k:'stock',t:'Stock teórico',num:1},
+      {k:'max',t:'Objetivo (máx)',num:1},
+      {k:'min',t:'Reorden (mín)',num:1},
+      {k:'reponer',t:'Reponer',num:1,render:r=> r.reponer>0?`<b style="color:var(--red)">${r.reponer} u</b>`:'—'},
       {k:'rot',t:'Rotación',num:1,render:r=>pct(r.rot)},
       {k:'estado',t:'Estado',render:r=>`<span class="badge ${r.cls}">${r.estado}</span>`}
     ];
     const totSi=sum(inventarioPDV,x=>x.si), totSo=sum(inventarioPDV,x=>x.so), totStock=sum(inventarioPDV,x=>x.stock);
-    const foot={pdv:'TOTAL',cli:'',si:totSi,so:totSo,stock:totStock,rot:pct(totSi?totSo/totSi:0),estado:''};
-    const quiebre=inventarioPDV.filter(r=>r.estado==='Riesgo de quiebre');
+    const aRep=inventarioPDV.filter(r=>r.reponer>0);
+    const totRep=sum(aRep,x=>x.reponer);
     const sobre=inventarioPDV.filter(r=>r.estado==='Sobre-stock');
+    const foot={pdv:'TOTAL',cli:'',si:totSi,so:totSo,stock:totStock,max:sum(inventarioPDV,x=>x.max),min:'',reponer:totRep,rot:pct(totSi?totSo/totSi:0),estado:''};
     const alerts=[
-      ...quiebre.map(r=>`<div class="alert bad">🔴 <b>${namePDV(r.pdv)}</b>: riesgo de quiebre — stock teórico ${r.stock}u, rotación ${pct(r.rot)}. Priorizar reposición.</div>`),
+      ...aRep.map(r=>`<div class="alert bad">🔴 <b>${namePDV(r.pdv)}</b>: bajo mínimo — stock ${r.stock}u ≤ reorden ${r.min}u. <b>Reponer ${r.reponer}u</b> (hasta objetivo ${r.max}u).</div>`),
       ...sobre.map(r=>`<div class="alert warn">🟠 <b>${namePDV(r.pdv)}</b>: sobre-stock — ${r.stock}u en tienda, rotación ${pct(r.rot)}. Frenar reposición / activar salida.</div>`)
     ].join('');
-    return `<p class="hint">Stock teórico en tienda = <b>Sell-In − Sell-Out</b> (despachado menos vendido al consumidor). Es una estimación de gestión; el stock real requiere conteo físico.</p>
+    return `<p class="hint">Modelo de <b>ruta propia</b>: stock teórico = Sell-In − Sell-Out. Cuando cae al <b>reorden (mín)</b>, se sugiere reponer hasta el <b>objetivo (máx)</b>. Es una estimación; el stock real requiere conteo físico.</p>
       <div class="kpis">
         <div class="kpi"><div class="lbl">Stock teórico en canal</div><div class="val">${totStock} u</div><div class="sub">de ${totSi}u despachadas</div></div>
-        <div class="kpi red"><div class="lbl">PDV en riesgo de quiebre</div><div class="val">${quiebre.length}</div></div>
+        <div class="kpi red"><div class="lbl">Unidades a reponer</div><div class="val">${totRep} u</div><div class="sub">${aRep.length} PDV bajo mínimo</div></div>
         <div class="kpi amber"><div class="lbl">PDV con sobre-stock</div><div class="val">${sobre.length}</div></div>
       </div>
-      ${alerts?`<div class="panel"><h2>🚨 Alertas de inventario</h2>${alerts}</div>`:''}
-      <div class="panel"><h2>📦 Stock teórico por punto de venta</h2>${table(cols, inventarioPDV, foot)}
-        <p class="hint" style="margin-top:8px">"Sin sell-out" = no hay venta al consumidor registrada de ese PDV (fuera de Jumbo el dato es parcial), por lo que el stock mostrado equivale a lo despachado.</p></div>`;
+      ${alerts?`<div class="panel"><h2>🚚 Sugerencia de reposición (ruta)</h2>${alerts}</div>`:''}
+      <div class="panel"><h2>📦 Stock y reposición por punto de venta</h2>${table(cols, inventarioPDV, foot)}
+        <p class="hint" style="margin-top:8px">Objetivo/reorden por defecto son <b>sugeridos</b> (máx = sell-in del PDV, mín = 30%). Ajústalos por PDV en <b>data.js → "asignacion"</b>. "Sin sell-out" = sin venta al consumidor registrada (fuera de Jumbo es parcial).</p></div>`;
   }
 };
 
