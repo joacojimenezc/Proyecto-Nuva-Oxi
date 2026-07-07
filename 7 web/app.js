@@ -471,10 +471,13 @@ const views = {
       {k:'rot',t:'Rotación',num:1,render:r=>pct(r.rot)},
       {k:'estado',t:'Estado',render:r=>`<span class="badge ${r.cls}">${r.estado}</span>`}
     ];
-    const totSi=sum(inventarioPDV,x=>x.si), totSo=sum(inventarioPDV,x=>x.so), totStock=sum(inventarioPDV,x=>x.stock);
-    const aRep=inventarioPDV.filter(r=>r.reponer>0);
+    const segs=['Todos', ...new Set(inventarioPDV.map(r=>segCliente(cliDePDV(r.pdv))))];
+    const rows=inventarioPDV.filter(r=> invSeg==='Todos' || segCliente(cliDePDV(r.pdv))===invSeg);
+    const chips=segs.map(s=>`<button class="chip ${invSeg===s?'active':''}" onclick="invFiltro('${s}')">${s}</button>`).join('');
+    const totSi=sum(rows,x=>x.si), totSo=sum(rows,x=>x.so), totStock=sum(rows,x=>x.stock);
+    const aRep=rows.filter(r=>r.reponer>0);
     const totRep=sum(aRep,x=>x.reponer);
-    const sobre=inventarioPDV.filter(r=>r.estado==='Sobre-stock');
+    const sobre=rows.filter(r=>r.estado==='Sobre-stock');
     const foot={pdv:'TOTAL',cli:'',si:totSi,so:totSo,stock:totStock,max:sum(inventarioPDV,x=>x.max),min:'',reponer:totRep,rot:pct(totSi?totSo/totSi:0),estado:''};
     const alerts=[
       ...aRep.map(r=>`<div class="alert bad">🔴 <b>${namePDV(r.pdv)}</b>: bajo mínimo — stock ${r.stock}u ≤ reorden ${r.min}u. <b>Reponer ${r.reponer}u</b> (hasta objetivo ${r.max}u).</div>`),
