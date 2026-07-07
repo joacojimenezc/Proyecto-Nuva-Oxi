@@ -71,8 +71,8 @@ window.NUVA_EXTRA = {
      - calendar_src: correo/ID del calendario a mostrar embebido. Vacío = usa "cuenta".
      - tz: zona horaria del calendario. */
   "google": {
-    "cuenta": "",
-    "calendar_src": "",
+    "cuenta": "contactonuvaoxi@gmail.com",
+    "calendar_src": "contactonuvaoxi@gmail.com",
     "tz": "America/Santiago",
     "client_id": ""
   }
