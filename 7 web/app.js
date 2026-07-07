@@ -436,8 +436,10 @@ const views = {
             {k:'rot',t:'Rotación',num:1,render:r=>pct(r.rot)}
           ], foco) : '<p class="hint">Sin PDV prioritarios.</p>'}</div>
         <div class="panel"><h2>📸 Redes sociales &amp; autenticidad</h2>
-          <p style="margin-bottom:8px"><a class="lnk" href="${m.Instagram||'#'}" target="_blank" rel="noopener">Instagram @nuva_oxi</a></p>
-          <ul class="dims">${redes.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+          <a class="iglanding" href="${m.Instagram||'#'}" target="_blank" rel="noopener"><span class="iglogo">📷</span><span><b>@nuva_oxi</b><br><span class="hint" style="margin:0">Abrir Instagram ↗</span></span></a>
+          <div class="imgslot" style="margin:10px 0"><img src="img/instagram.jpg" alt="preview instagram" onerror="this.parentElement.classList.add('empty');this.remove();"><span class="imgslot-hint">🖼️ Vista previa del landing de IG — guarda un screenshot como <b>img/instagram.jpg</b> en <b>7 web</b>.</span></div>
+          ${vidId?`<a class="ytcard" href="${vid}" target="_blank" rel="noopener" title="Ver en YouTube"><img src="https://img.youtube.com/vi/${vidId}/hqdefault.jpg" alt="Video NUVA OXI" loading="lazy" onerror="this.style.display='none'"/><span class="ytplay">▶ Ver video</span></a>`:''}
+          <ul class="dims" style="margin-top:10px">${redes.map(t=>`<li>${t}</li>`).join('')}</ul></div>
       </div>
       <div class="panel"><h2>🚨 Alertas de trade marketing</h2>${alerts}</div>
       <div class="panel"><h2>📣 Plan de acciones</h2>
