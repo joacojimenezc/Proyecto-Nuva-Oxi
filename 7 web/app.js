@@ -490,7 +490,7 @@ const views = {
         <div class="kpi amber"><div class="lbl">PDV con sobre-stock</div><div class="val">${sobre.length}</div></div>
       </div>
       ${alerts?`<div class="panel"><h2>🚚 Sugerencia de reposición (ruta)</h2>${alerts}</div>`:''}
-      <div class="panel"><h2>📦 Stock y reposición por punto de venta</h2>${table(cols, inventarioPDV, foot)}
+      <div class="panel"><h2>📦 Stock y reposición por punto de venta</h2>${table(cols, rows, foot)}
         <p class="hint" style="margin-top:8px">Objetivo/reorden por defecto son <b>sugeridos</b> (máx = sell-in del PDV, mín = 30%). Ajústalos por PDV en <b>data.js → "asignacion"</b>. "Sin sell-out" = sin venta al consumidor registrada (fuera de Jumbo es parcial).</p></div>`;
   },
   mercado(){
