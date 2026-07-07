@@ -74,6 +74,14 @@ const porCanal = (()=>{
   return Object.values(m).map(x=>({...x, cli:x.cli.size, pdv:x.pdv.size})).sort((a,b)=>b.venta-a.venta);
 })();
 
+/* ---- share (participacion) por cliente: unidades y pesos ---- */
+const porCliente = (()=>{
+  const m={};
+  (D.sellin||[]).forEach(v=>{ m[v.ID_Cliente]=m[v.ID_Cliente]||{cli:v.ID_Cliente,uds:0,venta:0}; m[v.ID_Cliente].uds+=Number(v.Uds)||0; m[v.ID_Cliente].venta+=Number(v.Venta_Neta)||0; });
+  const tu=sum(Object.values(m),x=>x.uds)||1, tv=sum(Object.values(m),x=>x.venta)||1;
+  return Object.values(m).map(x=>({...x, shareU:x.uds/tu, shareV:x.venta/tv})).sort((a,b)=>b.venta-a.venta);
+})();
+
 /* ---- analitica por SKU (incluye SKU sin ventas) ---- */
 const porSKU = (()=>{
   const m={};
