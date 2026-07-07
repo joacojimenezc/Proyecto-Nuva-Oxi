@@ -663,10 +663,9 @@ const views = {
     ];
     const siFoot={Fecha:'',ID_Cliente:'',ID_PDV:'',SKU:'TOTAL',Uds:K.uds,Venta_Neta:clp(K.venta),Estado_Factura:''};
     const ocCols=[
-      {k:'ID_Pedido',t:'Pedido'},{k:'ID_Cliente',t:'Cliente',render:r=>nameCliente(r.ID_Cliente)},
+      {k:'ID_Pedido',t:'Pedido'},{k:'Fecha_OC',t:'Fecha OC'},{k:'ID_Cliente',t:'Cliente',render:r=>nameCliente(r.ID_Cliente)},
       {k:'N_OC',t:'N° OC'},{k:'Monto_OC',t:'Monto OC',num:1,render:r=>clp(r.Monto_OC)},
-      {k:'Estado',t:'Estado OC',render:r=>badge(r.Estado)},
-      {k:'Estado_Despacho',t:'Despacho',render:r=>badge(r.Estado_Despacho)}
+      {k:'Estado',t:'Estado OC',render:r=>badge(r.Estado)}
     ];
     const invCols=[
       {k:'pdv',t:'PDV',render:r=>namePDV(r.pdv)},
