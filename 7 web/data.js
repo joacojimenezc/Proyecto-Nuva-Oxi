@@ -560,6 +560,31 @@ window.NUVA_DATA = {
                        Estructura de cada fila:
                        { "ID_PDV":"J001", "Stock_Max":60, "Stock_Min":18 } */
                 ],
+    "marca":  {
+                    "Instagram":  "https://www.instagram.com/nuvaoxi/",
+                    "Youtube":  "https://www.youtube.com/watch?v=6Uz_1QtVUcQ",
+                    "Posicionamiento":  "NUVA OXI se centra en funcionalidad ANTIOXIDANTE. Aspiracion: llegar a ser un 'wild food', aprovechando el aprendizaje del boom de la proteina, buscando una equivalencia en funcionalidad de antioxidantes. Reto clave: culturizar a la audiencia sobre el valor de los antioxidantes."
+                },
+    "competencia":  [
+                    {
+                        "Marca":  "Wild Foods",
+                        "Categoria":  "Wild food / alimentacion funcional (referente)",
+                        "Formatos":  "",
+                        "Pricing":  "",
+                        "Instagram":  "",
+                        "Web":  "",
+                        "Notas":  "Referente de relato 'wild food'. Analizar linea de producto, formatos, pricing y contenido de redes."
+                    },
+                    {
+                        "Marca":  "Ruta",
+                        "Categoria":  "Barras / snacks saludables",
+                        "Formatos":  "",
+                        "Pricing":  "",
+                        "Instagram":  "",
+                        "Web":  "",
+                        "Notas":  "Comparar posicionamiento, formatos, precio en canal y estrategia de marca."
+                    }
+                ],
     "finanzas":  {
                      "ingresos":  358656,
                      "costo":  70250,
