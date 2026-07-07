@@ -1033,7 +1033,7 @@ function gerenciaSecciones(){
       {t:'Estado', raw:r=>r.estado}
     ]},
     { titulo:'Cobranzas (cuentas por cobrar)', rows: porCxC||[], cols:[
-      {t:'Cliente', raw:r=>nameCliente(r.cli)}, {t:'Facturas', num:1, raw:r=>r.docs},
+      {t:'Cliente', raw:r=>nameCliente(r.cli)}, {t:'Facturas', num:1, raw:r=>r.docs}, {t:'Vence (próx.)', raw:r=>r.vence},
       {t:'Plazo (días)', num:1, raw:r=>r.plazo}, {t:'Por cobrar ($)', num:1, raw:r=>Math.round(r.monto||0), web:r=>clp(r.monto)}
     ]},
     { titulo:'Estado de clientes', rows: D.clientes||[], cols:[
