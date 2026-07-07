@@ -588,7 +588,7 @@ const views = {
     const src = String(g.calendar_src || g.cuenta || '').trim();
     const acct = String(g.cuenta||'').trim();
     const openCal = acct ? `https://calendar.google.com/calendar/r?authuser=${encodeURIComponent(acct)}` : 'https://calendar.google.com/calendar/r';
-    const embed = src ? `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(src)}&ctz=${encodeURIComponent(tz)}&mode=MONTH&hl=es&wkst=2&showTitle=0&showPrint=0&showCalendars=0&showTz=0` : '';
+    const embed = src ? `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(src)}&ctz=${encodeURIComponent(tz)}&hl=es` : '';
     return `
       <div class="gmtoolbar">
         <div class="gm-acct"><span class="gchip">📅 Google Calendar</span>${src?` <span class="hint" style="margin:0">${src}</span>`:''}</div>
