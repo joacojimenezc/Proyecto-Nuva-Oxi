@@ -653,7 +653,10 @@ const views = {
       {k:'Condicion',t:'Condición'},{k:'Resp',t:'Responsable'},{k:'Estado',t:'Estado',render:r=>badge(r.Estado)}
     ];
     return `
-      <p class="hint">Vista ejecutiva de solo lectura · Gerencia · piloto NUVA OXI.</p>
+      <div class="filterbar">
+        <p class="hint" style="margin:0">Vista ejecutiva de solo lectura · Gerencia · piloto NUVA OXI.</p>
+        <div class="repbtns"><button class="btnrep xls" onclick="gerenciaExcel()">⬇ Excel</button><button class="btnrep pdf" onclick="gerenciaPdf()">⬇ PDF</button></div>
+      </div>
       <div class="kpis">
         <div class="kpi"><div class="lbl">Venta Sell-In</div><div class="val">${clp(K.venta)}</div><div class="sub">${K.uds} unidades</div></div>
         <div class="kpi blue"><div class="lbl">Margen bruto</div><div class="val">${clp(K.margen)}</div></div>
@@ -951,6 +954,83 @@ function expPdf(titulo, cols, rows){
 }
 function repExcel(id){ const R=REPORTES[id]; expExcel(`${id}_nuvaoxi_${stamp()}.xls`, R.cols, R.rows()); }
 function repPdf(id){ const R=REPORTES[id]; expPdf(R.titulo, R.cols, R.rows()); }
+
+/* ---- Exportación de la vista GERENCIA (todas las secciones, Excel y PDF) ---- */
+function gerenciaSecciones(){
+  const pdvRec = id => (D.pdv||[]).find(p=>p.ID_PDV===id) || {};
+  const agg = {};
+  (D.sellin||[]).forEach(v=>{ const k=v.ID_PDV; (agg[k]=agg[k]||{pdv:k,uds:0,venta:0,margen:0}); agg[k].uds+=Number(v.Uds)||0; agg[k].venta+=Number(v.Venta_Neta)||0; agg[k].margen+=Number(v.Margen)||0; });
+  const pdvRows = Object.values(agg).sort((a,b)=>b.venta-a.venta);
+  return [
+    { titulo:'Puntos de venta · Venta Sell-In (pesos y unidades)', rows: pdvRows, cols:[
+      {t:'Punto de venta', raw:r=>namePDV(r.pdv)},
+      {t:'Cliente', raw:r=>nameCliente(pdvRec(r.pdv).ID_Cliente)},
+      {t:'Segmento', raw:r=>segCliente(pdvRec(r.pdv).ID_Cliente)},
+      {t:'Unidades', num:1, raw:r=>r.uds},
+      {t:'Venta Sell-In ($)', num:1, raw:r=>Math.round(r.venta), web:r=>clp(r.venta)},
+      {t:'Margen ($)', num:1, raw:r=>Math.round(r.margen), web:r=>clp(r.margen)}
+    ]},
+    { titulo:'Detalle Sell-In por SKU · status de facturación', rows: D.sellin||[], cols:[
+      {t:'Fecha', raw:r=>r.Fecha}, {t:'Cliente', raw:r=>nameCliente(r.ID_Cliente)}, {t:'PDV', raw:r=>namePDV(r.ID_PDV)},
+      {t:'SKU', raw:r=>r.SKU}, {t:'Descripción', raw:r=>skuInfo(r.SKU).Descripcion||''},
+      {t:'Uds', num:1, raw:r=>r.Uds},
+      {t:'Venta Neta ($)', num:1, raw:r=>Math.round(r.Venta_Neta), web:r=>clp(r.Venta_Neta)},
+      {t:'Margen ($)', num:1, raw:r=>Math.round(r.Margen), web:r=>clp(r.Margen)},
+      {t:'Status Factura', raw:r=>r.Estado_Factura}
+    ]},
+    { titulo:'Órdenes de compra', rows: D.pedidos||[], cols:[
+      {t:'Pedido', raw:r=>r.ID_Pedido}, {t:'Cliente', raw:r=>nameCliente(r.ID_Cliente)}, {t:'N° OC', raw:r=>r.N_OC},
+      {t:'Monto OC ($)', num:1, raw:r=>Math.round(r.Monto_OC||0), web:r=>clp(r.Monto_OC)},
+      {t:'Estado OC', raw:r=>r.Estado}, {t:'Despacho', raw:r=>r.Estado_Despacho}
+    ]},
+    { titulo:'Inventario por punto de venta', rows: inventarioPDV, cols:[
+      {t:'PDV', raw:r=>namePDV(r.pdv)},
+      {t:'Cliente', raw:r=>nameCliente(((D.pdv||[]).find(p=>p.ID_PDV===r.pdv)||{}).ID_Cliente)},
+      {t:'Sell-In', num:1, raw:r=>r.si}, {t:'Sell-Out', num:1, raw:r=>r.so},
+      {t:'Stock teórico', num:1, raw:r=>r.stock}, {t:'Rotación', num:1, raw:r=>Math.round((r.rot||0)*100)+'%', web:r=>pct(r.rot)},
+      {t:'Estado', raw:r=>r.estado}
+    ]},
+    { titulo:'Cobranzas (cuentas por cobrar)', rows: porCxC||[], cols:[
+      {t:'Cliente', raw:r=>nameCliente(r.cli)}, {t:'Facturas', num:1, raw:r=>r.docs},
+      {t:'Plazo (días)', num:1, raw:r=>r.plazo}, {t:'Por cobrar ($)', num:1, raw:r=>Math.round(r.monto||0), web:r=>clp(r.monto)}
+    ]},
+    { titulo:'Estado de clientes', rows: D.clientes||[], cols:[
+      {t:'ID', raw:r=>r.ID_Cliente}, {t:'Cliente', raw:r=>r.Cadena}, {t:'Segmento', raw:r=>r.Segmento},
+      {t:'Condición', raw:r=>r.Condicion}, {t:'Responsable', raw:r=>r.Resp}, {t:'Estado', raw:r=>r.Estado}
+    ]}
+  ];
+}
+function gerenciaExcel(){
+  const secs = gerenciaSecciones();
+  let out = '';
+  secs.forEach(s=>{
+    const th = s.cols.map(c=>`<th>${esc(c.t)}</th>`).join('');
+    const body = s.rows.length ? s.rows.map(r=>'<tr>'+s.cols.map(c=>`<td>${esc(cellRaw(c,r))}</td>`).join('')+'</tr>').join('') : `<tr><td>Sin registros</td></tr>`;
+    out += `<h3 style="color:#14503b">${esc(s.titulo)}</h3><table border="1"><thead><tr>${th}</tr></thead><tbody>${body}</tbody></table><br>`;
+  });
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"></head><body><h1>NUVA OXI · Resumen Gerencia</h1><div>Generado ${esc(stamp())} · confidencial</div>${out}</body></html>`;
+  dlFile(`gerencia_nuvaoxi_${stamp()}.xls`, 'application/vnd.ms-excel', '﻿'+html);
+}
+function gerenciaPdf(){
+  const secs = gerenciaSecciones();
+  const w = window.open('', '_blank');
+  if(!w){ alert('Permite las ventanas emergentes para generar el PDF.'); return; }
+  let out = '';
+  secs.forEach(s=>{
+    const th = s.cols.map(c=>`<th class="${c.num?'num':''}">${esc(c.t)}</th>`).join('');
+    const body = s.rows.length ? s.rows.map(r=>'<tr>'+s.cols.map(c=>`<td class="${c.num?'num':''}">${esc(cellWeb(c,r))}</td>`).join('')+'</tr>').join('') : `<tr><td colspan="${s.cols.length}" style="text-align:center;color:#888">Sin registros</td></tr>`;
+    out += `<h2>${esc(s.titulo)}</h2><table><thead><tr>${th}</tr></thead><tbody>${body}</tbody></table>`;
+  });
+  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Resumen Gerencia · NUVA OXI</title>
+    <style>body{font-family:'Segoe UI',system-ui,sans-serif;color:#1c2b26;padding:24px}
+    h1{color:#14503b;font-size:20px;margin:0 0 2px} h2{color:#14503b;font-size:14px;margin:18px 0 6px}
+    .meta{color:#6b7d76;font-size:11px;margin-bottom:10px}
+    table{width:100%;border-collapse:collapse;font-size:10.5px;margin-bottom:6px} th,td{border:1px solid #cfdad4;padding:5px 7px;text-align:left} th{background:#eef4f0;color:#14503b} td.num,th.num{text-align:right}
+    @media print{@page{size:landscape;margin:10mm}}</style></head>
+    <body><h1>NUVA OXI · Resumen Gerencia</h1><div class="meta">Generado ${esc(stamp())} · uso interno confidencial</div>${out}
+    <scr`+`ipt>window.onload=function(){setTimeout(function(){window.print();},300);};<\/scr`+`ipt></body></html>`);
+  w.document.close();
+}
 
 /* ---- PDV: filtro por segmento + exportacion ---- */
 let pdvSeg = 'Todos';
