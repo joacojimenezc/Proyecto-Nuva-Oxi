@@ -561,7 +561,7 @@ window.NUVA_DATA = {
                        { "ID_PDV":"J001", "Stock_Max":60, "Stock_Min":18 } */
                 ],
     "marca":  {
-                    "Instagram":  "https://www.instagram.com/nuvaoxi/",
+                    "Instagram":  "https://www.instagram.com/nuva_oxi/",
                     "Youtube":  "https://www.youtube.com/watch?v=6Uz_1QtVUcQ",
                     "Posicionamiento":  "NUVA OXI se centra en funcionalidad ANTIOXIDANTE. Aspiracion: llegar a ser un 'wild food', aprovechando el aprendizaje del boom de la proteina, buscando una equivalencia en funcionalidad de antioxidantes. Reto clave: culturizar a la audiencia sobre el valor de los antioxidantes."
                 },
