@@ -61,6 +61,13 @@
       </div>
       <a data-view="reportes">📑 Reportes</a>
       <div class="navgroup">
+        <button class="navhead">🔗 Google <span class="chev">▾</span></button>
+        <div class="navsub">
+          <a data-view="calendario">📅 Calendario</a>
+          <a data-view="correo">✉️ Correo (Gmail)</a>
+        </div>
+      </div>
+      <div class="navgroup">
         <button class="navhead">🧭 Estrategia <span class="chev">▾</span></button>
         <div class="navsub">
           <a data-view="flujo">Flujo operacional</a>
@@ -87,6 +94,7 @@
   </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="data.js"></script>
   <script src="facturas.js"></script>
   <script src="extra.js"></script>
@@ -104,6 +112,7 @@
     if (I.nuvaoxi)   D.nuvaoxi   = I.nuvaoxi;
   })();
   </script>
+  <script src="gmail.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

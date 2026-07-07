@@ -64,6 +64,17 @@ window.NUVA_EXTRA = {
     { "Concepto": "Marketing y trade", "Monto": 120000 },
     { "Concepto": "Logistica y despacho", "Monto": 65000 },
     { "Concepto": "Administracion y otros", "Monto": 90000 }
-  ]
+  ],
+
+  /* Cuenta Google para las pestañas Calendario y Correo.
+     - cuenta: tu correo Google (ej. "tucorreo@gmail.com"). Vacío = usa la sesión activa del navegador.
+     - calendar_src: correo/ID del calendario a mostrar embebido. Vacío = usa "cuenta".
+     - tz: zona horaria del calendario. */
+  "google": {
+    "cuenta": "",
+    "calendar_src": "",
+    "tz": "America/Santiago",
+    "client_id": ""
+  }
 
 };

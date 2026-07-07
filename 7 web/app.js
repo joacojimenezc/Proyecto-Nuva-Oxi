@@ -582,7 +582,29 @@ const views = {
         ${ar(480,320,480,267,1)}
       </svg></div>
       <p class="hint" style="margin-top:6px">🟢 cadena física · 🟠 reposición · punteadas = control/estudio del CRM · <b>Marketing empuja la venta</b> y estudiamos la industria de forma <b>permanente</b> para detectar oportunidades, riesgos y amenazas.</p></div>`;
-  }
+  },
+  calendario(){
+    const g = (D.google)||{}, tz = g.tz || 'America/Santiago';
+    const src = String(g.calendar_src || g.cuenta || '').trim();
+    const acct = String(g.cuenta||'').trim();
+    const openCal = acct ? `https://calendar.google.com/calendar/r?authuser=${encodeURIComponent(acct)}` : 'https://calendar.google.com/calendar/r';
+    const embed = src ? `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(src)}&ctz=${encodeURIComponent(tz)}&mode=WEEK&wkst=2` : '';
+    return `
+      <div class="gmtoolbar">
+        <div class="gm-acct"><span class="gchip">📅 Google Calendar</span>${src?` <span class="hint" style="margin:0">${src}</span>`:''}</div>
+        <div class="repbtns">
+          <a class="btnrep pdf" href="${openCal}" target="_blank" rel="noopener">↗ Abrir completo</a>
+          <a class="btnrep xls" href="https://calendar.google.com/calendar/u/0/r/eventedit" target="_blank" rel="noopener">➕ Nuevo evento</a>
+        </div>
+      </div>
+      ${embed
+        ? `<div class="gframe-wrap"><iframe class="gframe" src="${embed}" frameborder="0" scrolling="no" title="Google Calendar"></iframe></div>
+           <p class="hint">Si se ve vacío, inicia sesión en tu cuenta Google en este navegador (con el botón ↗). El embed muestra el calendario de <b>${src}</b>.</p>`
+        : `<div class="glaunch"><div class="glaunch-ico">📅</div><h2>Conecta tu Google Calendar</h2>
+             <p class="hint" style="max-width:520px">Para verlo embebido aquí, pon tu correo o ID de calendario en <b>extra.js → "google" → "calendar_src"</b>. Mientras tanto, ábrelo directo e inicia sesión:</p>
+             <a class="btn-google" href="${openCal}" target="_blank" rel="noopener">Abrir Google Calendar →</a></div>`}`;
+  },
+  correo(){ return (typeof gmailView==='function') ? gmailView() : '<p class="hint">Cargando módulo de correo…</p>'; }
 };
 
 function barsChart(){
@@ -901,7 +923,7 @@ function contaGo(s){ contaSub=s; $('#search').value=''; render(); }
 
 /* ---- router + search + sort ---- */
 let current='dashboard', sortState={};
-const titles={dashboard:'Dashboard',rotacion:'Rotación · Sell-in vs Sell-out',clientes:'Clientes',pdv:'Puntos de venta',productos:'Productos · SKU',inventario:'Control de Inventario',contabilidad:'Contabilidad',logistica:'Logística y Despachos',planning:'Planning · Roadmap',finanzas:'Finanzas',pnl:'P&L · Estado de Resultados',reportes:'Reportes',marketing:'Marketing y Trade',mercado:'Mercado y Competencia',flujo:'Flujo operacional',decisiones:'Decisiones pendientes'};
+const titles={dashboard:'Dashboard',rotacion:'Rotación · Sell-in vs Sell-out',clientes:'Clientes',pdv:'Puntos de venta',productos:'Productos · SKU',inventario:'Control de Inventario',contabilidad:'Contabilidad',logistica:'Logística y Despachos',planning:'Planning · Roadmap',finanzas:'Finanzas',pnl:'P&L · Estado de Resultados',reportes:'Reportes',marketing:'Marketing y Trade',mercado:'Mercado y Competencia',flujo:'Flujo operacional',decisiones:'Decisiones pendientes',calendario:'Calendario · Google',correo:'Correo · Gmail'};
 
 function render(){
   $('#app').innerHTML = views[current]();
