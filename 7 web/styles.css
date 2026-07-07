@@ -196,3 +196,7 @@ tfoot td{font-weight:700;background:#f0f5f2}
 .gm-in:focus{outline:2px solid var(--green-l);border-color:transparent}
 textarea.gm-in{resize:vertical}
 @media(max-width:640px){.gm-item{grid-template-columns:1fr 60px}.gm-item .gm-mid{grid-column:1/-1}}
+
+/* ===== Acceso Gerencia (clave nuvaoxi2026): solo la vista Gerencia ===== */
+.nav-gerencia{color:var(--wine-d);font-weight:700}
+.role-jefa #nav > :not(.nav-gerencia){display:none}
