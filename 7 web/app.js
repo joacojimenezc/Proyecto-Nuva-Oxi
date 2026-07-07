@@ -410,15 +410,36 @@ const views = {
       .forEach(p=>al.push({t:'Sin sell-out',ref:p.Nombre_PDV,cls:'warn',msg:'PDV activo sin registro de sell-out — visitar y activar el punto.'}));
     porSKU.filter(s=>s.uds===0).forEach(s=>al.push({t:'SKU sin ventas',ref:skuInfo(s.sku).Descripcion||s.sku,cls:'bad',msg:'Producto sin ventas — considerar campaña o material POP.'}));
     (D.clientes||[]).filter(c=>/prospecto|contactado/i.test(c.Estado)).forEach(c=>al.push({t:'Oportunidad cliente',ref:c.Cadena,cls:'warn',msg:`Cliente en estado "${c.Estado}" — apoyar cierre con propuesta de activación.`}));
-    const alerts = al.length ? al.map(a=>`<div class="alert ${a.cls}"><b>${a.t} · ${a.ref}</b> — ${a.msg}</div>`).join('') : '<p class="hint">Sin alertas de marketing.</p>';
-    const mrows=(D.marketing||[]).map(m=>({...m, cliente: m.ID_Cliente?nameCliente(m.ID_Cliente):'', pdv: m.ID_PDV?namePDV(m.ID_PDV):''}));
+    const alerts = al.length ? al.map(a=>`<div class="alert ${a.cls}"><b>${a.t} · ${a.ref}</b> — ${a.msg}</div>`).join('') : '<p class="hint">Sin alertas.</p>';
+    const m = D.marca || {};
+    const mrows=(D.marketing||[]).map(x=>({...x, cliente: x.ID_Cliente?nameCliente(x.ID_Cliente):'', pdv: x.ID_PDV?namePDV(x.ID_PDV):''}));
     const mcols=[
       {k:'Fecha',t:'Fecha'},{k:'Tipo',t:'Tipo',render:r=>badge(r.Tipo)},{k:'cliente',t:'Cliente'},{k:'pdv',t:'PDV'},
       {k:'Descripcion',t:'Descripción'},{k:'Costo',t:'Costo',num:1,render:r=>clp(r.Costo)},{k:'Estado',t:'Estado',render:r=>badge(r.Estado)}];
-    return `<p class="hint">Alineación con trade marketing: alertas para activar promociones, degustaciones o campañas que apoyen la venta.</p>
-      <div class="panel"><h2>🎯 Alertas de trade marketing</h2>${alerts}</div>
-      <div class="panel"><h2>📣 Acciones planificadas</h2>
-        <p class="hint">Registra degustaciones, promociones, activaciones y campañas en <b>data.js → "marketing"</b>.</p>
+    const foco = rotacion.filter(r=>r.si>0 && r.rot<0.5).sort((a,b)=>a.rot-b.rot).slice(0,5);
+    const redes = [
+      'Dar PROTAGONISMO a la fundadora: rostro, historia y voz propia — autenticidad &gt; imágenes con look de IA.',
+      'Educar sobre antioxidantes: crear la categoría (el gran reto), en lenguaje simple y con beneficios reales.',
+      'Contar el relato del orujo de uva y la economía circular con Concha y Toro (diferenciador único).',
+      'Mostrar detrás de escena, degustaciones y PDV — contenido real y cercano.',
+      'Segmentar por sabor: Maní (energía/saciedad), Cacao (indulgencia consciente), Frutal (ligero/antiox).'
+    ];
+    return `<p class="hint">Marketing <b>alineado a la venta</b>: dónde activar, cómo comunicar y qué está planificado.</p>
+      <div class="grid2">
+        <div class="panel"><h2>🎯 Foco: dónde activar (alineado a venta)</h2>
+          <p class="hint">PDV con menor rotación = prioridad para degustación/activación que empuje el sell-out.</p>
+          ${foco.length? table([
+            {k:'pdv',t:'PDV',render:r=>namePDV(r.pdv)},
+            {k:'si',t:'Sell-In',num:1},{k:'so',t:'Sell-Out',num:1},
+            {k:'rot',t:'Rotación',num:1,render:r=>pct(r.rot)}
+          ], foco) : '<p class="hint">Sin PDV prioritarios.</p>'}</div>
+        <div class="panel"><h2>📸 Redes sociales &amp; autenticidad</h2>
+          <p style="margin-bottom:8px"><a class="lnk" href="${m.Instagram||'#'}" target="_blank" rel="noopener">Instagram @nuva_oxi</a></p>
+          <ul class="dims">${redes.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+      </div>
+      <div class="panel"><h2>🚨 Alertas de trade marketing</h2>${alerts}</div>
+      <div class="panel"><h2>📣 Plan de acciones</h2>
+        <p class="hint">Registra degustaciones, promociones, activaciones y campañas en <b>extra.js → "marketing"</b>.</p>
         ${mrows.length ? table(mcols, mrows) : '<p class="hint">Aún sin acciones registradas.</p>'}</div>`;
   },
   inventario(){
