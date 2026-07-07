@@ -26,18 +26,41 @@
     </div>
     <nav id="nav">
       <a data-view="dashboard" class="active">📊 Dashboard</a>
-      <a data-view="rotacion">🔄 Rotación</a>
-      <a data-view="clientes">🤝 Clientes</a>
-      <a data-view="pdv">📍 Puntos de venta</a>
-      <a data-view="productos">🍫 Productos</a>
-      <a data-view="inventario">📦 Inventario</a>
-      <a data-view="contabilidad">📒 Contabilidad</a>
-      <a data-view="logistica">🚚 Logística</a>
-      <a data-view="finanzas">💰 Finanzas</a>
-      <a data-view="reportes">📑 Reportes</a>
-      <a data-view="marketing">🎯 Marketing</a>
-      <a data-view="mercado">🔍 Mercado</a>
-      <a data-view="decisiones">✅ Decisiones</a>
+      <div class="navgroup">
+        <button class="navhead">🛒 Comercial <span class="chev">▾</span></button>
+        <div class="navsub">
+          <a data-view="clientes">Clientes</a>
+          <a data-view="pdv">Puntos de venta</a>
+          <a data-view="productos">Productos</a>
+          <a data-view="rotacion">Rotación</a>
+          <a data-view="mercado">Mercado y competencia</a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <button class="navhead">📦 Operaciones <span class="chev">▾</span></button>
+        <div class="navsub">
+          <a data-view="inventario">Inventario</a>
+          <a data-view="logistica">Logística</a>
+          <a data-view="planning">Planning</a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <button class="navhead">💰 Finanzas <span class="chev">▾</span></button>
+        <div class="navsub">
+          <a data-view="contabilidad">Contabilidad</a>
+          <a data-view="finanzas">Estado financiero</a>
+          <a data-view="pnl">P&amp;L (resultado)</a>
+          <a data-view="reportes">Reportes</a>
+        </div>
+      </div>
+      <div class="navgroup">
+        <button class="navhead">🎯 Estrategia <span class="chev">▾</span></button>
+        <div class="navsub">
+          <a data-view="marketing">Marketing</a>
+          <a data-view="flujo">Flujo operacional</a>
+          <a data-view="decisiones">Decisiones</a>
+        </div>
+      </div>
     </nav>
     <div class="side-foot">
       <span id="genfecha"></span>
