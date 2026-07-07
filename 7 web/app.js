@@ -1084,6 +1084,10 @@ function exportarPdv(fmt){
   else expPdf('Puntos de venta'+suf, pdvExpCols, rows);
 }
 
+/* ---- Filtro de mes para cobertura (vista Clientes) ---- */
+let cobMes = (mesesVenta().slice(-1)[0]) || 'Todo';
+function cobFiltro(m){ cobMes = m; render(); }
+
 /* ---- sub-pestañas de Contabilidad ---- */
 const contaTabs=[
   {k:'sellin',  t:'🧾 Facturas Sell-In'},
