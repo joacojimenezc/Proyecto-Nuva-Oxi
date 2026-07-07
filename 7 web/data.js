@@ -1,5 +1,5 @@
 window.NUVA_DATA = {
-    "generado":  "2026-07-07 14:06",
+    "generado":  "2026-07-07 14:13",
     "clientes":  [
                      {
                          "ID_Cliente":  "CL-CEN",
@@ -395,7 +395,8 @@ window.NUVA_DATA = {
                        "Uds":  12,
                        "Venta_Neta":  19160,
                        "Margen":  16160,
-                       "Estado_Factura":  "Pagada"
+                       "Estado_Factura":  "Pagada",
+                       "Fecha_Venc":  "2026-02-04"
                    },
                    {
                        "ID_Venta":  2,
@@ -406,7 +407,8 @@ window.NUVA_DATA = {
                        "Uds":  8,
                        "Venta_Neta":  12773,
                        "Margen":  10773,
-                       "Estado_Factura":  "Pagada"
+                       "Estado_Factura":  "Pagada",
+                       "Fecha_Venc":  "2026-02-05"
                    },
                    {
                        "ID_Venta":  3,
@@ -417,7 +419,8 @@ window.NUVA_DATA = {
                        "Uds":  9,
                        "Venta_Neta":  14370,
                        "Margen":  12120,
-                       "Estado_Factura":  "Emitida"
+                       "Estado_Factura":  "Emitida",
+                       "Fecha_Venc":  "2026-02-06"
                    },
                    {
                        "ID_Venta":  4,
@@ -428,7 +431,8 @@ window.NUVA_DATA = {
                        "Uds":  5,
                        "Venta_Neta":  24790,
                        "Margen":  19790,
-                       "Estado_Factura":  "Pagada"
+                       "Estado_Factura":  "Pagada",
+                       "Fecha_Venc":  "2026-02-08"
                    },
                    {
                        "ID_Venta":  5,
@@ -439,7 +443,8 @@ window.NUVA_DATA = {
                        "Uds":  8,
                        "Venta_Neta":  39664,
                        "Margen":  31664,
-                       "Estado_Factura":  "Emitida"
+                       "Estado_Factura":  "Emitida",
+                       "Fecha_Venc":  "2026-02-11"
                    },
                    {
                        "ID_Venta":  6,
@@ -450,13 +455,15 @@ window.NUVA_DATA = {
                        "Uds":  50,
                        "Venta_Neta":  247899,
                        "Margen":  197899,
-                       "Estado_Factura":  "Emitida"
+                       "Estado_Factura":  "Emitida",
+                       "Fecha_Venc":  "2026-02-12"
                    }
                ],
     "pedidos":  [
                     {
                         "ID_Pedido":  "PED001",
                         "ID_Cliente":  "CL-CEN",
+                        "Fecha_OC":  "2026-01-10",
                         "N_OC":  "OC-88231",
                         "Monto_OC":  295000,
                         "Estado":  "Facturado"
@@ -464,6 +471,7 @@ window.NUVA_DATA = {
                     {
                         "ID_Pedido":  "PED002",
                         "ID_Cliente":  "CL-RITZ",
+                        "Fecha_OC":  "2026-01-11",
                         "N_OC":  "OC-RC-19",
                         "Monto_OC":  47200,
                         "Estado":  "Pagado"
@@ -471,6 +479,7 @@ window.NUVA_DATA = {
                     {
                         "ID_Pedido":  "PED003",
                         "ID_Cliente":  "CL-DEL",
+                        "Fecha_OC":  "2026-01-05",
                         "N_OC":  "OC-DL-03",
                         "Monto_OC":  22800,
                         "Estado":  "Cerrado"
