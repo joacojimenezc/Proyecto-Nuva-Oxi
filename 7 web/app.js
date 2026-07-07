@@ -671,6 +671,16 @@ const views = {
         <div class="kpi"><div class="lbl">Cobertura (con venta)</div><div class="val">${new Set((D.sellin||[]).map(v=>v.ID_PDV)).size}/${K.pdvTot} · ${Math.round(new Set((D.sellin||[]).map(v=>v.ID_PDV)).size/(K.pdvTot||1)*100)}%</div><div class="sub">${new Set((D.sellin||[]).map(v=>v.ID_Cliente)).size}/${K.cli} clientes con venta</div></div>
       </div>
       <div class="panel"><h2>📍 Puntos de venta · Venta Sell-In (pesos y unidades)</h2>${table(pdvCols, pdvRows, pdvFoot)}</div>
+      <div class="panel"><h2>🏢 Venta Sell-In por cliente (suma de locales)</h2>${(function(){
+        const a={}; (D.sellin||[]).forEach(v=>{ const k=v.ID_Cliente; (a[k]=a[k]||{cli:k,uds:0,venta:0,pdvs:new Set()}); a[k].uds+=Number(v.Uds)||0; a[k].venta+=Number(v.Venta_Neta)||0; a[k].pdvs.add(v.ID_PDV); });
+        const rows=Object.values(a).map(x=>({cli:x.cli,uds:x.uds,venta:x.venta,pdvs:x.pdvs.size})).sort((p,q)=>q.venta-p.venta);
+        return table([
+          {k:'cli',t:'Cliente',render:r=>nameCliente(r.cli)},
+          {k:'pdvs',t:'N° locales',num:1},
+          {k:'uds',t:'Unidades',num:1},
+          {k:'venta',t:'Venta Neta ($)',num:1,render:r=>clp(r.venta)}
+        ], rows, {cli:'TOTAL',pdvs:'',uds:K.uds,venta:clp(K.venta)});
+      })()}</div>
       <div class="panel"><h2>🧾 Detalle Sell-In por SKU · status de facturación</h2>${table(siCols, D.sellin||[], siFoot)}</div>
       <div class="panel"><h2>📦 Órdenes de compra</h2>${(D.pedidos&&D.pedidos.length)?table(ocCols, D.pedidos):'<p class="hint">Sin órdenes de compra registradas.</p>'}</div>
       <div class="panel"><h2>📦 Inventario por punto de venta</h2>${table(invCols, inventarioPDV)}</div>
