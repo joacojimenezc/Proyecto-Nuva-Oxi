@@ -470,6 +470,40 @@ function mapaSVG(rows){
   <div class="legend"><span><i style="background:var(--green-l)"></i>Activo</span><span><i style="background:var(--amber)"></i>Otro estado</span><span class="mp-hint">Posición geográfica aproximada por comuna (RM). Pasa el cursor sobre un punto para ver el PDV.${sinCoord?` · ${sinCoord} PDV sin comuna mapeable.`:''}</span></div>`;
 }
 
+/* mapaPDV: usa Leaflet (mapa real con calles) si está disponible (hay internet);
+   si no, cae al mapa esquemático SVG offline. */
+function mapaPDV(rows){
+  if(window.L) return `<div id="mapaLeaflet" class="mapa-real"></div>
+    <div class="legend"><span><i style="background:#2fa377"></i>Activo</span><span><i style="background:#e8a33d"></i>Otro estado</span><span class="mp-hint">Mapa OpenStreetMap · clic en un punto para ver el PDV · rueda+Ctrl o botones para zoom.</span></div>`;
+  return mapaSVG(rows);
+}
+let _leafMap=null;
+function initLeafletMap(){
+  const el=document.getElementById('mapaLeaflet');
+  if(!el || !window.L) return;
+  if(_leafMap){ try{ _leafMap.remove(); }catch(e){} _leafMap=null; }
+  const map=L.map(el,{scrollWheelZoom:false});
+  _leafMap=map;
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18, attribution:'© OpenStreetMap'}).addTo(map);
+  const rows=pdvFiltrados(), byC={};
+  rows.forEach(p=>{ const c=COMUNA_COORD[cnorm(p.Comuna)]; if(c){ (byC[cnorm(p.Comuna)]=byC[cnorm(p.Comuna)]||[]).push({p,c}); } });
+  const markers=[];
+  Object.values(byC).forEach(arr=>{
+    arr.forEach((x,i)=>{
+      const ang = arr.length>1 ? i/arr.length*2*Math.PI : 0;
+      const jr = arr.length>1 ? 0.007 : 0;   // separa los del mismo comuna (~0.7km)
+      const lat=x.c[0]+Math.sin(ang)*jr, lng=x.c[1]+Math.cos(ang)*jr;
+      const activo = x.p.Estado==='Activo';
+      const m=L.circleMarker([lat,lng],{radius:7,color:'#fff',weight:1.6,fillColor:activo?'#2fa377':'#e8a33d',fillOpacity:.95});
+      m.bindPopup(`<b>${x.p.Nombre_PDV}</b><br>${nameCliente(x.p.ID_Cliente)} · ${x.p.Comuna}<br>Estado: ${x.p.Estado}`);
+      m.addTo(map); markers.push(m);
+    });
+  });
+  if(markers.length){ map.fitBounds(L.featureGroup(markers).getBounds().pad(0.25)); }
+  else { map.setView([-33.45,-70.62],10); }
+  setTimeout(()=>map.invalidateSize(),120);
+}
+
 /* ---- Reportes descargables (Excel .xls y PDF via impresion del navegador) ----
    Cada columna: {t:titulo, num:bool, raw:(r)=>valor crudo (Excel), web:(r)=>texto formateado (web/PDF)} */
 const IVA = 0.19;
