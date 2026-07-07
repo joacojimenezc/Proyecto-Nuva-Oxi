@@ -189,7 +189,7 @@ const views = {
         <div class="kpi"><div class="lbl">Venta neta (sell-in)</div><div class="val">${clp(K.venta)}</div><div class="sub">${K.uds} u · <b>bruto c/IVA ${clp(K.venta*1.19)}</b></div></div>
         <div class="kpi blue"><div class="lbl">Margen bruto</div><div class="val">${clp(K.margen)}</div><div class="sub">costo $250/u (no validado)</div></div>
         <div class="kpi red"><div class="lbl">CxC pendiente</div><div class="val">${clp(K.cxc)}</div><div class="sub">facturas emitidas</div></div>
-        <div class="kpi"><div class="lbl">Cobertura PDV</div><div class="val">${K.pdvAct}/${K.pdvTot}</div><div class="sub">${K.cli} clientes</div></div>
+        <div class="kpi"><div class="lbl">Cobertura ${_mesAct==='Todo'?'(acum.)':'('+_mesAct+')'}</div><div class="val">${cobD.pdvCon}/${cobD.pdvTot} · ${pct(cobD.pctPdv)}</div><div class="sub">${cobD.cliCon}/${cobD.cliTot} clientes con venta</div></div>
         <div class="kpi amber"><div class="lbl">Sell-out total</div><div class="val">${K.selloutTot} u</div><div class="sub">rotación global ${pct(K.selloutTot/K.uds)}</div></div>
       </div>
       <div class="grid2">
