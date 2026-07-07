@@ -200,3 +200,13 @@ textarea.gm-in{resize:vertical}
 /* ===== Acceso Gerencia (clave nuvaoxi2026): solo la vista Gerencia ===== */
 .nav-gerencia{color:var(--wine-d);font-weight:700}
 .role-jefa #nav > :not(.nav-gerencia){display:none}
+
+/* ===== Espacios para imágenes (drop-in) y card Instagram ===== */
+.imgslot{position:relative}
+.imgslot img{max-width:100%;display:block;border-radius:12px;box-shadow:var(--shadow)}
+.imgslot-hint{display:none}
+.imgslot.empty{border:2px dashed var(--line);border-radius:12px;padding:26px 16px;text-align:center;background:var(--bg)}
+.imgslot.empty .imgslot-hint{display:block;color:var(--muted);font-size:12.5px;line-height:1.5}
+.iglanding{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff;text-decoration:none;box-shadow:var(--shadow);margin-bottom:6px}
+.iglanding .iglogo{font-size:22px;background:rgba(255,255,255,.22);width:42px;height:42px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}
+.iglanding .hint{color:#ffe9f2 !important}
