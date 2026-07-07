@@ -438,7 +438,7 @@ const COMUNA_COORD = {
   'penalolen':[-33.487,-70.545], 'nunoa':[-33.456,-70.597], 'puente alto':[-33.611,-70.575],
   'san bernardo':[-33.592,-70.700], 'pirque':[-33.663,-70.548]
 };
-function mapaPDV(rows){
+function mapaSVG(rows){
   const W=660, H=460, pad=50;
   const pts = rows.map(p=>{ const c=COMUNA_COORD[cnorm(p.Comuna)]; return c?{p,lat:c[0],lng:c[1]}:null; }).filter(Boolean);
   const sinCoord = rows.length - pts.length;
