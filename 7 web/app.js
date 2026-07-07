@@ -562,6 +562,19 @@ const REPORTES = {
       {t:'% Venta', num:1, raw:r=>Math.round(r.part*100), web:r=>pct(r.part)}
     ],
     rows:()=> porSKU
+  },
+  reposicion: {
+    icon:'🚚', titulo:'Reporte de Reposición (Ruta)',
+    desc:'PDV bajo mínimo con unidades sugeridas a reponer, para la ruta de distribución.',
+    cols:[
+      {t:'PDV', raw:r=>namePDV(r.pdv)},
+      {t:'Cliente', raw:r=>nameCliente(cliDePDV(r.pdv))},
+      {t:'Stock teórico', num:1, raw:r=>r.stock},
+      {t:'Reorden (mín)', num:1, raw:r=>r.min},
+      {t:'Objetivo (máx)', num:1, raw:r=>r.max},
+      {t:'Reponer', num:1, raw:r=>r.reponer}
+    ],
+    rows:()=> inventarioPDV.filter(r=>r.reponer>0)
   }
 };
 
