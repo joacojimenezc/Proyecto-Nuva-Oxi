@@ -69,7 +69,7 @@
   (function(){
     var D = window.NUVA_DATA = window.NUVA_DATA || {};
     var E = window.NUVA_EXTRA || {}, I = window.NUVA_INDUSTRIA || {};
-    ['marca','logistica','marketing','compras','asignacion'].forEach(function(k){ if (E[k] !== undefined) D[k] = E[k]; });
+    Object.keys(E).forEach(function(k){ if (E[k] !== undefined) D[k] = E[k]; });
     if (I.competencia && I.competencia.length) D.competencia = I.competencia;
     if (I.industria) D.industria = I.industria;
     if (I.nuvaoxi)   D.nuvaoxi   = I.nuvaoxi;
