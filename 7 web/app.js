@@ -719,6 +719,39 @@ const views = {
       </div>
       <div class="panel"><h2>🚨 Alertas clave</h2>${alertas.length?alertas.join(''):'<p class="hint">Sin alertas críticas.</p>'}</div>
       <p class="hint">El detalle operativo (sell-in por SKU, órdenes de compra, inventario y clientes) vive en sus secciones: <b>Contabilidad</b>, <b>Inventario</b> y <b>Clientes</b>. El botón Excel/PDF descarga el informe completo.</p>`;
+  },
+  redes(){
+    const ig = window.NUVA_IG || {}, m = D.marca || {};
+    if(!ig.ok){
+      return `<p class="hint">Panel de Instagram (API de Meta Business). Aún no conectado.</p>
+        <div class="panel"><h2>📸 Conectar Instagram</h2>
+          <p class="hint">Para ver feed, seguidores, métricas y segmentación de <a class="lnk" href="${m.Instagram||'#'}" target="_blank" rel="noopener">@nuva_oxi</a>:</p>
+          <ol class="dims">
+            <li>En tu app de <b>Meta for Developers</b> genera un <b>token de larga duración</b> (permisos: instagram_basic, pages_show_list, instagram_manage_insights, pages_read_engagement).</li>
+            <li>Guárdalo en <b>&lt;usuario&gt;\\NuvaOxi-Sync\\ig-config.txt</b> (fuera del repo). Formato: <code>TOKEN=xxxx</code> (opcional <code>IG_USER_ID=xxxx</code>).</li>
+            <li>Corre <b>7 web\\gen-instagram.ps1</b> (o deja la tarea programada). Genera <b>instagram.js</b> y este panel se llena solo.</li>
+          </ol>
+          <p class="hint">🔒 El token queda local y fuera de GitHub; nunca se expone en el navegador. ${ig.motivo?('· Estado: '+ig.motivo):''}</p></div>`;
+    }
+    const p = ig.perfil||{}, ins = ig.insights||{}, dem = ig.demografia||{};
+    const feed = (ig.media||[]).map(x=>`<a class="igtile" href="${x.permalink}" target="_blank" rel="noopener" title="${(x.caption||'').slice(0,90)}"><img src="${x.img}" alt="" loading="lazy" onerror="this.style.display='none'"><span class="igmeta">❤ ${num(x.likes)} · 💬 ${num(x.comentarios)}</span></a>`).join('');
+    const bars = arr => (arr||[]).length ? `<div class="bars">${arr.map(d=>`<div class="barrow"><span class="barlbl" title="${d.label}">${d.label}</span><div class="track"><div class="fill si" style="width:${Math.round((d.pct||0)*100)}%"></div></div><span>${pct(d.pct)}</span></div>`).join('')}</div>` : '<p class="hint">Sin datos (la segmentación requiere ≥100 seguidores).</p>';
+    return `<p class="hint">Instagram <b>@${p.usuario||'nuva_oxi'}</b> · datos vía API de Meta · actualizado ${ig.generado||''}.</p>
+      <div class="kpis">
+        <div class="kpi"><div class="lbl">Seguidores</div><div class="val">${num(p.seguidores)}</div><div class="sub">${num(p.publicaciones)} publicaciones</div></div>
+        <div class="kpi blue"><div class="lbl">Alcance (28d)</div><div class="val">${num(ins.alcance_28d)}</div><div class="sub">${num(ins.visitas_perfil_28d)} visitas al perfil</div></div>
+        <div class="kpi"><div class="lbl">Impresiones (28d)</div><div class="val">${num(ins.impresiones_28d)}</div></div>
+        <div class="kpi amber"><div class="lbl">Engagement prom.</div><div class="val">${ins.engagement_prom!=null?ins.engagement_prom+'%':'—'}</div></div>
+      </div>
+      <div class="panel"><h2>🖼️ Últimas publicaciones</h2><div class="iggrid">${feed||'<p class="hint">Sin publicaciones.</p>'}</div></div>
+      <div class="grid2">
+        <div class="panel"><h2>👥 Público por edad</h2>${bars(dem.edad)}</div>
+        <div class="panel"><h2>⚧ Público por género</h2>${bars(dem.genero)}</div>
+      </div>
+      <div class="grid2">
+        <div class="panel"><h2>🌎 Top países</h2>${bars(dem.paises)}</div>
+        <div class="panel"><h2>🏙️ Top ciudades</h2>${bars(dem.ciudades)}</div>
+      </div>`;
   }
 };
 
