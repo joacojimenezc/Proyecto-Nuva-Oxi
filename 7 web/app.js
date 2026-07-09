@@ -201,9 +201,9 @@ function crmResumen(){
                  accion:c.Proxima_Accion, fecha:dISO(c.Fecha_Proxima), ult:dISO(c.Fecha_Ult_Contacto),
                  notas:c.Notas||'', vencida: !!dISO(c.Fecha_Proxima) && dISO(c.Fecha_Proxima) < hoy }))
     .sort((a,b)=>(a.fecha||'9999')<(b.fecha||'9999')?-1:1);
-  const visitas = (D.visitas||[]).map(v=>{
+  const visitas = (D.visitas||[]).map((v,i)=>{
     const realizada = /realizad/i.test(v.Estado_Visita||'');
-    return { ...v, fecha:dISO(v.Fecha), proxima:dISO(v.Fecha_Proxima), realizada,
+    return { ...v, _i:i, fecha:dISO(v.Fecha), proxima:dISO(v.Fecha_Proxima), realizada,
              vencida: !realizada && !!dISO(v.Fecha) && dISO(v.Fecha) < hoy };
   }).sort((a,b)=>(a.fecha||'9999')<(b.fecha||'9999')?-1:1);
   const sinContacto = (D.clientes||[]).filter(c=>{ const u=dISO(c.Fecha_Ult_Contacto); return !u || u < hace30; });
