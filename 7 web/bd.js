@@ -57,12 +57,14 @@ function hojaDe(wb, exacto, regex){
   return n ? wb.Sheets[n] : null;
 }
 
-/* extrae SOLO las columnas indicadas; descarta filas con la 1ª col. clave vacía */
-function extraerHoja(ws, cols, fechas){
+/* extrae SOLO las columnas indicadas; descarta filas con la col. clave vacía
+   (keyCol opcional; por defecto la 1ª columna) */
+function extraerHoja(ws, cols, fechas, keyCol){
   var XL = xlsxLib();
   fechas = fechas || [];
+  var key = keyCol || cols[0];
   return XL.utils.sheet_to_json(ws, { defval: '' })
-    .filter(function(r){ return String(r[cols[0]] == null ? '' : r[cols[0]]).trim() !== ''; })
+    .filter(function(r){ return String(r[key] == null ? '' : r[key]).trim() !== ''; })
     .map(function(r){
       var o = {};
       cols.forEach(function(c){ o[c] = fechas.indexOf(c) >= 0 ? oa2iso(r[c]) : r[c]; });
@@ -136,7 +138,8 @@ function parseSellOut(wb){
   var s = {}, w = [], res = {};
   var h = hojaDe(wb, 'SELL_OUT', /sell.?out/i);
   if (h){
-    s.sellout = extraerHoja(h, BD_COLS.sellout, BD_FECHAS.sellout)
+    /* clave = ID_PDV (no Fecha): hay filas válidas sin fecha (p.ej. demo/migradas) */
+    s.sellout = extraerHoja(h, BD_COLS.sellout, BD_FECHAS.sellout, 'ID_PDV')
       .map(function(r){ r.Uds = Number(r.Uds_Vendidas) || 0; return r; });   // alias para app.js
     res.sellout = s.sellout.length + ' fila(s)';
   } else w.push('Falta la hoja "SELL_OUT" — no hay nada que actualizar.');

@@ -50,6 +50,7 @@
       var D  = window.NUVA_DATA = window.NUVA_DATA || {};
       var rd = j.data || {};
       OWNED.forEach(function(k){ if (rd[k] !== undefined) D[k] = rd[k]; });
+      if (j.generado) D.generado = j.generado;   // el backend lo devuelve al nivel superior
     })
     .catch(function(e){
       clearTimeout(timer);

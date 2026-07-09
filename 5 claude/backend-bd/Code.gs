@@ -407,7 +407,7 @@ function esArchivoDeBase_(file) {
 
 // Quita caracteres de control del nombre de archivo
 function sanearNombre_(nombre) {
-  var limpio = nombre.replace(/[ -]/g, '').trim();
+  var limpio = nombre.replace(/[\u0000-\u001F\u007F]/g, '').trim();
   return limpio || 'archivo';
 }
 
