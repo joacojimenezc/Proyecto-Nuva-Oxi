@@ -752,6 +752,84 @@ function bdPanelCarga(){
     + '</div></div>';
 }
 
+/* ============================================================
+   Detalle de productos vendidos (para las tablas Clientes y PDV)
+   Agrupa el sell-in por cliente/PDV y SKU; en PDV suma también el
+   sell-out por producto. Solo lectura (se calcula de las ventas).
+   ============================================================ */
+function bdDetalleVentas(campo){
+  var D = bdDatos();
+  var grupos = {};   // id -> { id, nombre, uds, venta, skus: { sku: {uds, venta, so} } }
+  (D.sellin || []).forEach(function(v){
+    var id = v[campo]; if (!id) return;
+    var g = grupos[id] = grupos[id] || { id: id, uds: 0, venta: 0, skus: {} };
+    var s = g.skus[v.SKU] = g.skus[v.SKU] || { uds: 0, venta: 0, so: 0 };
+    var u = Number(v.Uds) || 0, vn = Number(v.Venta_Neta) || 0;
+    s.uds += u; s.venta += vn; g.uds += u; g.venta += vn;
+  });
+  if (campo === 'ID_PDV'){
+    (D.sellout || []).forEach(function(so){
+      var g = grupos[so.ID_PDV]; if (!g) return;
+      var sku = so.SKU || '(sin SKU)';
+      var s = g.skus[sku] = g.skus[sku] || { uds: 0, venta: 0, so: 0 };
+      s.so += Number(so.Uds !== undefined ? so.Uds : so.Uds_Vendidas) || 0;
+    });
+  }
+  Object.keys(grupos).forEach(function(id){
+    var g = grupos[id];
+    if (campo === 'ID_Cliente'){
+      var c = (D.clientes || []).filter(function(x){ return x.ID_Cliente === id; })[0];
+      g.nombre = (c && c.Cadena) || id;
+    } else {
+      var p = (D.pdv || []).filter(function(x){ return x.ID_PDV === id; })[0];
+      g.nombre = (p && p.Nombre_PDV) || id;
+    }
+  });
+  return Object.keys(grupos).map(function(id){ return grupos[id]; })
+    .sort(function(a, b){ return b.venta - a.venta; });
+}
+
+function bdHtmlDetalle(sec){
+  if (sec !== 'clientes' && sec !== 'pdv') return '';
+  var esPdv = (sec === 'pdv');
+  var grupos = bdDetalleVentas(esPdv ? 'ID_PDV' : 'ID_Cliente');
+  var titulo = esPdv ? '🍫 Detalle por producto en cada punto de venta' : '🍫 Detalle de productos vendidos a cada cliente';
+  if (!grupos.length)
+    return '<div class="panel"><h2>' + titulo + '</h2><p class="hint">Sin ventas registradas en el sell-in.</p></div>';
+  var D = bdDatos();
+  var descSku = function(sku){ var s = (D.sku || []).filter(function(x){ return x.SKU === sku; })[0]; return (s && s.Descripcion) || ''; };
+  var th = '<tr>'
+    + '<th>' + (esPdv ? 'Punto de venta' : 'Cliente') + '</th><th>SKU</th><th>Producto</th>'
+    + '<th class="num">' + (esPdv ? 'Sell-In (u)' : 'Uds') + '</th>'
+    + (esPdv ? '<th class="num">Sell-Out (u)</th>' : '')
+    + '<th class="num">Venta Neta</th><th class="num">% del total</th></tr>';
+  var totVenta = grupos.reduce(function(a, g){ return a + g.venta; }, 0) || 1;
+  var body = '';
+  grupos.forEach(function(g){
+    var skus = Object.keys(g.skus).map(function(k){ return { sku: k, d: g.skus[k] }; })
+      .sort(function(a, b){ return b.d.venta - a.d.venta; });
+    skus.forEach(function(s, i){
+      body += '<tr>'
+        + '<td>' + (i === 0 ? '<b>' + esc(g.nombre) + '</b>' : '') + '</td>'
+        + '<td>' + esc(s.sku) + '</td><td>' + esc(descSku(s.sku)) + '</td>'
+        + '<td class="num">' + s.d.uds + '</td>'
+        + (esPdv ? '<td class="num">' + (s.d.so || '—') + '</td>' : '')
+        + '<td class="num">' + clp(s.d.venta) + '</td>'
+        + '<td class="num">' + pct(s.d.venta / totVenta) + '</td></tr>';
+    });
+    var soTot = esPdv ? skus.reduce(function(a, s){ return a + s.d.so; }, 0) : 0;
+    body += '<tr style="background:#e8f2ec;font-weight:700">'
+      + '<td>Subtotal ' + esc(g.nombre) + '</td><td></td><td></td>'
+      + '<td class="num">' + g.uds + '</td>'
+      + (esPdv ? '<td class="num">' + (soTot || '—') + '</td>' : '')
+      + '<td class="num">' + clp(g.venta) + '</td>'
+      + '<td class="num">' + pct(g.venta / totVenta) + '</td></tr>';
+  });
+  return '<div class="panel"><h2>' + titulo + '</h2>'
+    + '<p class="hint" style="margin:0 0 8px">Calculado desde el <b>Sell-In</b>' + (esPdv ? ' y el <b>Sell-Out</b>' : '') + ' — solo lectura (para modificarlo, edita esas tablas).</p>'
+    + '<div class="tablewrap"><table><thead>' + th + '</thead><tbody>' + body + '</tbody></table></div></div>';
+}
+
 /* Ver documento en el navegador (PDF/imagen) sin descargarlo */
 function bdDocEsVisible(nombre){ return /\.(pdf|jpe?g|png)$/i.test(String(nombre || '')); }
 async function bdDocVer(id, nombre){
@@ -1082,6 +1160,8 @@ function bdVistaDatos(){
         + '<button class="btnrep xls" onclick="bdGuardarTabla()"' + disAttr + '>💾 Guardar cambios</button> '
         + '<button class="btnrep pdf" onclick="bdDescartarEdicion()">↩ Descartar</button>'
         + '</div>';
+      /* detalle de productos vendidos (solo Clientes y PDV) */
+      html += bdHtmlDetalle(tb.sec);
     }
     html += '</div>';
   });
