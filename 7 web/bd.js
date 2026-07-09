@@ -769,6 +769,196 @@ async function bdDocVer(id, nombre){
 }
 
 /* ============================================================
+   Reportería: Excel del Dashboard (espejo de la vista dashboard)
+   Usa los MISMOS agregados globales de app.js (K, rotacion, porCanal,
+   porCliente, porSKU, porCxC, cobertura…) => mismos números que la web.
+   Requiere xlsx-js-style (vendor) para los colores/estilos.
+   ============================================================ */
+var BD_XC = {   // paleta de la app (styles.css :root), sin '#'
+  verdeD:'14503B', verde:'1F7A5A', verdeL:'2FA377', vinoD:'4A1E3F', vino:'7A2E5C',
+  ambar:'E8A33D', rojo:'D9534F', azul:'3A7BD5', tinta:'1C2B26', gris:'6B7D76',
+  linea:'D5DED8', panelV:'E8F2EC', avisoW:'FDF3E0', avisoB:'FBEAEA', blanco:'FFFFFF'
+};
+function bdXb(){ var b={style:'thin',color:{rgb:BD_XC.linea}}; return {top:b,bottom:b,left:b,right:b}; }
+/* celda con estilo: bdX(valor, {b:negrita, sz, color, fill, fmt, al, wrap}) */
+function bdX(v, o){
+  o = o || {};
+  var s = {
+    font: { sz: o.sz || 10, bold: !!o.b, color: { rgb: o.color || BD_XC.tinta } },
+    alignment: { horizontal: o.al || (typeof v === 'number' ? 'right' : 'left'), vertical: 'center', wrapText: !!o.wrap },
+    border: o.noBorde ? undefined : bdXb()
+  };
+  if (o.fill) s.fill = { patternType: 'solid', fgColor: { rgb: o.fill } };
+  if (o.fmt)  s.numFmt = o.fmt;
+  return { v: (v === undefined || v === null) ? '' : v, t: (typeof v === 'number' ? 'n' : 's'), s: s };
+}
+var BD_FMT_CLP = '"$"#,##0';
+var BD_FMT_PCT = '0%';
+
+function buildReporteDashboard(){
+  var XL = xlsxLib();
+  var D2 = bdDatos();
+  var mesAct = mesesVenta().slice(-1)[0] || 'Todo';
+  var cob = coberturaPeriodo(mesAct);
+  var fz = D2.finanzas || {};
+  var filas = [], merges = [], alturas = {};
+  var NCOL = 6;
+  function fila(arr){ while (arr.length < NCOL) arr.push(bdX('', { noBorde:true })); filas.push(arr); return filas.length - 1; }
+  function vacia(){ fila([bdX('', { noBorde:true })]); }
+  function seccion(txt){
+    var r = fila([bdX(txt, { b:true, sz:12, color:BD_XC.blanco, fill:BD_XC.verdeD })]);
+    for (var i = 1; i < NCOL; i++) filas[r][i] = bdX('', { fill:BD_XC.verdeD });
+    merges.push({ s:{ r:r, c:0 }, e:{ r:r, c:NCOL-1 } });
+    alturas[r] = 20;
+  }
+  function avisoFila(txt, tipo){
+    var fill = tipo === 'bad' ? BD_XC.avisoB : BD_XC.avisoW;
+    var col  = tipo === 'bad' ? '8A2A27' : '8A6D3B';
+    var r = fila([bdX(txt, { color:col, fill:fill, wrap:true })]);
+    for (var i = 1; i < NCOL; i++) filas[r][i] = bdX('', { fill:fill });
+    merges.push({ s:{ r:r, c:0 }, e:{ r:r, c:NCOL-1 } });
+    alturas[r] = 30;
+  }
+  function th(cols){ fila(cols.map(function(t, i){ return bdX(t, { b:true, color:BD_XC.verdeD, fill:BD_XC.panelV, al: i ? 'right' : 'left' }); })); }
+
+  /* --- título --- */
+  var r0 = fila([bdX('NUVA OXI · Dashboard Comercial', { b:true, sz:16, color:BD_XC.blanco, fill:BD_XC.vinoD, noBorde:true })]);
+  for (var i = 1; i < NCOL; i++) filas[r0][i] = bdX('', { fill:BD_XC.vinoD });
+  merges.push({ s:{ r:r0, c:0 }, e:{ r:r0, c:NCOL-1 } });
+  alturas[r0] = 30;
+  var r1 = fila([bdX('Generado ' + (D2.generado || '') + ' · Piloto comercial · 🔒 Confidencial — uso interno', { sz:9, color:'D9C7D2', fill:BD_XC.vinoD, noBorde:true })]);
+  for (i = 1; i < NCOL; i++) filas[r1][i] = bdX('', { fill:BD_XC.vinoD });
+  merges.push({ s:{ r:r1, c:0 }, e:{ r:r1, c:NCOL-1 } });
+  vacia();
+
+  /* --- KPIs (los 5 del dashboard) --- */
+  var rot = K.uds ? K.selloutTot / K.uds : 0;
+  fila([
+    bdX('VENTA NETA (SELL-IN)', { b:true, sz:9, color:BD_XC.gris }),
+    bdX('MARGEN BRUTO',         { b:true, sz:9, color:BD_XC.gris }),
+    bdX('CxC PENDIENTE',        { b:true, sz:9, color:BD_XC.gris }),
+    bdX('COBERTURA ' + (mesAct === 'Todo' ? '(ACUM.)' : '(' + mesAct + ')'), { b:true, sz:9, color:BD_XC.gris }),
+    bdX('SELL-OUT TOTAL',       { b:true, sz:9, color:BD_XC.gris })
+  ]);
+  var rV = fila([
+    bdX(K.venta,  { b:true, sz:14, color:BD_XC.verdeD, fmt:BD_FMT_CLP }),
+    bdX(K.margen, { b:true, sz:14, color:BD_XC.azul,   fmt:BD_FMT_CLP }),
+    bdX(K.cxc,    { b:true, sz:14, color:BD_XC.rojo,   fmt:BD_FMT_CLP }),
+    bdX(cob.pdvCon + '/' + cob.pdvTot + ' PDV · ' + pct(cob.pctPdv), { b:true, sz:12, color:BD_XC.verdeD, al:'right' }),
+    bdX(K.selloutTot + ' u', { b:true, sz:14, color:BD_XC.ambar, al:'right' })
+  ]);
+  alturas[rV] = 24;
+  fila([
+    bdX(K.uds + ' u · bruto c/IVA ' + clp(K.venta * 1.19), { sz:8, color:BD_XC.gris }),
+    bdX('costo $250/u (no validado)',                      { sz:8, color:BD_XC.gris }),
+    bdX('facturas emitidas',                               { sz:8, color:BD_XC.gris }),
+    bdX(cob.cliCon + '/' + cob.cliTot + ' clientes con venta', { sz:8, color:BD_XC.gris }),
+    bdX('rotación global ' + pct(rot),                     { sz:8, color:BD_XC.gris })
+  ]);
+  vacia();
+
+  /* --- Sell-In vs Sell-Out por PDV --- */
+  seccion('🔄 Sell-In vs Sell-Out por punto de venta');
+  th(['PDV', 'Sell-In (u)', 'Sell-Out (u)', 'Rotación', 'Venta Neta', '']);
+  rotacion.forEach(function(r){
+    fila([
+      bdX(namePDV(r.pdv)),
+      bdX(r.si), bdX(r.so),
+      bdX(r.si ? r.so / r.si : 0, { fmt:BD_FMT_PCT, color: (r.si && r.rot < 0.35) ? BD_XC.rojo : BD_XC.tinta }),
+      bdX(r.vn, { fmt:BD_FMT_CLP }),
+      bdX('')
+    ]);
+  });
+  fila([
+    bdX('TOTAL', { b:true, fill:BD_XC.panelV }),
+    bdX(K.uds, { b:true, fill:BD_XC.panelV }), bdX(K.selloutTot, { b:true, fill:BD_XC.panelV }),
+    bdX(rot, { b:true, fill:BD_XC.panelV, fmt:BD_FMT_PCT }),
+    bdX(K.venta, { b:true, fill:BD_XC.panelV, fmt:BD_FMT_CLP }),
+    bdX('', { fill:BD_XC.panelV })
+  ]);
+  vacia();
+
+  /* --- Alertas del piloto (las mismas de la vista) --- */
+  seccion('🚨 Alertas del piloto');
+  rotacion.filter(function(r){ return r.si > 0 && r.rot < 0.35; }).forEach(function(r){
+    avisoFila('⚠️ ' + namePDV(r.pdv) + ': rotación ' + pct(r.rot) + ' (sell-in ' + r.si + ' / sell-out ' + r.so + ') — posible sobre-stock en tienda.', 'warn');
+  });
+  if (porCxC.length){
+    var t = porCxC[0], totCxC = 0, nDocs = 0;
+    porCxC.forEach(function(x){ totCxC += x.monto; nDocs += x.docs; });
+    avisoFila('💸 Factura por cobrar: ' + clp(totCxC) + ' en ' + nDocs + ' factura(s) emitida(s). Mayor: ' + nameCliente(t.cli) + ' ' + clp(t.monto) + ' (plazo ' + t.plazo + 'd) — gestionar cobranza antes del vencimiento.', 'bad');
+  }
+  var mkt = D2.marketing || [];
+  avisoFila(mkt.length
+    ? '📣 Marketing: ' + mkt.length + ' acción(es) planificada(s) — verificar ejecución y su efecto en sell-out.'
+    : '📣 Marketing sin plan: no hay campañas ni activaciones cargadas — crear activaciones en PDV y campañas de redes para empujar el sell-out.', 'warn');
+  avisoFila('📸 Instagram @nuva_oxi: dar protagonismo a la fundadora para hacer la cuenta más auténtica. Sumar rostro, relato y detrás de escena.', 'warn');
+  fila([bdX('Resultado operativo estimado: ' + clp(fz.resultado || 0) + ' · caja hoy ' + clp(fz.cobrado || 0) + ' (falta cobrar ' + clp(fz.cxc || 0) + ')', { sz:9, color:BD_XC.gris, noBorde:true })]);
+  merges.push({ s:{ r:filas.length - 1, c:0 }, e:{ r:filas.length - 1, c:NCOL - 1 } });
+  vacia();
+
+  /* --- Resumen por canal --- */
+  seccion('🏷️ Resumen por canal de venta');
+  th(['Canal', 'Clientes', 'PDV', 'Uds', 'Venta Neta', '% Venta']);
+  porCanal.forEach(function(c){
+    fila([bdX(c.canal), bdX(c.cli), bdX(c.pdv), bdX(c.uds), bdX(c.venta, { fmt:BD_FMT_CLP }), bdX(c.venta / (K.venta || 1), { fmt:BD_FMT_PCT })]);
+  });
+  fila([bdX('TOTAL', { b:true, fill:BD_XC.panelV }), bdX('', { fill:BD_XC.panelV }), bdX('', { fill:BD_XC.panelV }),
+        bdX(K.uds, { b:true, fill:BD_XC.panelV }), bdX(K.venta, { b:true, fill:BD_XC.panelV, fmt:BD_FMT_CLP }), bdX(1, { b:true, fill:BD_XC.panelV, fmt:BD_FMT_PCT })]);
+  vacia();
+
+  /* --- Top SKU --- */
+  seccion('🍫 Top SKU · venta neta');
+  th(['SKU', 'Producto', 'Uds', 'Venta', '% Part.', '']);
+  porSKU.slice(0, 6).forEach(function(s){
+    fila([bdX(s.sku), bdX(skuInfo(s.sku).Descripcion || ''), bdX(s.uds), bdX(s.venta, { fmt:BD_FMT_CLP }), bdX(s.part, { fmt:BD_FMT_PCT }), bdX('')]);
+  });
+  vacia();
+
+  /* --- Participación por cliente --- */
+  seccion('🥇 Participación por cliente (share)');
+  th(['Cliente', 'Uds', '% Uds', 'Venta Neta', '% $', '']);
+  porCliente.forEach(function(c){
+    fila([bdX(nameCliente(c.cli)), bdX(c.uds), bdX(c.shareU, { fmt:BD_FMT_PCT }), bdX(c.venta, { fmt:BD_FMT_CLP }), bdX(c.shareV, { fmt:BD_FMT_PCT }), bdX('')]);
+  });
+  fila([bdX('TOTAL', { b:true, fill:BD_XC.panelV }), bdX(K.uds, { b:true, fill:BD_XC.panelV }), bdX(1, { b:true, fill:BD_XC.panelV, fmt:BD_FMT_PCT }),
+        bdX(K.venta, { b:true, fill:BD_XC.panelV, fmt:BD_FMT_CLP }), bdX(1, { b:true, fill:BD_XC.panelV, fmt:BD_FMT_PCT }), bdX('', { fill:BD_XC.panelV })]);
+  vacia();
+
+  /* --- Crecimiento por período (si hay datos en extra.js) --- */
+  var per = D2.periodos || [];
+  if (per.length){
+    seccion('📈 Crecimiento por período (montos de ejemplo)');
+    th(['Período', 'Uds', 'Venta', 'Var. $', '', '']);
+    per.forEach(function(p, i){
+      var pv = per[i - 1];
+      var varV = (pv && pv.Venta) ? (p.Venta - pv.Venta) / pv.Venta : null;
+      fila([bdX(p.Periodo), bdX(p.Uds), bdX(p.Venta, { fmt:BD_FMT_CLP }),
+            varV == null ? bdX('—', { al:'right' }) : bdX(varV, { fmt:'+0%;-0%', color: varV >= 0 ? BD_XC.verde : BD_XC.rojo, b:true }),
+            bdX(''), bdX('')]);
+    });
+  }
+
+  /* --- armar hoja --- */
+  var ws = XL.utils.aoa_to_sheet(filas);
+  ws['!merges'] = merges;
+  ws['!cols'] = [{ wch:30 }, { wch:17 }, { wch:15 }, { wch:17 }, { wch:17 }, { wch:14 }];
+  ws['!rows'] = filas.map(function(_, r){ return alturas[r] ? { hpt: alturas[r] } : { hpt: 15 }; });
+  var wb = XL.utils.book_new();
+  XL.utils.book_append_sheet(wb, ws, 'Dashboard');
+  return wb;
+}
+
+function bdDescargarDashboard(){
+  try{
+    var f = 'Dashboard_NUVA_OXI_' + new Date().toISOString().slice(0, 10) + '.xlsx';
+    xlsxLib().writeFile(buildReporteDashboard(), f);
+  }catch(e){
+    bdAviso('bad', 'No se pudo generar el reporte: ' + e.message); render();
+  }
+}
+
+/* ============================================================
    Vista "Base de datos"
    ============================================================ */
 function bdPanelConfirmar(){
@@ -838,6 +1028,11 @@ function bdVistaArchivos(){
     + '3) <b>Sube</b> el archivo: la web lo valida, muestra un resumen y al confirmar reemplaza la base en el repo GitHub y refresca los datos. '
     + 'Para cambios rápidos sin Excel, usa la sub-pestaña <b>📝 Datos</b>.</p></div>'
     + '<div class="panel"><h2>🗄️ Bases de datos (Excel)</h2>' + table(cols, rows) + '</div>'
+    + '<div class="panel" style="border-left:4px solid var(--wine,#7a2e5c)"><h2>📊 Reportería</h2>'
+    + '<p class="hint" style="margin:0 0 10px">Descarga el <b>Dashboard en Excel</b>: una réplica con formato de lo que muestra la portada de la web '
+    + '(KPIs, sell-in vs sell-out por PDV, alertas, resumen por canal, top SKU, participación por cliente y crecimiento), con los mismos números y colores. '
+    + 'Ideal para enviar por correo o presentar sin dar acceso a la web.</p>'
+    + '<div class="repbtns"><button class="btnrep xls" onclick="bdDescargarDashboard()">⬇ Descargar Dashboard (Excel)</button></div></div>'
     + '<div class="panel" style="border-left:4px solid var(--green,#2e7d52)"><h2>📥 Cargas de Sell-Out</h2>'
     + '<p class="hint" style="margin:0 0 10px">Sube aquí los Excel de ventas de tu producto que te llegan de afuera: el portal B2B de Cencosud o los reportes de tus clientes. '
     + 'La web valida el archivo, agrega las filas nuevas al <b>Sell-Out</b> (rotación, inventario y dashboard se actualizan) y guarda el archivo crudo en el repo, '
