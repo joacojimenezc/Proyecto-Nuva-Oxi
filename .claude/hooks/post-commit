@@ -1,7 +1,0 @@
-#!/bin/sh
-# post-commit — re-sube los archivos del deploy a Google Drive tras cada commit.
-# No bloquea el commit: lanza el sync en segundo plano.
-# Plantilla; se instala copiándola a .git/hooks/post-commit. Ver .claude/sync-drive.ps1
-REPO="$(git rev-parse --show-toplevel)"
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$REPO/.claude/sync-drive.ps1" >/dev/null 2>&1 &
-exit 0

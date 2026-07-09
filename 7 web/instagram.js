@@ -1,5 +1,5 @@
-/* Datos de Instagram — generado por gen-instagram.ps1 desde la API de Meta.
-   Se REGENERA solo. El token NO va aqui (va en <usuario>\NuvaOxi-Sync\ig-config.txt, FUERA del repo).
+/* Datos de Instagram desde la API de Meta.
+   El token NO va aqui; este archivo solo contiene datos publicables para la web.
    Estructura (shape canonico) que consume la web:
    window.NUVA_IG = {
      ok:true, generado:"YYYY-MM-DD HH:mm",
@@ -8,4 +8,4 @@
      media:[{id,caption,tipo,img,permalink,fecha,likes,comentarios}],
      demografia:{ genero:[{label,pct}], edad:[...], paises:[...], ciudades:[...] }
    } */
-window.NUVA_IG = { ok:false, generado:"", motivo:"aun no conectado (falta correr gen-instagram.ps1 con el token)" };
+window.NUVA_IG = { ok:false, generado:"", motivo:"aun no conectado" };

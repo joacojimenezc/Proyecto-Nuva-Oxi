@@ -10,7 +10,7 @@ const nameCliente = id => (D.clientes.find(c => c.ID_Cliente === id) || {}).Cade
 const namePDV = id => (D.pdv.find(p => p.ID_PDV === id) || {}).Nombre_PDV || id;
 
 /* ---- Facturas PDF: emparejamiento automatico por cliente ----
-   Lee window.NUVA_FACTURAS (generado por gen-facturas.ps1) y asocia
+   Lee window.NUVA_FACTURAS (manifiesto local versionado) y asocia
    cada venta con las facturas cuyo nombre contiene el nombre o el
    codigo del cliente. Si no hay coincidencia, no muestra boton. */
 /* Documentos del backend Drive (subidos via pestana Base de datos). Se fusionan con
@@ -814,7 +814,7 @@ const views = {
           <ol class="dims">
             <li>En tu app de <b>Meta for Developers</b> genera un <b>token de larga duración</b> (permisos: instagram_basic, pages_show_list, instagram_manage_insights, pages_read_engagement).</li>
             <li>Guárdalo en <b>&lt;usuario&gt;\\NuvaOxi-Sync\\ig-config.txt</b> (fuera del repo). Formato: <code>TOKEN=xxxx</code> (opcional <code>IG_USER_ID=xxxx</code>).</li>
-            <li>Corre <b>7 web\\gen-instagram.ps1</b> (o deja la tarea programada). Genera <b>instagram.js</b> y este panel se llena solo.</li>
+            <li>Actualiza <b>instagram.js</b> con los datos de la API de Meta y este panel se llena solo.</li>
           </ol>
           <p class="hint">🔒 El token queda local y fuera de GitHub; nunca se expone en el navegador. ${ig.motivo?('· Estado: '+ig.motivo):''}</p></div>`;
     }
@@ -946,7 +946,7 @@ const cellRaw = (c, r) => { const v = c.raw(r); return v == null ? '' : v; };
 const esc = s => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const stamp = () => new Date().toLocaleDateString('es-CL');
 
-/* ---- Facturas de COMPRA: manifiesto NUVA_COMPRAS (generado por gen-facturas.ps1) ----
+/* ---- Facturas de COMPRA: manifiesto NUVA_COMPRAS ----
    Convencion de nombre: COMPRA-<folio>-<Proveedor>.pdf (ASCII, proveedor en un token). */
 /* lista VIVA (igual que facturasAll) */
 const comprasAll = () => [...new Set([...(window.NUVA_COMPRAS || []), ...((docsBd().fac_compras)||[]).map(d=>d.name)])];
