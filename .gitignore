@@ -4,12 +4,16 @@ index-embed.html
 # Dependencias
 node_modules/
 
+# Logs
+*.log
+
 # Temporales / basura
 ~$*
 *.zip
 *.tmp
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# Memoria del bot de WhatsApp "Continuidad Pilotos" (local; NO va al repo ni al deploy)
+# Memoria del bot de WhatsApp (local; NO va al repo ni al deploy)
 _bot-memoria/

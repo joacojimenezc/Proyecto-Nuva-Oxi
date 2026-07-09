@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NUVA OXI · CRM Comercial</title>
+  <link rel="icon" type="image/jpeg" href="logo nuva oxi.jpeg" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="gate" class="gate">
+    <div class="gate-box">
+      <img class="gate-logo" src="logo nuva oxi.jpeg" alt="NUVA OXI" />
+      <div class="gate-lock">🔒 Documento confidencial</div>
+      <p>Información de uso interno de NUVA OXI. Ingresa la clave para continuar.</p>
+      <input id="gateInput" type="password" inputmode="numeric" placeholder="Clave" autocomplete="off" />
+      <button id="gateBtn">Ingresar</button>
+      <div id="gateErr" class="gate-err"></div>
+    </div>
+  </div>
+  <aside class="sidebar">
+    <div class="brand">
+      <img class="brand-logo-img" src="logo nuva oxi.jpeg" alt="NUVA OXI" />
+      <small class="brand-sub">CRM Comercial · Piloto</small>
+    </div>
+    <nav id="nav">
+      <a data-view="gerencia" class="nav-gerencia">👔 Gerencia</a>
+      <a data-view="dashboard" class="active">📊 Dashboard</a>
+      <a data-view="flujo">🧭 Flujo operacional</a>
+      <div class="navgroup collapsed">
+        <button class="navhead">🛒 Comercial <span class="chev">▾</span></button>
+        <div class="navsub">
+          <a data-view="clientes">Clientes</a>
+          <a data-view="crm">🤝 CRM · Seguimiento</a>
+          <a data-view="pdv">Puntos de venta</a>
+          <a data-view="productos">Productos</a>
+          <a data-view="rotacion">Rotación</a>
+        </div>
+      </div>
+      <div class="navgroup collapsed">
+        <button class="navhead">📦 Operaciones <span class="chev">▾</span></button>
+        <div class="navsub">
+          <a data-view="inventario">Inventario</a>
+          <a data-view="logistica">Logística</a>
+          <a data-view="planning">Planificación estratégica</a>
+        </div>
+      </div>
+      <div class="navgroup collapsed">
+        <button class="navhead">💰 Finanzas <span class="chev">▾</span></button>
+        <div class="navsub">
+          <a data-view="contabilidad">Contabilidad</a>
+          <a data-view="finanzas">Estado financiero</a>
+          <a data-view="pnl">P&amp;L (resultado)</a>
+        </div>
+      </div>
+      <div class="navgroup collapsed">
+        <button class="navhead">🎯 Marketing &amp; Mercado <span class="chev">▾</span></button>
+        <div class="navsub">
+          <a data-view="marketing">Marketing</a>
+          <a data-view="mercado">Mercado y competencia</a>
+          <a data-view="redes">Redes · Instagram</a>
+        </div>
+      </div>
+      <a data-view="reportes">📑 Reportes</a>
+      <a data-view="bd">🗄️ Base de datos</a>
+      <a data-view="calendario">📅 Calendario</a>
+      <a data-view="decisiones">✅ Decisiones</a>
+    </nav>
+    <div class="side-foot">
+      <span id="genfecha"></span>
+      <small id="fuenteDatos">Datos del CRM Excel</small>
+    </div>
+  </aside>
+
+  <main class="content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 id="viewTitle">Dashboard</h1>
+        <span class="conf-badge">🔒 Confidencial · uso interno</span>
+      </div>
+      <input id="search" type="search" placeholder="Buscar…" />
+    </header>
+    <section id="app"></section>
+    <footer class="foot">Proyecto NUVA OXI · sistema de gestión del piloto comercial · <b>🔒 Documento confidencial — uso interno, no distribuir.</b></footer>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="data.js"></script>
+  <script src="facturas.js"></script>
+  <script src="extra.js"></script>
+  <script src="industria.js"></script>
+  <script src="instagram.js"></script>
+  <script>
+  /* Fusiona datos DURABLES sobre NUVA_DATA (el refresh del CRM solo regenera data.js):
+     - extra.js  -> marca, logistica, marketing, compras, asignacion (edítalos ahí)
+     - industria.js -> competencia, industria (tendencias/desafios/oportunidades), nuvaoxi */
+  (function(){
+    var D = window.NUVA_DATA = window.NUVA_DATA || {};
+    var E = window.NUVA_EXTRA || {}, I = window.NUVA_INDUSTRIA || {};
+    Object.keys(E).forEach(function(k){ if (E[k] !== undefined) D[k] = E[k]; });
+    if (I.competencia && I.competencia.length) D.competencia = I.competencia;
+    if (I.industria) D.industria = I.industria;
+    if (I.nuvaoxi)   D.nuvaoxi   = I.nuvaoxi;
+  })();
+  </script>
+  <script src="gmail.js"></script>
+  <script>
+  /* ---- Portada de confidencialidad con clave ----
+     Corre AQUI (no en app.js) para que el boton Ingresar responda de inmediato
+     aunque el backend/app.js demoren en cargar. Es un DISUASIVO visual, no
+     cifrado: los datos siguen en data.js/data.json.
+     Si el rol jefa entra antes de que exista go(), se deja pendiente y app.js
+     lo aplica al terminar de cargar (window.__nuvaGoPendiente). */
+  (function(){
+    const g = document.getElementById('gate'); if(!g) return;
+    const enc = s => btoa(unescape(encodeURIComponent(String(s))));
+    const FULL = 'MDIwNzI1';            // 020725      -> acceso completo
+    const JEFA = 'bnV2YW94aTIwMjY=';    // nuvaoxi2026 -> vista Gerencia (solo lectura)
+    function applyRole(role){
+      if(role==='jefa'){
+        document.body.classList.add('role-jefa');
+        if(typeof go==='function'){ go('gerencia'); }
+        else { window.__nuvaGoPendiente='gerencia'; }
+      }
+    }
+    const saved = sessionStorage.getItem('nuvaoxi_role');
+    if(saved){ applyRole(saved); g.style.display='none'; return; }
+    const inp = document.getElementById('gateInput'), err = document.getElementById('gateErr');
+    const attempt = () => {
+      const v = enc((inp.value||'').trim());
+      if(v===FULL){ sessionStorage.setItem('nuvaoxi_role','full'); g.style.display='none'; }
+      else if(v===JEFA){ sessionStorage.setItem('nuvaoxi_role','jefa'); applyRole('jefa'); g.style.display='none'; }
+      else { err.textContent = 'Clave incorrecta.'; inp.select(); }
+    };
+    document.getElementById('gateBtn').onclick = attempt;
+    inp.addEventListener('keydown', e => { if(e.key==='Enter') attempt(); });
+    inp.focus();
+  })();
+  </script>
+  <!-- Base de datos web: SheetJS local + config + boot (bd-boot.js trae los datos
+       del backend /api/bd — repo GitHub —, los fusiona sobre NUVA_DATA y recien
+       ahi inyecta app.js y bd.js). -->
+  <!-- xlsx-js-style: SheetJS 0.18.5 + estilos de celda (para el Excel de reportería) -->
+  <script src="vendor/xlsx-style.bundle.js"></script>
+  <script src="bd-config.js"></script>
+  <script src="bd-boot.js"></script>
+</body>
+</html>
