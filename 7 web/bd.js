@@ -36,18 +36,24 @@ var oa2iso = function(v){
 
 /* columnas que se extraen por sección (mismas del refresh actual) */
 var BD_COLS = {
-  clientes:  ['ID_Cliente','Cadena','Segmento','SubCanal','Plazo_Pago','Condicion','Contacto','Resp','Estado'],
+  clientes:  ['ID_Cliente','Cadena','Segmento','SubCanal','Plazo_Pago','Condicion','Contacto','Resp','Estado','Fecha_Ult_Contacto','Proxima_Accion','Fecha_Proxima','Notas'],
   pdv:       ['ID_PDV','ID_Cliente','Nombre_PDV','Comuna','Resp','Estado','Formato_Recom','Frecuencia_Visita'],
   sku:       ['SKU','Descripcion','Sabor','Formato','PVP_cIVA','PVP_Neto','Costo_Unit'],
   sellin:    ['ID_Venta','Fecha','ID_Cliente','ID_PDV','SKU','Uds','Venta_Neta','Margen','Estado_Factura','Fecha_Venc'],
   pedidos:   ['ID_Pedido','ID_Cliente','Fecha_OC','N_OC','Monto_OC','Estado'],
   decisiones:['Tema','Decision','Responsable','Estado'],
-  sellout:   ['Fecha','Semana_ISO','ID_Cliente','ID_PDV','SKU','Uds_Vendidas','PVP_Salida','Fuente','Stock_Observado','Resp','Notas']
+  sellout:   ['Fecha','Semana_ISO','ID_Cliente','ID_PDV','SKU','Uds_Vendidas','PVP_Salida','Fuente','Stock_Observado','Resp','Notas'],
+  /* CRM / seguimiento comercial (hojas 05 y 06 del CRM Excel) */
+  visitas:   ['ID_Visita','Fecha','Resp','ID_Cliente','ID_PDV','Motivo','Objetivo','Estado_Visita','Proxima_Accion','Fecha_Proxima'],
+  registro:  ['Fecha','ID_PDV','Resp','Stock_Observado','Venta_Estimada','Precio_Obs','Calidad_Exhib','Necesita_Repos','Cant_Sugerida','Problema','Comentarios','Proxima_Accion']
 };
 var BD_FECHAS = {
-  sellin:  ['Fecha','Fecha_Venc'],
-  pedidos: ['Fecha_OC'],
-  sellout: ['Fecha']
+  clientes: ['Fecha_Ult_Contacto','Fecha_Proxima'],
+  sellin:   ['Fecha','Fecha_Venc'],
+  pedidos:  ['Fecha_OC'],
+  sellout:  ['Fecha'],
+  visitas:  ['Fecha','Fecha_Proxima'],
+  registro: ['Fecha']
 };
 
 /* busca hoja por nombre exacto y, si no está, por token (regex) */
@@ -98,8 +104,10 @@ function parseCRM(wb){
   var s = {}, w = [], res = {};
   var mapa = [
     { sec:'clientes',   hoja:'01_Maestro_Clientes',   rx:/cliente/i },
-    { sec:'pdv',        hoja:'02_Maestro_PDV',        rx:/pdv/i },
+    { sec:'pdv',        hoja:'02_Maestro_PDV',        rx:/02.*pdv|maestro_pdv/i },
     { sec:'sku',        hoja:'03_Maestro_SKU',        rx:/sku/i },
+    { sec:'visitas',    hoja:'05_Plan_Visitas',       rx:/visita/i, key:'ID_Visita' },
+    { sec:'registro',   hoja:'06_Registro_PDV',       rx:/registro/i, key:'ID_PDV' },
     { sec:'pedidos',    hoja:'08_Pedidos_OC',         rx:/pedido/i },
     { sec:'sellin',     hoja:'09_Sell_In',            rx:/sell.?in/i },
     { sec:'decisiones', hoja:'11_Tareas_Decisiones',  rx:/decision|tarea/i }
@@ -107,7 +115,7 @@ function parseCRM(wb){
   mapa.forEach(function(m){
     var h = hojaDe(wb, m.hoja, m.rx);
     if (!h){ w.push('Falta la hoja "' + m.hoja + '" — se omite la sección ' + m.sec + '.'); return; }
-    var rows = extraerHoja(h, BD_COLS[m.sec], BD_FECHAS[m.sec]);
+    var rows = extraerHoja(h, BD_COLS[m.sec], BD_FECHAS[m.sec], m.key);
     if (m.sec === 'sellin') rows = filtroSKU(rows);
     s[m.sec] = rows;
     res[m.sec] = rows.length + ' fila(s)';
@@ -170,6 +178,8 @@ function buildCRM(data){
   XL.utils.book_append_sheet(wb, wsDe(D2.clientes,   BD_COLS.clientes),   '01_Maestro_Clientes');
   XL.utils.book_append_sheet(wb, wsDe(D2.pdv,        BD_COLS.pdv),        '02_Maestro_PDV');
   XL.utils.book_append_sheet(wb, wsDe(D2.sku,        BD_COLS.sku),        '03_Maestro_SKU');
+  XL.utils.book_append_sheet(wb, wsDe(D2.visitas,    BD_COLS.visitas),    '05_Plan_Visitas');
+  XL.utils.book_append_sheet(wb, wsDe(D2.registro,   BD_COLS.registro),   '06_Registro_PDV');
   XL.utils.book_append_sheet(wb, wsDe(D2.pedidos,    BD_COLS.pedidos),    '08_Pedidos_OC');
   XL.utils.book_append_sheet(wb, wsDe(D2.sellin,     BD_COLS.sellin),     '09_Sell_In');
   XL.utils.book_append_sheet(wb, wsDe(D2.decisiones, BD_COLS.decisiones), '11_Tareas_Decisiones');
@@ -513,7 +523,9 @@ var BD_TABLAS = [
   { sec:'sellin',     t:'🧾 Sell-In (ventas)' },
   { sec:'pedidos',    t:'📦 Pedidos / OC' },
   { sec:'decisiones', t:'✅ Decisiones' },
-  { sec:'sellout',    t:'📤 Sell-Out' }
+  { sec:'sellout',    t:'📤 Sell-Out' },
+  { sec:'visitas',    t:'🗓️ Plan de visitas (CRM)' },
+  { sec:'registro',   t:'📋 Registro de visitas a PDV (CRM)' }
 ];
 
 function bdSubGo(k){ bdSub = k; render(); }
@@ -1002,6 +1014,48 @@ function buildReporteDashboard(){
   fila([bdX('TOTAL', { b:true, fill:BD_XC.panelV }), bdX(K.uds, { b:true, fill:BD_XC.panelV }), bdX(1, { b:true, fill:BD_XC.panelV, fmt:BD_FMT_PCT }),
         bdX(K.venta, { b:true, fill:BD_XC.panelV, fmt:BD_FMT_CLP }), bdX(1, { b:true, fill:BD_XC.panelV, fmt:BD_FMT_PCT }), bdX('', { fill:BD_XC.panelV })]);
   vacia();
+
+  /* --- Seguimiento comercial (CRM): mismo resumen del dashboard --- */
+  var cr = (typeof crmResumen === 'function') ? crmResumen() : null;
+  if (cr && (cr.acciones.length || cr.visitas.length)){
+    seccion('🤝 Seguimiento comercial (CRM)');
+    th(['Acciones vencidas', 'Próximas 7 días', 'Visitas pendientes', 'Visitas atrasadas', 'Visitas realizadas', 'Sin contacto 30d+']);
+    fila([
+      bdX(cr.accVencidas, { b:true, color: cr.accVencidas ? BD_XC.rojo : BD_XC.verde }),
+      bdX(cr.accProximas, { b:true, color: BD_XC.ambar }),
+      bdX(cr.visPend,     { b:true }),
+      bdX(cr.visVencidas, { b:true, color: cr.visVencidas ? BD_XC.rojo : BD_XC.verde }),
+      bdX(cr.visReal,     { b:true, color: BD_XC.verde }),
+      bdX(cr.sinContacto, { b:true, color: cr.sinContacto ? BD_XC.ambar : BD_XC.verde })
+    ]);
+    if (cr.acciones.length){
+      fila([bdX('Próximas acciones por cliente', { b:true, sz:10, color:BD_XC.verdeD, noBorde:true })]);
+      th(['Cliente', 'Estado', 'Últ. contacto', 'Próxima acción', 'Fecha', '⚠ Vencida']);
+      cr.acciones.forEach(function(a){
+        fila([
+          bdX(a.cliente, { b:true }), bdX(a.estado), bdX(a.ult || '—', { al:'right' }),
+          bdX(a.accion, { wrap:true }),
+          bdX(a.fecha || '—', { al:'right', color: a.vencida ? BD_XC.rojo : BD_XC.tinta, b: a.vencida }),
+          bdX(a.vencida ? 'SÍ' : '', { b:true, color:BD_XC.rojo, al:'center' })
+        ]);
+      });
+    }
+    if (cr.visitas.length){
+      fila([bdX('Plan de visitas', { b:true, sz:10, color:BD_XC.verdeD, noBorde:true })]);
+      th(['Fecha', 'Resp.', 'Cliente', 'PDV', 'Motivo', 'Estado']);
+      cr.visitas.forEach(function(v){
+        fila([
+          bdX(v.fecha || '—'), bdX(v.Resp || ''),
+          bdX(nameCliente(v.ID_Cliente) || v.ID_Cliente || ''),
+          bdX(namePDV(v.ID_PDV) || v.ID_PDV || ''),
+          bdX(v.Motivo || '', { wrap:true }),
+          bdX(v.realizada ? 'Realizada' : (v.vencida ? 'ATRASADA' : (v.Estado_Visita || 'Planificada')),
+              { b:true, color: v.realizada ? BD_XC.verde : (v.vencida ? BD_XC.rojo : BD_XC.ambar) })
+        ]);
+      });
+    }
+    vacia();
+  }
 
   /* --- Crecimiento por período (si hay datos en extra.js) --- */
   var per = D2.periodos || [];

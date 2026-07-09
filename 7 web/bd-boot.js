@@ -10,7 +10,7 @@
 
   /* Claves de NUVA_DATA que son PROPIAS de los datos (las únicas que el
      backend puede pisar). Las de extra.js / industria.js nunca se tocan. */
-  var OWNED = ['generado','clientes','pdv','sku','sellin','pedidos','decisiones','sellout','finanzas'];
+  var OWNED = ['generado','clientes','pdv','sku','sellin','pedidos','decisiones','sellout','finanzas','visitas','registro'];
 
   function inyectar(src, cb){
     var s = document.createElement('script');
@@ -22,11 +22,11 @@
     };
     document.body.appendChild(s);
   }
-  /* app.js primero (renderiza con los datos ya fusionados), después bd.js.
-     Si app.js no carga, NO se inyecta bd.js (depende de sus globals). */
+  /* app.js primero (renderiza con los datos ya fusionados), después bd.js
+     y crm.js. Si app.js no carga, NO se inyectan (dependen de sus globals). */
   function arrancar(){
     inyectar('app.js', function(okApp){
-      if (okApp){ inyectar('bd.js'); return; }
+      if (okApp){ inyectar('bd.js', function(){ inyectar('crm.js'); }); return; }
       var app = document.getElementById('app');
       if (app) app.innerHTML = '<p class="hint">⚠️ No se pudo cargar la aplicación (app.js). Revisa la conexión y recarga la página.</p>';
     });

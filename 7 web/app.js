@@ -185,6 +185,39 @@ const inventarioPDV = rotacion.map(r=>{
   return {...r, stock, known, max:a.max, min:a.min, reponer, fuente:a.fuente, estado, cls};
 }).sort((x,y)=> y.reponer-x.reponer || y.stock-x.stock);
 
+/* ---- CRM / seguimiento comercial ----
+   Fuentes: clientes (Proxima_Accion / Fecha_Ult_Contacto / Fecha_Proxima),
+   visitas (05_Plan_Visitas) y registro (06_Registro_PDV) del CRM Excel.
+   Lo usan la pestaña CRM (crm.js), el panel del dashboard y el Excel de
+   reportería (bd.js) — definido aquí porque app.js carga primero. */
+function crmResumen(){
+  const dISO = v => String(v||'').slice(0,10);
+  const hoy = new Date().toISOString().slice(0,10);
+  const en7 = new Date(Date.now()+7*864e5).toISOString().slice(0,10);
+  const hace30 = new Date(Date.now()-30*864e5).toISOString().slice(0,10);
+  const acciones = (D.clientes||[])
+    .filter(c => c.Proxima_Accion)
+    .map(c => ({ id:c.ID_Cliente, cliente:c.Cadena||c.ID_Cliente, estado:c.Estado||'',
+                 accion:c.Proxima_Accion, fecha:dISO(c.Fecha_Proxima), ult:dISO(c.Fecha_Ult_Contacto),
+                 notas:c.Notas||'', vencida: !!dISO(c.Fecha_Proxima) && dISO(c.Fecha_Proxima) < hoy }))
+    .sort((a,b)=>(a.fecha||'9999')<(b.fecha||'9999')?-1:1);
+  const visitas = (D.visitas||[]).map(v=>{
+    const realizada = /realizad/i.test(v.Estado_Visita||'');
+    return { ...v, fecha:dISO(v.Fecha), proxima:dISO(v.Fecha_Proxima), realizada,
+             vencida: !realizada && !!dISO(v.Fecha) && dISO(v.Fecha) < hoy };
+  }).sort((a,b)=>(a.fecha||'9999')<(b.fecha||'9999')?-1:1);
+  const sinContacto = (D.clientes||[]).filter(c=>{ const u=dISO(c.Fecha_Ult_Contacto); return !u || u < hace30; });
+  return {
+    acciones, visitas, registro: (D.registro||[]),
+    accVencidas: acciones.filter(a=>a.vencida).length,
+    accProximas: acciones.filter(a=>a.fecha && a.fecha>=hoy && a.fecha<=en7).length,
+    visPend: visitas.filter(v=>!v.realizada).length,
+    visReal: visitas.filter(v=>v.realizada).length,
+    visVencidas: visitas.filter(v=>v.vencida).length,
+    sinContacto: sinContacto.length
+  };
+}
+
 /* ---- render helpers ---- */
 function table(cols, rows, foot){
   const th = cols.map(c=>`<th class="${c.num?'num':''}" data-k="${c.k}">${c.t}</th>`).join('');
@@ -266,7 +299,28 @@ const views = {
             ], pr); })()}
           <p class="hint" style="margin-top:6px">Montos de <b>ejemplo</b> — reemplazar por venta real en <b>extra.js → "periodos"</b>.</p>
         </div>
-      </div>`;
+      </div>
+      ${(()=>{ const cr = crmResumen();
+        if(!cr.acciones.length && !cr.visitas.length)
+          return `<div class="panel"><h2>🤝 Seguimiento comercial (CRM)</h2><p class="hint">Sin datos de seguimiento — edítalos en <b>Base de datos → Datos</b> (Clientes / Plan de visitas) o sube el CRM Excel. Detalle en la pestaña <b>CRM</b>.</p></div>`;
+        const top = cr.acciones.slice(0,5);
+        return `<div class="panel"><h2>🤝 Seguimiento comercial (CRM)</h2>
+          <p class="hint" style="margin:0 0 8px">
+            <span class="badge ${cr.accVencidas?'b-red':'b-green'}">${cr.accVencidas} acción(es) vencida(s)</span>
+            <span class="badge b-amber">${cr.accProximas} próximas 7 días</span>
+            <span class="badge ${cr.visVencidas?'b-red':'b-gray'}">visitas: ${cr.visPend} pendiente(s) · ${cr.visVencidas} atrasada(s)</span>
+            <span class="badge b-green">${cr.visReal} realizada(s)</span>
+            <span class="badge ${cr.sinContacto?'b-amber':'b-green'}">${cr.sinContacto} cliente(s) sin contacto 30d+</span>
+          </p>
+          ${table([
+            {k:'cliente',t:'Cliente',render:r=>`<b>${esc(r.cliente)}</b>`},
+            {k:'estado',t:'Estado',render:r=>badge(r.estado)},
+            {k:'ult',t:'Últ. contacto',render:r=>r.ult||'—'},
+            {k:'accion',t:'Próxima acción',render:r=>esc(r.accion)},
+            {k:'fecha',t:'Fecha',render:r=> r.fecha ? (r.vencida?`<span class="badge b-red">${r.fecha} ⚠</span>`:r.fecha) : '—'}
+          ], top)}
+          <p class="hint" style="margin-top:8px">Detalle completo (visitas y registro en terreno) en la pestaña <b>🤝 CRM</b>.</p>
+        </div>`; })()}`;
   },
   rotacion(){
     const cols=[
