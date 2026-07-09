@@ -13,7 +13,32 @@ const namePDV = id => (D.pdv.find(p => p.ID_PDV === id) || {}).Nombre_PDV || id;
    Lee window.NUVA_FACTURAS (generado por gen-facturas.ps1) y asocia
    cada venta con las facturas cuyo nombre contiene el nombre o el
    codigo del cliente. Si no hay coincidencia, no muestra boton. */
-const FACTURAS = window.NUVA_FACTURAS || [];
+/* Documentos del backend Drive (subidos via pestana Base de datos). Se fusionan con
+   los manifiestos locales; si el doc esta en Drive se descarga por API (funciona en
+   la web publicada, donde las rutas ../4 finanzas/... no existen). */
+const DOCS_BD = window.NUVA_DOCS || {};
+const bdDocDe = (name, cat) => (DOCS_BD[cat]||[]).find(d => d.name === name);
+function bdDocOpen(id){
+  const cfg = window.NUVA_BD_CFG || {};
+  fetch(`${cfg.api}?action=file&kind=doc&id=${encodeURIComponent(id)}&k=${encodeURIComponent(cfg.key)}`)
+    .then(r => r.json()).then(j => {
+      if(!j.ok) throw new Error(j.error || 'error');
+      const bin = atob(j.b64); const arr = new Uint8Array(bin.length);
+      for(let i=0;i<bin.length;i++) arr[i] = bin.charCodeAt(i);
+      const blob = new Blob([arr], {type: j.mime || 'application/octet-stream'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = j.filename || 'documento';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url), 1500);
+    }).catch(e => alert('No se pudo descargar: ' + e.message));
+}
+function docAnchor(file, cat, base){
+  const d = bdDocDe(file, cat);
+  if(d && window.NUVA_BD_CFG && window.NUVA_BD_CFG.api)
+    return `<a class="btnpdf" href="#" onclick="event.preventDefault();bdDocOpen('${d.id}')" title="${esc(file)}">📄 Ver / Descargar</a>`;
+  return `<a class="btnpdf" href="${encodeURI(base + file)}" target="_blank" rel="noopener" title="${esc(file)}">📄 Ver / Descargar</a>`;
+}
+const FACTURAS = [...new Set([...(window.NUVA_FACTURAS || []), ...((DOCS_BD.fac_sellin)||[]).map(d=>d.name)])];
 const FAC_BASE = '../4 finanzas/contabilidad/1 facturas sell in/';
 const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[^a-z0-9]/g,'');
 function facturasDe(idCliente){
@@ -27,7 +52,7 @@ function facturasDe(idCliente){
 function pdfBtns(idCliente){
   const fs = facturasDe(idCliente);
   if(!fs.length) return '';
-  return fs.map(f => `<a class="btnpdf" href="${encodeURI(FAC_BASE + f)}" target="_blank" rel="noopener" title="${f}">📄 Ver / Descargar</a>`).join(' ');
+  return fs.map(f => docAnchor(f, 'fac_sellin', FAC_BASE)).join(' ');
 }
 
 function badge(estado){
@@ -863,7 +888,7 @@ const stamp = () => new Date().toLocaleDateString('es-CL');
 
 /* ---- Facturas de COMPRA: manifiesto NUVA_COMPRAS (generado por gen-facturas.ps1) ----
    Convencion de nombre: COMPRA-<folio>-<Proveedor>.pdf (ASCII, proveedor en un token). */
-const COMPRAS_PDF = window.NUVA_COMPRAS || [];
+const COMPRAS_PDF = [...new Set([...(window.NUVA_COMPRAS || []), ...((DOCS_BD.fac_compras)||[]).map(d=>d.name)])];
 const COMP_BASE = '../4 finanzas/contabilidad/2 facturas compras/';
 function parseCompra(file){
   const base = String(file).replace(/\.pdf$/i,'');
@@ -878,7 +903,7 @@ function comprasPdfDe(row){
 }
 function compraBtns(files){
   if(!files || !files.length) return '';
-  return files.map(f => `<a class="btnpdf" href="${encodeURI(COMP_BASE + f)}" target="_blank" rel="noopener" title="${f}">📄 Ver / Descargar</a>`).join(' ');
+  return files.map(f => docAnchor(f, 'fac_compras', COMP_BASE)).join(' ');
 }
 
 const REPORTES = {
@@ -1200,6 +1225,7 @@ document.querySelectorAll('#nav a').forEach(a=>a.onclick=()=>go(a.dataset.view))
 document.querySelectorAll('#nav .navhead').forEach(h=>h.onclick=()=>h.parentElement.classList.toggle('collapsed'));
 $('#search').addEventListener('input', applySearch);
 $('#genfecha').textContent = 'Generado ' + (D.generado||'');
+if(window.NUVA_REMOTE){ const f=document.getElementById('fuenteDatos'); if(f) f.textContent='Datos: BD web (Drive)'; }
 render();
 
 /* ---- Portada de confidencialidad con clave ----

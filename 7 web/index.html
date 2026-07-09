@@ -62,12 +62,13 @@
         </div>
       </div>
       <a data-view="reportes">📑 Reportes</a>
+      <a data-view="bd">🗄️ Base de datos</a>
       <a data-view="calendario">📅 Calendario</a>
       <a data-view="decisiones">✅ Decisiones</a>
     </nav>
     <div class="side-foot">
       <span id="genfecha"></span>
-      <small>Datos del CRM Excel</small>
+      <small id="fuenteDatos">Datos del CRM Excel</small>
     </div>
   </aside>
 
@@ -104,6 +105,10 @@
   })();
   </script>
   <script src="gmail.js"></script>
-  <script src="app.js"></script>
+  <!-- Base de datos web: SheetJS local + config + boot (bd-boot.js trae los datos
+       del backend Drive, los fusiona sobre NUVA_DATA y recien ahi inyecta app.js y bd.js). -->
+  <script src="vendor/xlsx.full.min.js"></script>
+  <script src="bd-config.js"></script>
+  <script src="bd-boot.js"></script>
 </body>
 </html>
