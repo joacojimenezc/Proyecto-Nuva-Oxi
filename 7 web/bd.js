@@ -496,6 +496,108 @@ async function bdDocEliminar(cat, id, nombre){
 }
 
 /* ============================================================
+   Sub-pestaña DATOS: edición en línea de las tablas
+   Los cambios se guardan en data.json del repo (saveData); el Excel
+   de la base NO se modifica (para eso está la sub-pestaña Archivos).
+   ============================================================ */
+var bdSub   = 'archivos';   // sub-pestaña activa: archivos | datos
+var bdTabla = null;         // sección desplegada en Datos
+var bdEdit  = null;         // { sec, rows } edición en curso
+
+var BD_TABLAS = [
+  { sec:'clientes',   t:'👥 Clientes' },
+  { sec:'pdv',        t:'📍 Puntos de venta' },
+  { sec:'sku',        t:'🏷️ Productos (SKU)' },
+  { sec:'sellin',     t:'🧾 Sell-In (ventas)' },
+  { sec:'pedidos',    t:'📦 Pedidos / OC' },
+  { sec:'decisiones', t:'✅ Decisiones' },
+  { sec:'sellout',    t:'📤 Sell-Out' }
+];
+
+function bdSubGo(k){ bdSub = k; render(); }
+
+/* esc() no escapa comillas — para value="..." hace falta */
+function bdVal(v){ return esc(v == null ? '' : v).replace(/"/g, '&quot;'); }
+
+function bdCopiaSeccion(sec){
+  var D = (typeof window !== 'undefined' && window.NUVA_DATA) || {};
+  return JSON.parse(JSON.stringify(D[sec] || []));
+}
+function bdTablaGo(sec){
+  if (bdTabla === sec){ bdTabla = null; bdEdit = null; render(); return; }   // colapsar
+  bdTabla = sec;
+  bdEdit = { sec: sec, rows: bdCopiaSeccion(sec) };
+  render();
+}
+/* celda editada: actualiza el estado al tipear (sin re-render → no pierde el foco) */
+function bdCelda(inp){
+  if (!bdEdit) return;
+  var r = Number(inp.getAttribute('data-r')), c = inp.getAttribute('data-c');
+  if (bdEdit.rows[r]) bdEdit.rows[r][c] = inp.value;
+}
+function bdFilaAgregar(){
+  if (!bdEdit) return;
+  var o = {}; BD_COLS[bdEdit.sec].forEach(function(c){ o[c] = ''; });
+  bdEdit.rows.push(o); render();
+}
+function bdFilaEliminar(i){
+  if (!bdEdit) return;
+  bdEdit.rows.splice(i, 1); render();
+}
+function bdDescartarEdicion(){
+  if (!bdTabla) return;
+  bdEdit = { sec: bdTabla, rows: bdCopiaSeccion(bdTabla) };
+  bdAviso('warn', 'Cambios descartados — se restauró la tabla.');
+  render();
+}
+/* '12' / '12,5' / '12.5' -> Number; el resto queda como texto */
+function bdCoerce(v){
+  if (typeof v !== 'string') return v;
+  var s = v.trim();
+  if (s === '') return '';
+  if (/^-?\d+([.,]\d+)?$/.test(s)) return Number(s.replace(',', '.'));
+  return s;
+}
+async function bdGuardarTabla(){
+  if (!bdEdit || !bdConectado()) return;
+  var sec = bdEdit.sec;
+  var rows = bdEdit.rows
+    .map(function(r){ var o = {}; BD_COLS[sec].forEach(function(c){ o[c] = bdCoerce(r[c]); }); return o; })
+    .filter(function(r){ return BD_COLS[sec].some(function(c){ return r[c] !== '' && r[c] != null; }); });   // fuera filas 100% vacías
+  if (sec === 'sellout') rows = rows.map(function(r){ r.Uds = Number(r.Uds_Vendidas) || 0; return r; });
+  var antes = (bdCopiaSeccion(sec)).length;
+  var tb = BD_TABLAS.filter(function(t){ return t.sec === sec; })[0] || { t: sec };
+  if (!confirm('Guardar ' + tb.t + ': ' + rows.length + ' fila(s) (antes: ' + antes + ').\nActualiza los datos de la web (data.json del repo GitHub).')) return;
+  var sections = {}; sections[sec] = rows;
+  if (sec === 'sellin') sections.finanzas = finanzasDesde(rows);   // P&L consistente
+  try{
+    bdAviso('warn', 'Guardando cambios…'); render();
+    await bdPost({ action:'saveData', sections: sections });
+    try { sessionStorage.setItem('nuva_bd_pendiente', JSON.stringify(sections)); } catch (e) {}
+    bdAviso('ok', 'Datos guardados ✔ recargando…'); render();
+    setTimeout(function(){ location.reload(); }, 900);
+  }catch(e){
+    bdAviso('bad', 'Error al guardar: ' + e.message); render();
+  }
+}
+
+/* Ver documento en el navegador (PDF/imagen) sin descargarlo */
+function bdDocEsVisible(nombre){ return /\.(pdf|jpe?g|png)$/i.test(String(nombre || '')); }
+async function bdDocVer(id, nombre){
+  var w = window.open('', '_blank');   // abrir YA (si no, el popup blocker lo mata)
+  try{
+    var r = await bdGet({ action:'file', kind:'doc', id:id });
+    var bin = atob(r.b64), bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    var url = URL.createObjectURL(new Blob([bytes], { type: r.mime || 'application/octet-stream' }));
+    if (w) w.location = url; else window.open(url, '_blank');
+  }catch(e){
+    if (w) try { w.close(); } catch (e2) {}
+    bdAviso('bad', 'No se pudo abrir "' + nombre + '": ' + e.message); render();
+  }
+}
+
+/* ============================================================
    Vista "Base de datos"
    ============================================================ */
 function bdPanelConfirmar(){
@@ -517,20 +619,12 @@ function bdPanelConfirmar(){
     + '</div></div>';
 }
 
-function bdVista(){
+/* ---- sub-pestaña ARCHIVOS: bases Excel + documentos (ver/descargar/eliminar) ---- */
+function bdVistaArchivos(){
   var conectado = bdConectado();
   var basesMeta = window.NUVA_BASES || {};
   var docs = window.NUVA_DOCS || {};
-  var disAttr = conectado ? '' : ' disabled title="Sin conexión al backend — configura la URL del Web App en bd-config.js"';
-
-  var badgeSt = conectado
-    ? '<span class="badge b-green">Conectado a GitHub ✔</span>'
-    : '<span class="badge b-red">Sin conexión — modo local (solo descarga)</span>';
-  var gen = (window.NUVA_REMOTE && window.NUVA_REMOTE.generado)
-    ? ' <span class="hint" style="margin:0">· datos remotos generados ' + esc(window.NUVA_REMOTE.generado) + '</span>' : '';
-
-  var msg = bdMsg
-    ? '<div class="alert ' + (bdMsg.cls === 'ok' ? 'ok' : bdMsg.cls) + '">' + esc(bdMsg.txt) + '</div>' : '';
+  var disAttr = conectado ? '' : ' disabled title="Sin conexión al backend"';
 
   /* tabla de bases (reusa table() de app.js) */
   var rows = BASES.map(function(b){ return { b:b, m:basesMeta[b.id] }; });
@@ -539,7 +633,7 @@ function bdVista(){
         return r.b.icon + ' <b>' + esc(r.b.label) + '</b><div class="hint" style="margin:2px 0 0;white-space:normal;max-width:340px">' + esc(r.b.desc) + '</div>'; } },
     { k:'file', t:'Archivo', render:function(r){ return esc(r.b.filename); } },
     { k:'upd', t:'Últ. actualización', render:function(r){
-        return r.m ? esc(bdFecha(r.m.updatedAt)) + (r.m.size ? ' · ' + esc(bdBytes(r.m.size)) : '') : '—'; } },
+        return (r.m && r.m.updatedAt) ? esc(bdFecha(r.m.updatedAt)) + (r.m.size ? ' · ' + esc(bdBytes(r.m.size)) : '') : '—'; } },
     { k:'sec', t:'Al subir', render:function(r){
         return r.b.parse ? '<span class="badge b-green">Actualiza la web</span>' : '<span class="badge b-gray">Solo archivo</span>'; } },
     { k:'acc', t:'Acciones', render:function(r){
@@ -557,7 +651,10 @@ function bdVista(){
     { k:'name', t:'Documento', render:function(r){ return '📄 ' + esc(r.name); } },
     { k:'size', t:'Tamaño', num:1, render:function(r){ return esc(bdBytes(r.size)); } },
     { k:'acc', t:'Acciones', render:function(r){
-        return '<button class="btnrep xls" onclick="bdDocDescargar(\'' + bdAttr(r.id) + '\',\'' + bdAttr(r.name) + '\')"' + disAttr + '>⬇ Descargar</button> '
+        var ver = bdDocEsVisible(r.name)
+          ? '<button class="btnrep xls" onclick="bdDocVer(\'' + bdAttr(r.id) + '\',\'' + bdAttr(r.name) + '\')"' + disAttr + '>👁 Ver</button> ' : '';
+        return ver
+             + '<button class="btnrep xls" onclick="bdDocDescargar(\'' + bdAttr(r.id) + '\',\'' + bdAttr(r.name) + '\')"' + disAttr + '>⬇ Descargar</button> '
              + '<button class="btnrep pdf" onclick="bdDocEliminar(\'' + bdCat + '\',\'' + bdAttr(r.id) + '\',\'' + bdAttr(r.name) + '\')"' + disAttr + '>🗑 Eliminar</button>'; } }
   ];
   var dTabla = dRows.length
@@ -568,18 +665,78 @@ function bdVista(){
     + '<div class="panel" style="border-left:4px solid var(--blue)"><h2>🔁 Cómo se trabaja</h2>'
     + '<p class="hint" style="margin:0">1) <b>Descarga</b> la base Excel · 2) <b>Trabaja</b> en tu computador manteniendo hojas y columnas · '
     + '3) <b>Sube</b> el archivo: la web lo valida, muestra un resumen y al confirmar reemplaza la base en el repo GitHub y refresca los datos. '
-    + 'Las bases "Solo archivo" se respaldan sin recalcular la web (inventario y finanzas se calculan desde sell-in/sell-out).</p></div>'
-    + '<div class="filterbar"><div>' + badgeSt + gen + '</div></div>'
-    + (conectado ? '' : '<p class="hint">Para habilitar subidas se necesita el backend: en la web publicada es <b>/api/bd</b> (requiere GITHUB_TOKEN configurado en Vercel). En esta vista local solo funciona la descarga generada.</p>')
-    + msg
-    + bdPanelConfirmar()
+    + 'Para cambios rápidos sin Excel, usa la sub-pestaña <b>📝 Datos</b>.</p></div>'
     + '<div class="panel"><h2>🗄️ Bases de datos (Excel)</h2>' + table(cols, rows) + '</div>'
-    + '<div class="panel"><h2>📁 Documentos de respaldo</h2>'
+    + '<div class="panel"><h2>📁 Documentos (facturas, OC y otros)</h2>'
     + '<div class="subtabs">' + tabs + '</div>'
     + '<div class="filterbar"><p class="hint" style="margin:0">' + dRows.length + ' documento(s) en <b>' + esc(catAct.t) + '</b>.</p>'
     + '<div class="repbtns"><button class="btnrep xls" onclick="bdSubirDoc(\'' + bdCat + '\')"' + disAttr + '>⬆ Subir documento</button></div></div>'
     + dTabla
     + '</div>';
+}
+
+/* ---- sub-pestaña DATOS: acordeón de tablas editables ---- */
+function bdVistaDatos(){
+  var conectado = bdConectado();
+  var D = window.NUVA_DATA || {};
+  var disAttr = conectado ? '' : ' disabled title="Sin conexión al backend — solo lectura"';
+  var html = '<div class="panel" style="border-left:4px solid var(--blue)"><h2>📝 Edición de datos por tabla</h2>'
+    + '<p class="hint" style="margin:0">Despliega una tabla, edita las celdas directamente, agrega (➕) o elimina (🗑) filas y pulsa <b>💾 Guardar</b>. '
+    + 'Los cambios actualizan al instante los datos que muestra la web. El Excel de la base NO se modifica: si después subes o regeneras el CRM, '
+    + 'sus tablas vuelven a mandar — para cambios permanentes replícalos también en tu Excel.</p></div>'
+    + '<div class="panel"><h2>🗂️ Tablas</h2>';
+  BD_TABLAS.forEach(function(tb){
+    var abierta = (bdTabla === tb.sec);
+    var n = (D[tb.sec] || []).length;
+    html += '<div class="bd-acord' + (abierta ? ' abierta' : '') + '">'
+      + '<button class="bd-acord-h" onclick="bdTablaGo(\'' + tb.sec + '\')">'
+      + (abierta ? '▾ ' : '▸ ') + tb.t
+      + ' <span class="badge b-gray">' + n + ' fila(s)</span></button>';
+    if (abierta && bdEdit && bdEdit.sec === tb.sec){
+      var cols = BD_COLS[tb.sec];
+      var th = cols.map(function(c){ return '<th>' + esc(c) + '</th>'; }).join('') + '<th></th>';
+      var body = bdEdit.rows.map(function(r, i){
+        return '<tr>' + cols.map(function(c){
+          return '<td><input data-r="' + i + '" data-c="' + bdVal(c) + '" value="' + bdVal(r[c]) + '" oninput="bdCelda(this)"' + (conectado ? '' : ' readonly') + '></td>';
+        }).join('')
+        + '<td><button class="btnrep pdf" onclick="bdFilaEliminar(' + i + ')"' + disAttr + ' title="Eliminar esta fila">🗑</button></td></tr>';
+      }).join('');
+      if (!bdEdit.rows.length) body = '<tr><td colspan="' + (cols.length + 1) + '" style="text-align:center;color:#888;padding:10px">Sin filas — usa ➕ Agregar fila.</td></tr>';
+      html += '<div class="tablewrap bd-editwrap"><table class="bd-edit"><thead><tr>' + th + '</tr></thead><tbody>' + body + '</tbody></table></div>'
+        + '<div class="repbtns bd-editbtns">'
+        + '<button class="btnrep xls" onclick="bdFilaAgregar()"' + disAttr + '>➕ Agregar fila</button> '
+        + '<button class="btnrep xls" onclick="bdGuardarTabla()"' + disAttr + '>💾 Guardar cambios</button> '
+        + '<button class="btnrep pdf" onclick="bdDescartarEdicion()">↩ Descartar</button>'
+        + '</div>';
+    }
+    html += '</div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+function bdVista(){
+  var conectado = bdConectado();
+  var badgeSt = conectado
+    ? '<span class="badge b-green">Conectado a GitHub ✔</span>'
+    : '<span class="badge b-red">Sin conexión — modo local (solo descarga)</span>';
+  var gen = (window.NUVA_REMOTE && window.NUVA_REMOTE.generado)
+    ? ' <span class="hint" style="margin:0">· datos remotos generados ' + esc(window.NUVA_REMOTE.generado) + '</span>' : '';
+  var msg = bdMsg
+    ? '<div class="alert ' + (bdMsg.cls === 'ok' ? 'ok' : bdMsg.cls) + '">' + esc(bdMsg.txt) + '</div>' : '';
+
+  var subtabs = '<div class="subtabs">'
+    + '<button class="subtab ' + (bdSub === 'archivos' ? 'active' : '') + '" onclick="bdSubGo(\'archivos\')">📁 Archivos</button>'
+    + '<button class="subtab ' + (bdSub === 'datos' ? 'active' : '') + '" onclick="bdSubGo(\'datos\')">📝 Datos</button>'
+    + '</div>';
+
+  return ''
+    + '<div class="filterbar"><div>' + badgeSt + gen + '</div></div>'
+    + (conectado ? '' : '<p class="hint">Para habilitar subidas y edición se necesita el backend <b>/api/bd</b> (GITHUB_TOKEN y BD_WRITE_KEY en Vercel). En modo local solo funciona la descarga generada.</p>')
+    + msg
+    + bdPanelConfirmar()
+    + subtabs
+    + (bdSub === 'datos' ? bdVistaDatos() : bdVistaArchivos());
 }
 
 /* ============================================================
@@ -591,7 +748,19 @@ if (typeof window !== 'undefined'){
       var st = document.createElement('style');
       st.id = 'bd-css';
       st.textContent = '.alert.ok{background:#eef8f1;border-color:var(--green-l)}'
-                     + '.btnrep[disabled]{opacity:.45;cursor:not-allowed}';
+                     + '.btnrep[disabled]{opacity:.45;cursor:not-allowed}'
+                     + '.bd-acord{border:1px solid #dfe7e2;border-radius:8px;margin:8px 0;overflow:hidden;background:#fff}'
+                     + '.bd-acord-h{display:block;width:100%;text-align:left;padding:10px 12px;background:#f4f8f5;border:0;cursor:pointer;font:inherit;font-weight:600;color:inherit}'
+                     + '.bd-acord.abierta .bd-acord-h{background:#e8f2ec}'
+                     + '.bd-acord-h:hover{background:#edf5f0}'
+                     + '.bd-editwrap{max-height:440px;overflow:auto;margin:0;padding:8px}'
+                     + '.bd-edit{width:100%;border-collapse:collapse}'
+                     + '.bd-edit th{position:sticky;top:0;background:#eef4f0;font-size:11.5px;padding:6px;text-align:left;white-space:nowrap}'
+                     + '.bd-edit td{padding:3px 4px}'
+                     + '.bd-edit input{width:100%;min-width:84px;box-sizing:border-box;border:1px solid #d5ded8;border-radius:4px;padding:4px 6px;font:inherit;font-size:12.5px;background:#fff}'
+                     + '.bd-edit input:focus{outline:2px solid #9cc7ae;border-color:#9cc7ae}'
+                     + '.bd-edit input[readonly]{background:#f5f5f5;color:#777}'
+                     + '.bd-editbtns{margin:4px 8px 10px}';
       document.head.appendChild(st);
     }
     titles.bd = 'Base de datos';
