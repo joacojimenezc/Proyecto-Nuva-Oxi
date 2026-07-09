@@ -2,7 +2,7 @@
    NUVA OXI · Módulo "Base de datos" (bd.js)
    Se carga DESPUÉS de app.js (lo inyecta bd-boot.js), por lo que puede
    usar sus globals: esc(), clp(), table(), views, titles, render(), go().
-   - Descarga / subida de las 6 bases Excel (backend Apps Script + Drive)
+   - Descarga / subida de las 6 bases Excel (backend: repo GitHub vía /api/bd)
    - Parseo client-side con SheetJS al subir CRM / Sell-In / Sell-Out
    - Documentos de respaldo por categoría (facturas, OC, otros)
    ============================================================ */
@@ -275,7 +275,7 @@ async function bdGet(params){
   var cfg = bdCfg();
   if (!cfg.api) throw new Error('sin backend configurado (bd-config.js)');
   var qs = Object.keys(params).map(function(k){ return k + '=' + encodeURIComponent(params[k]); }).join('&');
-  var r = await fetch(cfg.api + '?' + qs + '&k=' + encodeURIComponent(cfg.key));
+  var r = await fetch(cfg.api + '?' + qs + '&k=' + encodeURIComponent(cfg.key), { cache: 'no-store' });
   var j = await r.json();
   if (!j.ok) throw new Error(j.error || 'error del servidor');
   return j;
@@ -319,7 +319,15 @@ function bdBytes(n){
   if (n >= 1024)    return Math.round(n / 1024) + ' KB';
   return n + ' B';
 }
-function bdAttr(s){ return String(s == null ? '' : s).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
+/* escape para valores dentro de onclick="fn('...')": & PRIMERO (evita
+   contrabando de entidades tipo &#39; que el parser HTML decodifica antes
+   de ejecutar el JS), luego JS-string y delimitadores de atributo/HTML */
+function bdAttr(s){
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/\\/g, '\\\\').replace(/'/g, "\\'")
+    .replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
 
 /* ============================================================
    Estado UI + acciones (funciones globales para los onclick)
@@ -344,13 +352,13 @@ async function bdDescargar(id){
   var meta = (window.NUVA_BASES || {})[id];
   if (meta && bdCfg().api){
     try{
-      bdAviso('warn', 'Descargando ' + B.filename + ' desde Drive…'); render();
+      bdAviso('warn', 'Descargando ' + B.filename + ' desde GitHub…'); render();
       var r = await bdGet({ action:'file', kind:'base', id:id });
       dlB64(r.filename || B.filename, r.mime || MIME_XLSX, r.b64);
       bdMsg = null; render();
       return;
     }catch(e){
-      bdAviso('warn', 'No se pudo bajar de Drive (' + e.message + ') — se genera una copia local.'); render();
+      bdAviso('warn', 'No se pudo bajar del repo (' + e.message + ') — se genera una copia local.'); render();
     }
   }
   try{
@@ -367,6 +375,10 @@ function bdSubirBase(id){
   inp.type = 'file'; inp.accept = '.xlsx,.xls';
   inp.onchange = async function(){
     var f = inp.files[0]; if (!f) return;
+    if (f.size > 3 * 1024 * 1024){
+      bdAviso('bad', 'El archivo supera 3 MB (límite de subida web). Déjalo en tu carpeta local y el auto-sync lo llevará al repo.');
+      render(); return;
+    }
     try{
       var buf = await f.arrayBuffer();
       var b64 = ab2b64(buf);
@@ -381,7 +393,7 @@ function bdSubirBase(id){
         var r = await bdPost({ action:'uploadBase', id:id, filename:f.name, b64:b64 });
         window.NUVA_BASES = window.NUVA_BASES || {};
         window.NUVA_BASES[id] = { filename:f.name, updatedAt:(r.updatedAt || new Date().toISOString()), size:f.size };
-        bdAviso('ok', B.label + ': archivo actualizado ✔ (solo respaldo, no cambia los datos de la web)');
+        bdAviso('ok', B.label + ': archivo actualizado en el repo ✔ (solo respaldo, no cambia los datos de la web)');
       }
     }catch(e){
       bdAviso('bad', 'No se pudo leer/subir el archivo: ' + e.message);
@@ -414,6 +426,10 @@ function bdSubirDoc(cat){
   inp.type = 'file'; inp.accept = '.pdf,.xlsx,.xls,.csv,.docx,.jpg,.jpeg,.png';
   inp.onchange = async function(){
     var f = inp.files[0]; if (!f) return;
+    if (f.size > 3 * 1024 * 1024){
+      bdAviso('bad', 'El documento supera 3 MB (límite de subida web). Déjalo en tu carpeta local y el auto-sync lo llevará al repo.');
+      render(); return;
+    }
     try{
       bdAviso('warn', 'Subiendo "' + f.name + '"…'); render();
       var b64 = ab2b64(await f.arrayBuffer());
@@ -437,12 +453,12 @@ async function bdDocDescargar(id, nombre){
   }
 }
 async function bdDocEliminar(cat, id, nombre){
-  if (!confirm('¿Eliminar "' + nombre + '"?\nSe envía a la papelera de Drive (reversible).')) return;
+  if (!confirm('¿Eliminar "' + nombre + '"?\nSe elimina del repo (queda recuperable en el historial git).')) return;
   try{
     await bdPost({ action:'deleteDoc', id:id });
     var lista = (window.NUVA_DOCS || {})[cat] || [];
     for (var i = 0; i < lista.length; i++) if (lista[i].id === id){ lista.splice(i, 1); break; }
-    bdAviso('ok', 'Documento enviado a la papelera de Drive.');
+    bdAviso('ok', 'Documento eliminado del repo (recuperable en el historial git).');
   }catch(e){
     bdAviso('bad', 'Error al eliminar: ' + e.message);
   }
@@ -461,7 +477,7 @@ function bdPanelConfirmar(){
   var haySec = Object.keys(bdPendiente.sections || {}).length > 0;
   return '<div class="panel" style="border-left:4px solid var(--amber)">'
     + '<h2>📋 Confirmar actualización · ' + esc(B.label || bdPendiente.id) + '</h2>'
-    + '<p class="hint">Archivo: <b>' + esc(bdPendiente.filename) + '</b>. Al confirmar se reemplaza el Excel en Drive y se actualizan los datos de la web (la página se recarga).</p>'
+    + '<p class="hint">Archivo: <b>' + esc(bdPendiente.filename) + '</b>. Al confirmar se reemplaza el Excel en el repo GitHub y se actualizan los datos de la web (la página se recarga).</p>'
     + (filas ? '<ul class="dims">' + filas + '</ul>' : '')
     + warns
     + (haySec ? '' : '<div class="alert bad">No se reconoció ninguna sección en el archivo — revisa las hojas y vuelve a intentarlo.</div>')
@@ -478,7 +494,7 @@ function bdVista(){
   var disAttr = conectado ? '' : ' disabled title="Sin conexión al backend — configura la URL del Web App en bd-config.js"';
 
   var badgeSt = conectado
-    ? '<span class="badge b-green">Conectado a Drive ✔</span>'
+    ? '<span class="badge b-green">Conectado a GitHub ✔</span>'
     : '<span class="badge b-red">Sin conexión — modo local (solo descarga)</span>';
   var gen = (window.NUVA_REMOTE && window.NUVA_REMOTE.generado)
     ? ' <span class="hint" style="margin:0">· datos remotos generados ' + esc(window.NUVA_REMOTE.generado) + '</span>' : '';
@@ -522,10 +538,10 @@ function bdVista(){
   return ''
     + '<div class="panel" style="border-left:4px solid var(--blue)"><h2>🔁 Cómo se trabaja</h2>'
     + '<p class="hint" style="margin:0">1) <b>Descarga</b> la base Excel · 2) <b>Trabaja</b> en tu computador manteniendo hojas y columnas · '
-    + '3) <b>Sube</b> el archivo: la web lo valida, muestra un resumen y al confirmar reemplaza la base en Drive y refresca los datos. '
+    + '3) <b>Sube</b> el archivo: la web lo valida, muestra un resumen y al confirmar reemplaza la base en el repo GitHub y refresca los datos. '
     + 'Las bases "Solo archivo" se respaldan sin recalcular la web (inventario y finanzas se calculan desde sell-in/sell-out).</p></div>'
     + '<div class="filterbar"><div>' + badgeSt + gen + '</div></div>'
-    + (conectado ? '' : '<p class="hint">Para habilitar subidas y respaldo en Drive, pega la URL /exec del Web App en <b>bd-config.js → api</b>.</p>')
+    + (conectado ? '' : '<p class="hint">Para habilitar subidas se necesita el backend: en la web publicada es <b>/api/bd</b> (requiere GITHUB_TOKEN configurado en Vercel). En esta vista local solo funciona la descarga generada.</p>')
     + msg
     + bdPanelConfirmar()
     + '<div class="panel"><h2>🗄️ Bases de datos (Excel)</h2>' + table(cols, rows) + '</div>'

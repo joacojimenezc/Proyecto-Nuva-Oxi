@@ -16,11 +16,11 @@ const namePDV = id => (D.pdv.find(p => p.ID_PDV === id) || {}).Nombre_PDV || id;
 /* Documentos del backend Drive (subidos via pestana Base de datos). Se fusionan con
    los manifiestos locales; si el doc esta en Drive se descarga por API (funciona en
    la web publicada, donde las rutas ../4 finanzas/... no existen). */
-const DOCS_BD = window.NUVA_DOCS || {};
-const bdDocDe = (name, cat) => (DOCS_BD[cat]||[]).find(d => d.name === name);
+const docsBd = () => window.NUVA_DOCS || {};
+const bdDocDe = (name, cat) => (docsBd()[cat]||[]).find(d => d.name === name);
 function bdDocOpen(id){
   const cfg = window.NUVA_BD_CFG || {};
-  fetch(`${cfg.api}?action=file&kind=doc&id=${encodeURIComponent(id)}&k=${encodeURIComponent(cfg.key)}`)
+  fetch(`${cfg.api}?action=file&kind=doc&id=${encodeURIComponent(id)}&k=${encodeURIComponent(cfg.key)}`, {cache:'no-store'})
     .then(r => r.json()).then(j => {
       if(!j.ok) throw new Error(j.error || 'error');
       const bin = atob(j.b64); const arr = new Uint8Array(bin.length);
@@ -38,7 +38,8 @@ function docAnchor(file, cat, base){
     return `<a class="btnpdf" href="#" onclick="event.preventDefault();bdDocOpen('${d.id}')" title="${esc(file)}">📄 Ver / Descargar</a>`;
   return `<a class="btnpdf" href="${encodeURI(base + file)}" target="_blank" rel="noopener" title="${esc(file)}">📄 Ver / Descargar</a>`;
 }
-const FACTURAS = [...new Set([...(window.NUVA_FACTURAS || []), ...((DOCS_BD.fac_sellin)||[]).map(d=>d.name)])];
+/* lista VIVA (lee window.NUVA_DOCS al momento: un doc recién subido aparece sin recargar) */
+const facturasAll = () => [...new Set([...(window.NUVA_FACTURAS || []), ...((docsBd().fac_sellin)||[]).map(d=>d.name)])];
 const FAC_BASE = '../4 finanzas/contabilidad/1 facturas sell in/';
 const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[^a-z0-9]/g,'');
 function facturasDe(idCliente){
@@ -47,7 +48,7 @@ function facturasDe(idCliente){
   const fw = norm(String(c.Cadena||'').split(' ')[0]);   // primera palabra del nombre (ej. "Pirque")
   if(fw.length >= 4) keys.add(fw);
   const ks = [...keys].filter(Boolean);
-  return FACTURAS.filter(f => { const nf = norm(f); return ks.some(k => nf.includes(k)); });
+  return facturasAll().filter(f => { const nf = norm(f); return ks.some(k => nf.includes(k)); });
 }
 function pdfBtns(idCliente){
   const fs = facturasDe(idCliente);
@@ -888,7 +889,8 @@ const stamp = () => new Date().toLocaleDateString('es-CL');
 
 /* ---- Facturas de COMPRA: manifiesto NUVA_COMPRAS (generado por gen-facturas.ps1) ----
    Convencion de nombre: COMPRA-<folio>-<Proveedor>.pdf (ASCII, proveedor en un token). */
-const COMPRAS_PDF = [...new Set([...(window.NUVA_COMPRAS || []), ...((DOCS_BD.fac_compras)||[]).map(d=>d.name)])];
+/* lista VIVA (igual que facturasAll) */
+const comprasAll = () => [...new Set([...(window.NUVA_COMPRAS || []), ...((docsBd().fac_compras)||[]).map(d=>d.name)])];
 const COMP_BASE = '../4 finanzas/contabilidad/2 facturas compras/';
 function parseCompra(file){
   const base = String(file).replace(/\.pdf$/i,'');
@@ -899,7 +901,7 @@ function parseCompra(file){
 }
 function comprasPdfDe(row){
   const keys = [String(row.Folio||''), row.Proveedor].filter(Boolean).map(norm).filter(Boolean);
-  return COMPRAS_PDF.filter(f => { const nf = norm(f); return keys.some(k => nf.includes(k)); });
+  return comprasAll().filter(f => { const nf = norm(f); return keys.some(k => nf.includes(k)); });
 }
 function compraBtns(files){
   if(!files || !files.length) return '';
@@ -1182,8 +1184,14 @@ let current='dashboard', sortState={};
 const titles={dashboard:'Dashboard',rotacion:'Rotación · Sell-in vs Sell-out',clientes:'Clientes',pdv:'Puntos de venta',productos:'Productos · SKU',inventario:'Control de Inventario',contabilidad:'Contabilidad',logistica:'Logística y Despachos',planning:'Planificación estratégica',finanzas:'Finanzas',pnl:'P&L · Estado de Resultados',reportes:'Reportes',marketing:'Marketing y Trade',mercado:'Mercado y Competencia',redes:'Redes · Instagram',flujo:'Flujo operacional',decisiones:'Decisiones pendientes',calendario:'Calendario · Google',correo:'Correo · Gmail',gerencia:'Gerencia · Resumen ejecutivo'};
 
 function render(){
-  $('#app').innerHTML = views[current]();
-  $('#viewTitle').textContent = titles[current];
+  const v = views[current];
+  if(!v){   // vista aún no registrada (p.ej. bd.js todavía cargando)
+    $('#app').innerHTML = '<p class="hint">Cargando módulo…</p>';
+    $('#viewTitle').textContent = titles[current] || '';
+    return;
+  }
+  $('#app').innerHTML = v();
+  $('#viewTitle').textContent = titles[current] || '';
   applySearch();
   wireSort();
   if(current==='pdv') initLeafletMap();
