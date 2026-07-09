@@ -1,0 +1,11 @@
+{"kind":"workbook","id":"wb/kynneb","sheets":4,"tables":4}
+{"kind":"definedName","name":"DatosExternos_1","scope":"carga_cencosud","formula":"=carga_cencosud!$A$1:$F$3"}
+{"kind":"definedName","name":"DatosExternos_1","scope":"carga_clientes","formula":"=carga_clientes!$A$1:$F$3"}
+{"kind":"sheet","id":"ws/nqnxg5","name":"SELL_OUT","index":0,"range":"A1:K7","address":"A1:K7","tables":1}
+{"kind":"table","sheet":"SELL_OUT","address":"A1:K7","rows":7,"cols":11,"values":[["Fecha","Semana_ISO","ID_Cliente","ID_PDV","SKU","Uds_Vendidas","PVP_Salida","Fuente","Stock_Observado","Resp","Notas"],[46037,3,"CL-DEL","D001","SKU-CAC-U",10,1900,"Reporte Cliente",5,"Ana Barra","migrado borrador"],[46037,3,"CL-DEL","D002","SKU-MAN-U",6,1900,"Reporte Cliente",4,"Ana Barra","migrado borrador"],[46037,3,"CL-PIR","P001","SKU-CAC-4",4,5900,"Conteo Visita",1,"Jose Ignacio","migrado borrador"],[46037,3,"CL-RITZ","H001","SKU-MAN-4",8,5900,"Reporte Cliente",0,"Jose Ignacio","migrado borrador"],[46037,3,"CL-CEN","J001","SKU-FRU-4",5,5900,"Portal Cencosud",45,"Jose Ignacio","migrado borrador"],[46242,32,"CL-ALN","AN01","SKU-FRU-U",7,1900,"Conteo Visita",3,"Jose Ignacio","dummy demo"]]}
+{"kind":"sheet","id":"ws/xbxjjj","name":"RESUMEN","index":1,"range":"A1:B5","address":"A1:B5","tables":1}
+{"kind":"table","sheet":"RESUMEN","address":"A1:B5","rows":5,"cols":2,"values":[["RESUMEN SELL-OUT",null],[null,null],["Total Uds Sell-Out (manual)",40],["Registros manuales",6],["Nota","Sell-out por PDV/mes y rotacion vs sell-in se cruzan en CONSOLIDADO."]]}
+{"kind":"sheet","id":"ws/1gxwd1","name":"carga_clientes","index":2,"range":"A1:F3","address":"A1:F3","tables":1}
+{"kind":"table","sheet":"carga_clientes","address":"A1:F3","rows":3,"cols":6,"values":[["Fecha","ID_PDV","SKU","Uds_Vendidas","PVP_Salida","Fuente"],[46244,"D001","SKU-CAC-U",4,1900,"Reporte Cliente"],[46244,"D002","SKU-MAN-U",3,1900,"Reporte Cliente"]]}
+{"kind":"sheet","id":"ws/irfm2y","name":"carga_cencosud","index":3,"range":"A1:F3","address":"A1:F3","tables":1}
+{"kind":"table","sheet":"carga_cencosud","address":"A1:F3","rows":3,"cols":6,"values":[["Fecha","ID_PDV","SKU","Uds_Vendidas","PVP_Salida","Fuente"],[46246,"J001","SKU-FRU-4",5,5900,"Portal Cencosud"],[46253,"J001","SKU-FRU-4",7,5900,"Portal Cencosud"]]}

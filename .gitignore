@@ -1,0 +1,15 @@
+# Artefacto local pesado (se regenera con build_embed.js y se descarga; NO va al repo)
+index-embed.html
+
+# Dependencias
+node_modules/
+
+# Temporales / basura
+~$*
+*.zip
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Memoria del bot de WhatsApp "Continuidad Pilotos" (local; NO va al repo ni al deploy)
+_bot-memoria/

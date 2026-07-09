@@ -1,7 +1,25 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell(git clone https://github.com/sebastiancerda-IA/wp3-deploy.git \"C:\\\\Users\\\\jimen\\\\OneDrive\\\\Escritorio\\\\wp3-deploy\")"
+      "PowerShell(git clone https://github.com/sebastiancerda-IA/wp3-deploy.git \"C:\\\\Users\\\\jimen\\\\OneDrive\\\\Escritorio\\\\wp3-deploy\")",
+      "mcp__whatsapp__list_messages",
+      "Bash(powershell -Command \"if \\(Test-Path 'C:\\\\Users\\\\jimen\\\\.claude\\\\wa-assistant-state.json'\\) { Get-Content 'C:\\\\Users\\\\jimen\\\\.claude\\\\wa-assistant-state.json' -Raw } else { Write-Output 'MISSING' }\")",
+      "Read(//c/Users/jimen/.claude/**)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"/c/Users/jimen/OneDrive/Escritorio/wp3-deploy\" 2>/dev/null && { [ ! -f index-embed.html ] || [ index.html -nt index-embed.html ]; } && node \"/c/Users/jimen/Downloads/wp3_docs_build/build_embed.js\" >/dev/null 2>&1; true",
+            "shell": "bash",
+            "timeout": 90,
+            "statusMessage": "Sincronizando index-embed.html"
+          }
+        ]
+      }
     ]
   }
 }

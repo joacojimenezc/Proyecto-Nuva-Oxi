@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "wp3-static",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-File", ".claude/static-server.ps1", "-Port", "8123"],
+      "port": 8123
+    },
+    {
+      "name": "nuva-web",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-File", ".claude/static-server.ps1", "-Port", "8130", "-Root", "C:\\Users\\jimen\\OneDrive\\Escritorio\\Proyecto-Nuva-Oxi\\7 web"],
+      "port": 8130
+    }
+  ]
+}
