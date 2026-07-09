@@ -57,13 +57,36 @@
       window.NUVA_BASES  = j.bases || {};
       var D  = window.NUVA_DATA = window.NUVA_DATA || {};
       var rd = j.data || {};
-      OWNED.forEach(function(k){ if (rd[k] !== undefined) D[k] = rd[k]; });
-      if (j.generado) D.generado = j.generado;   // el backend lo devuelve al nivel superior
+      /* Guarda anti-regresión: si el data.js local es MÁS NUEVO que el data.json
+         del repo (p.ej. edición local del CRM recién generada), se mantiene lo
+         local. Formato 'yyyy-MM-dd HH:mm' → sirve comparar strings. */
+      var remotoGen = j.generado || rd.generado || '';
+      var localGen  = D.generado || '';
+      if (!localGen || !remotoGen || remotoGen >= localGen){
+        OWNED.forEach(function(k){ if (rd[k] !== undefined) D[k] = rd[k]; });
+        if (remotoGen) D.generado = remotoGen;
+      } else {
+        console.warn('bd-boot: data.json remoto (' + remotoGen + ') más antiguo que data.js local (' + localGen + ') — mandan los datos locales.');
+      }
     })
     .catch(function(e){
       clearTimeout(timer);
       console.warn('bd-boot: sin datos remotos (' + (e && e.message) + ') — usando data.js local.');
       window.NUVA_REMOTE = null;   // modo fallback: data.js manda
     })
-    .then(arrancar);   // en éxito o error, siempre arranca la app
+    .then(function(){
+      /* Red de seguridad post-subida: bd.js dejó en sessionStorage las secciones
+         recién confirmadas; se aplican UNA vez por si la lectura del repo llegó
+         rezagada (o falló) tras el location.reload(). */
+      try {
+        var pend = sessionStorage.getItem('nuva_bd_pendiente');
+        if (pend){
+          sessionStorage.removeItem('nuva_bd_pendiente');
+          var ps = JSON.parse(pend);
+          var D2 = window.NUVA_DATA = window.NUVA_DATA || {};
+          OWNED.forEach(function(k){ if (ps[k] !== undefined) D2[k] = ps[k]; });
+        }
+      } catch (e2) {}
+      arrancar();   // en éxito o error, siempre arranca la app
+    });
 })();

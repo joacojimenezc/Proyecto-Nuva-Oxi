@@ -74,9 +74,30 @@ function Invoke-Sync {
         if ($behind -gt 0) {
             git pull --rebase --autostash origin $Branch 2>&1 | Out-Null
             if ($LASTEXITCODE -ne 0) {
+                # Conflicto (p.ej. el mismo Excel editado local Y subido por la web).
+                # Politica: 1) respaldar la version LOCAL de los archivos en choque,
+                # 2) reintentar con "manda el remoto" (-X ours en rebase = upstream),
+                # 3) si ni asi, abortar y dejar un aviso VISIBLE (antes quedaba
+                #    atascado en silencio reintentando cada ciclo para siempre).
+                $conf = @(git diff --name-only --diff-filter=U 2>$null)
                 git rebase --abort 2>&1 | Out-Null
-                Write-Log "CONFLICTO con el remoto: rebase abortado, tus cambios locales quedan intactos. Requiere resolucion manual."
-                return
+                $bk = Join-Path $LogDir ("conflicto-" + (Get-Date -Format 'yyyyMMdd-HHmmss'))
+                foreach ($f in $conf) {
+                    if ($f -and (Test-Path (Join-Path $RepoPath $f))) {
+                        $dest = Join-Path $bk $f
+                        New-Item -ItemType Directory -Path (Split-Path $dest) -Force | Out-Null
+                        Copy-Item (Join-Path $RepoPath $f) $dest -Force
+                    }
+                }
+                git pull --rebase --autostash -X ours origin $Branch 2>&1 | Out-Null
+                if ($LASTEXITCODE -ne 0) {
+                    git rebase --abort 2>&1 | Out-Null
+                    $aviso = Join-Path $Escritorio 'AVISO-CONFLICTO-NUVA.txt'
+                    "El auto-sync de Proyecto-Nuva-Oxi tiene un conflicto que no pudo resolver solo.`r`nArchivos: $($conf -join ', ')`r`nRespaldo local: $bk`r`nLog: $LogPath" | Out-File $aviso -Encoding utf8
+                    Write-Log "CONFLICTO SIN RESOLVER: rebase abortado 2 veces. Aviso dejado en el Escritorio. Archivos: $($conf -join ', ')"
+                    return
+                }
+                Write-Log "CONFLICTO RESUELTO automaticamente (mando el remoto). Version local respaldada en: $bk. Archivos: $($conf -join ', ')"
             }
             Write-Log "BAJADA - $behind commit(s) remoto(s) integrados (ahora en $(git rev-parse --short HEAD))."
         }

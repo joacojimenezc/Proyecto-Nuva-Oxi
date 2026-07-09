@@ -32,10 +32,15 @@ function bdDocOpen(id){
       setTimeout(()=>URL.revokeObjectURL(url), 1500);
     }).catch(e => alert('No se pudo descargar: ' + e.message));
 }
+/* escape para valores dentro de onclick="fn('...')": & primero, luego JS-string
+   y delimitadores (un apóstrofe en el nombre de un PDF no debe romper el botón) */
+const jsAttr = s => String(s == null ? '' : s)
+  .replace(/&/g,'&amp;').replace(/\\/g,'\\\\').replace(/'/g,"\\'")
+  .replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 function docAnchor(file, cat, base){
   const d = bdDocDe(file, cat);
   if(d && window.NUVA_BD_CFG && window.NUVA_BD_CFG.api)
-    return `<a class="btnpdf" href="#" onclick="event.preventDefault();bdDocOpen('${d.id}')" title="${esc(file)}">📄 Ver / Descargar</a>`;
+    return `<a class="btnpdf" href="#" onclick="event.preventDefault();bdDocOpen('${jsAttr(d.id)}')" title="${esc(file)}">📄 Ver / Descargar</a>`;
   return `<a class="btnpdf" href="${encodeURI(base + file)}" target="_blank" rel="noopener" title="${esc(file)}">📄 Ver / Descargar</a>`;
 }
 /* lista VIVA (lee window.NUVA_DOCS al momento: un doc recién subido aparece sin recargar) */
@@ -1233,29 +1238,8 @@ document.querySelectorAll('#nav a').forEach(a=>a.onclick=()=>go(a.dataset.view))
 document.querySelectorAll('#nav .navhead').forEach(h=>h.onclick=()=>h.parentElement.classList.toggle('collapsed'));
 $('#search').addEventListener('input', applySearch);
 $('#genfecha').textContent = 'Generado ' + (D.generado||'');
-if(window.NUVA_REMOTE){ const f=document.getElementById('fuenteDatos'); if(f) f.textContent='Datos: BD web (Drive)'; }
+if(window.NUVA_REMOTE){ const f=document.getElementById('fuenteDatos'); if(f) f.textContent='Datos: BD web (GitHub)'; }
 render();
-
-/* ---- Portada de confidencialidad con clave ----
-   NOTA: es un DISUASIVO visual, no cifrado. La clave va codificada (base64),
-   pero los datos siguen en data.js; cualquiera con el archivo puede leerlos.
-   Para proteccion real se necesita servidor con login o cifrar los archivos. */
-(function(){
-  const g = document.getElementById('gate'); if(!g) return;
-  const enc = s => btoa(unescape(encodeURIComponent(String(s))));
-  const FULL = 'MDIwNzI1';            // 020725      -> acceso completo
-  const JEFA = 'bnV2YW94aTIwMjY=';    // nuvaoxi2026 -> vista Gerencia (solo lectura)
-  function applyRole(role){ if(role==='jefa'){ document.body.classList.add('role-jefa'); if(typeof go==='function') go('gerencia'); } }
-  const saved = sessionStorage.getItem('nuvaoxi_role');
-  if(saved){ applyRole(saved); g.style.display='none'; return; }
-  const inp = document.getElementById('gateInput'), err = document.getElementById('gateErr');
-  const attempt = () => {
-    const v = enc((inp.value||'').trim());
-    if(v===FULL){ sessionStorage.setItem('nuvaoxi_role','full'); g.style.display='none'; }
-    else if(v===JEFA){ sessionStorage.setItem('nuvaoxi_role','jefa'); applyRole('jefa'); g.style.display='none'; }
-    else { err.textContent = 'Clave incorrecta.'; inp.select(); }
-  };
-  document.getElementById('gateBtn').onclick = attempt;
-  inp.addEventListener('keydown', e => { if(e.key==='Enter') attempt(); });
-  inp.focus();
-})();
+/* la portada (gate) vive en index.html y corre ANTES que app.js; si dejó un
+   destino pendiente (rol jefa -> gerencia), se aplica ahora que go() existe */
+if(window.__nuvaGoPendiente){ const _v=window.__nuvaGoPendiente; window.__nuvaGoPendiente=null; go(_v); }

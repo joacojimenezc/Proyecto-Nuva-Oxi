@@ -20,6 +20,10 @@ const OWNER  = 'joacojimenezc';
 const REPO   = 'Proyecto-Nuva-Oxi';
 const BRANCH = 'main';
 const KEY    = process.env.BD_KEY || 'NUVAOXI-BD-2607-kx94q';
+/* Clave de ESCRITURA: solo existe como env en Vercel (nunca en el frontend
+   público). Las acciones que modifican el repo (uploadBase/uploadDoc/deleteDoc/
+   saveData) exigen wk === BD_WRITE_KEY; la KEY pública solo da lectura. */
+const WRITE_KEY = process.env.BD_WRITE_KEY || '';
 const TOKEN  = process.env.GITHUB_TOKEN || '';
 
 const DATA_PATH = '7 web/data.json';
@@ -99,14 +103,20 @@ async function shaDe(path){
   return j && j.sha ? j.sha : null;
 }
 
-/* crea o actualiza un archivo (commit directo a main) */
-async function escribir(path, b64, mensaje){
-  const sha = await shaDe(path);
+/* crea o actualiza un archivo (commit directo a main).
+   expectedSha (opcional): sha con el que se LEYÓ el contenido que alimenta esta
+   escritura — cierra el ciclo read-modify-write; si el archivo cambió entremedio,
+   GitHub responde 409 y el caller decide reintentar. Si se omite, se lee fresco.
+   Solo 409 es conflicto reintentable; 422 es error permanente (se propaga). */
+async function escribir(path, b64, mensaje, expectedSha){
+  const sha = (expectedSha !== undefined) ? expectedSha : await shaDe(path);
   const body = { message: mensaje, content: b64, branch: BRANCH };
   if (sha) body.sha = sha;
   const r = await gh('PUT', `/repos/${OWNER}/${REPO}/contents/${encPath(path)}`, body);
-  if (r.status === 409 || r.status === 422){
-    throw new Error('conflicto de escritura en ' + path + ' (otro cambio simultáneo) — reintenta');
+  if (r.status === 409){
+    const e = new Error('conflicto de escritura en ' + path + ' (otro cambio simultáneo)');
+    e.conflicto = true;
+    throw e;
   }
   if (!r.ok){
     let det = ''; try { det = (await r.json()).message || ''; } catch (e) {}
@@ -154,30 +164,42 @@ function fechaCL(){
   }).format(new Date()).replace(',', '');
 }
 
-/* lee data.json; {corrupto:true} si existe pero no parsea (NO se pisa) */
+/* lee data.json CON su sha (contents JSON trae content b64 + sha en una llamada);
+   {corrupto:true} si existe pero no parsea (NO se pisa) */
 async function leerData(){
-  const buf = await leerRaw(DATA_PATH);
-  if (buf === null) return { data: {}, nuevo: true };
+  const r = await gh('GET', `/repos/${OWNER}/${REPO}/contents/${encPath(DATA_PATH)}?ref=${BRANCH}`);
+  if (r.status === 404) return { data: {}, sha: null, nuevo: true };
+  if (!r.ok) throw new Error('GitHub GET ' + DATA_PATH + ': HTTP ' + r.status);
+  const j = await r.json();
   try {
-    const obj = JSON.parse(buf.toString('utf8'));
-    return { data: (obj && typeof obj === 'object') ? obj : {}, nuevo: false };
+    const obj = JSON.parse(Buffer.from(j.content || '', 'base64').toString('utf8') || '{}');
+    return { data: (obj && typeof obj === 'object') ? obj : {}, sha: j.sha || null, nuevo: false };
   } catch (e) {
     return { corrupto: true };
   }
 }
 
-/* merge superficial de sections + 'generado'; aborta si data.json está corrupto */
+/* merge superficial de sections + 'generado', protegido contra lost-update:
+   se escribe con el MISMO sha con que se leyó; si otro cambio se coló (409),
+   se relee, re-mezcla y reintenta (máx 3). Aborta si data.json está corrupto. */
 async function mergeData(sections){
-  const cur = await leerData();
-  if (cur.corrupto) throw new Error('data.json del repo está corrupto — no se hace merge (arréglalo o bórralo primero)');
-  const data = cur.data;
-  for (const k in sections){
-    if (Object.prototype.hasOwnProperty.call(sections, k)) data[k] = sections[k];
+  for (let intento = 1; intento <= 3; intento++){
+    const cur = await leerData();
+    if (cur.corrupto) throw new Error('data.json del repo está corrupto — no se hace merge (arréglalo o bórralo primero)');
+    const data = cur.data;
+    for (const k in sections){
+      if (Object.prototype.hasOwnProperty.call(sections, k)) data[k] = sections[k];
+    }
+    data.generado = fechaCL();
+    const b64 = Buffer.from(JSON.stringify(data), 'utf8').toString('base64');
+    try {
+      await escribir(DATA_PATH, b64, 'BD web: actualizar data.json', cur.sha);
+      return data.generado;
+    } catch (e) {
+      if (!e.conflicto || intento === 3) throw e;
+      /* 409: alguien escribió entremedio — releer y re-mezclar */
+    }
   }
-  data.generado = fechaCL();
-  const b64 = Buffer.from(JSON.stringify(data), 'utf8').toString('base64');
-  await escribir(DATA_PATH, b64, 'BD web: actualizar data.json');
-  return data.generado;
 }
 
 /* ---------------- validaciones ---------------- */
@@ -238,9 +260,13 @@ async function accionData(){
     if (Object.prototype.hasOwnProperty.call(raw, k) && k !== 'generado') data[k] = raw[k];
   }
 
+  /* las 6 bases existen en el repo por diseño: se listan SIEMPRE (la fecha es
+     metadato opcional — /commits puede fallar por rate limit o lag de indexación
+     y eso no debe hacer "desaparecer" la base ni bloquear su descarga) */
   const bases = {};
   basesMeta.forEach(b => {
-    if (b.fecha) bases[b.id] = { filename: baseName(BASE_PATHS[b.id]), updatedAt: b.fecha };
+    bases[b.id] = { filename: baseName(BASE_PATHS[b.id]) };
+    if (b.fecha) bases[b.id].updatedAt = b.fecha;
   });
 
   const docs = {};
@@ -261,6 +287,13 @@ async function accionFile(q){
   } else if (q.kind === 'doc'){
     path = String(q.id || '');
     if (!docPathValido(path)) return { ok: false, error: 'fuera de ambito' };
+    /* debe ser un ARCHIVO real: sobre un directorio GitHub ignora el media type
+       raw y devolvería el listado JSON como si fuera contenido */
+    const meta = await gh('GET', `/repos/${OWNER}/${REPO}/contents/${encPath(path)}?ref=${BRANCH}`);
+    if (meta.status === 404) return { ok: false, error: 'el archivo no existe en el repo' };
+    if (!meta.ok) return { ok: false, error: 'GitHub HTTP ' + meta.status };
+    const mj = await meta.json();
+    if (Array.isArray(mj) || mj.type !== 'file') return { ok: false, error: 'la ruta no es un archivo' };
   } else {
     return { ok: false, error: 'kind invalido' };
   }
@@ -288,10 +321,15 @@ async function accionUploadDoc(b){
   if (!b.filename || !b.b64) return { ok: false, error: 'faltan filename/b64' };
   if (b.b64.length > MAX_B64) return { ok: false, error: 'archivo demasiado grande (máx ~3 MB vía web; usa la carpeta local para archivos mayores)' };
 
-  const nombre = await nombreUnico(dir, nombreSano(b.filename));
-  const path = dir + '/' + nombre;
-  await escribir(path, b.b64, 'BD web: subir documento ' + nombre);
-  return { ok: true, id: path, name: nombre };
+  let nombre = await nombreUnico(dir, nombreSano(b.filename));
+  try {
+    await escribir(dir + '/' + nombre, b.b64, 'BD web: subir documento ' + nombre, null);
+  } catch (e) {
+    /* carrera con otra subida del mismo nombre: recomputar y reintentar una vez */
+    nombre = await nombreUnico(dir, nombreSano(b.filename));
+    await escribir(dir + '/' + nombre, b.b64, 'BD web: subir documento ' + nombre);
+  }
+  return { ok: true, id: dir + '/' + nombre, name: nombre };
 }
 
 async function accionDeleteDoc(b){
@@ -339,6 +377,9 @@ module.exports = async function handler(req, res){
       }
       if (!b || typeof b !== 'object') return res.status(200).json({ ok: false, error: 'body vacio' });
       if (b.k !== KEY) return res.status(200).json({ ok: false, error: 'clave invalida' });
+      /* todas las acciones POST modifican el repo: exigen la clave de escritura */
+      if (!WRITE_KEY) return res.status(200).json({ ok: false, error: 'BD_WRITE_KEY no configurada en Vercel — las escrituras están deshabilitadas' });
+      if (b.wk !== WRITE_KEY) return res.status(200).json({ ok: false, error: 'clave de edicion invalida' });
       switch (b.action){
         case 'uploadBase': return res.status(200).json(await accionUploadBase(b));
         case 'uploadDoc':  return res.status(200).json(await accionUploadDoc(b));

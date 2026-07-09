@@ -271,24 +271,51 @@ function baseDe(id){ return BASES.filter(function(b){ return b.id === id; })[0];
 function bdCfg(){ return (typeof window !== 'undefined' && window.NUVA_BD_CFG) || { api:'', key:'' }; }
 function bdConectado(){ return !!(bdCfg().api && window.NUVA_REMOTE && window.NUVA_REMOTE.ok); }
 
+/* tope del body de una función Vercel: 4.5 MB — se valida el payload REAL */
+var BD_MAX_BODY = 4.2 * 1024 * 1024;
+
+/* Clave de EDICIÓN: no viaja en el código público; se pide una vez y queda
+   en localStorage de este navegador. El backend la valida (env BD_WRITE_KEY). */
+function bdWriteKey(){
+  var wk = localStorage.getItem('nuva_bd_wk');
+  if (!wk){
+    wk = (prompt('Clave de edición de la Base de datos\n(la que configuraste como BD_WRITE_KEY en Vercel):') || '').trim();
+    if (wk) localStorage.setItem('nuva_bd_wk', wk);
+  }
+  return wk;
+}
+
+/* respuesta robusta: un 413 del edge de Vercel llega SIN JSON */
+async function bdRespuesta(r){
+  if (r.status === 413) throw new Error('el archivo es demasiado grande para subirlo por la web (~3 MB máx) — déjalo en tu carpeta local y el auto-sync lo llevará al repo');
+  var j;
+  try { j = await r.json(); }
+  catch (e) { throw new Error('respuesta inválida del servidor (HTTP ' + r.status + ')'); }
+  if (!j.ok){
+    if (/clave de edicion/i.test(j.error || '')) localStorage.removeItem('nuva_bd_wk');   // re-preguntar la próxima vez
+    throw new Error(j.error || 'error del servidor');
+  }
+  return j;
+}
+
 async function bdGet(params){
   var cfg = bdCfg();
   if (!cfg.api) throw new Error('sin backend configurado (bd-config.js)');
   var qs = Object.keys(params).map(function(k){ return k + '=' + encodeURIComponent(params[k]); }).join('&');
   var r = await fetch(cfg.api + '?' + qs + '&k=' + encodeURIComponent(cfg.key), { cache: 'no-store' });
-  var j = await r.json();
-  if (!j.ok) throw new Error(j.error || 'error del servidor');
-  return j;
+  return bdRespuesta(r);
 }
-/* POST con Content-Type text/plain (evita el preflight CORS de Apps Script) */
+/* POST text/plain (simple request, sin preflight); incluye la clave de edición */
 async function bdPost(body){
   var cfg = bdCfg();
   if (!cfg.api) throw new Error('sin backend configurado (bd-config.js)');
   body.k = cfg.key;
-  var r = await fetch(cfg.api, { method:'POST', headers:{ 'Content-Type':'text/plain' }, body: JSON.stringify(body) });
-  var j = await r.json();
-  if (!j.ok) throw new Error(j.error || 'error del servidor');
-  return j;
+  body.wk = bdWriteKey();
+  if (!body.wk) throw new Error('sin clave de edición — no se puede escribir');
+  var payload = JSON.stringify(body);
+  if (payload.length > BD_MAX_BODY) throw new Error('la subida supera el límite de la web (~3 MB de archivo) — usa tu carpeta local (auto-sync)');
+  var r = await fetch(cfg.api, { method:'POST', headers:{ 'Content-Type':'text/plain' }, body: payload });
+  return bdRespuesta(r);
 }
 
 /* ---- base64 <-> binario (en trozos para no reventar la pila) ---- */
@@ -410,9 +437,12 @@ async function bdConfirmarSubida(){
   try{
     bdAviso('warn', 'Subiendo base y actualizando datos…'); render();
     await bdPost({ action:'uploadBase', id:p.id, filename:p.filename, b64:p.b64, sections:p.sections });
+    /* red de seguridad para la recarga: si la lectura post-commit llega rezagada
+       (lag de GitHub) o falla, bd-boot aplica estas secciones igual (una vez) */
+    try { sessionStorage.setItem('nuva_bd_pendiente', JSON.stringify(p.sections || {})); } catch (e) {}
     bdPendiente = null;
     bdAviso('ok', 'Base actualizada ✔ recargando…'); render();
-    setTimeout(function(){ location.reload(); }, 700);
+    setTimeout(function(){ location.reload(); }, 900);
   }catch(e){
     bdAviso('bad', 'Error al subir: ' + e.message); render();
   }
@@ -525,7 +555,6 @@ function bdVista(){
   var dRows = docs[bdCat] || [];
   var dCols = [
     { k:'name', t:'Documento', render:function(r){ return '📄 ' + esc(r.name); } },
-    { k:'fecha', t:'Fecha', render:function(r){ return esc(bdFecha(r.updatedAt)); } },
     { k:'size', t:'Tamaño', num:1, render:function(r){ return esc(bdBytes(r.size)); } },
     { k:'acc', t:'Acciones', render:function(r){
         return '<button class="btnrep xls" onclick="bdDocDescargar(\'' + bdAttr(r.id) + '\',\'' + bdAttr(r.name) + '\')"' + disAttr + '>⬇ Descargar</button> '

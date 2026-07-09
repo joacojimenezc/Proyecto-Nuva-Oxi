@@ -105,6 +105,39 @@
   })();
   </script>
   <script src="gmail.js"></script>
+  <script>
+  /* ---- Portada de confidencialidad con clave ----
+     Corre AQUI (no en app.js) para que el boton Ingresar responda de inmediato
+     aunque el backend/app.js demoren en cargar. Es un DISUASIVO visual, no
+     cifrado: los datos siguen en data.js/data.json.
+     Si el rol jefa entra antes de que exista go(), se deja pendiente y app.js
+     lo aplica al terminar de cargar (window.__nuvaGoPendiente). */
+  (function(){
+    const g = document.getElementById('gate'); if(!g) return;
+    const enc = s => btoa(unescape(encodeURIComponent(String(s))));
+    const FULL = 'MDIwNzI1';            // 020725      -> acceso completo
+    const JEFA = 'bnV2YW94aTIwMjY=';    // nuvaoxi2026 -> vista Gerencia (solo lectura)
+    function applyRole(role){
+      if(role==='jefa'){
+        document.body.classList.add('role-jefa');
+        if(typeof go==='function'){ go('gerencia'); }
+        else { window.__nuvaGoPendiente='gerencia'; }
+      }
+    }
+    const saved = sessionStorage.getItem('nuvaoxi_role');
+    if(saved){ applyRole(saved); g.style.display='none'; return; }
+    const inp = document.getElementById('gateInput'), err = document.getElementById('gateErr');
+    const attempt = () => {
+      const v = enc((inp.value||'').trim());
+      if(v===FULL){ sessionStorage.setItem('nuvaoxi_role','full'); g.style.display='none'; }
+      else if(v===JEFA){ sessionStorage.setItem('nuvaoxi_role','jefa'); applyRole('jefa'); g.style.display='none'; }
+      else { err.textContent = 'Clave incorrecta.'; inp.select(); }
+    };
+    document.getElementById('gateBtn').onclick = attempt;
+    inp.addEventListener('keydown', e => { if(e.key==='Enter') attempt(); });
+    inp.focus();
+  })();
+  </script>
   <!-- Base de datos web: SheetJS local + config + boot (bd-boot.js trae los datos
        del backend /api/bd — repo GitHub —, los fusiona sobre NUVA_DATA y recien
        ahi inyecta app.js y bd.js). -->

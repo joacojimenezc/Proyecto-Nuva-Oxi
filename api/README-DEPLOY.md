@@ -18,8 +18,11 @@ La función serverless [`api/bd.js`](bd.js) los lee/escribe con la API de GitHub
 3. En Vercel (proyecto `proyecto-nuva-oxi`, equipo WP3): *Settings →
    Environment Variables* → agregar:
    - `GITHUB_TOKEN` = el token recién creado (Production, Preview y Development).
-   - (opcional) `BD_KEY` = clave propia; si no se define, usa la del código.
-4. Redeploy para que tome la variable.
+   - `BD_WRITE_KEY` = **clave de edición** que tú inventas (frase larga y difícil).
+     Sin ella las subidas/borrados quedan deshabilitados. La web te la pedirá
+     UNA vez al primer intento de subir/eliminar y la recuerda en ese navegador.
+   - (opcional) `BD_KEY` = clave de lectura propia; si no se define, usa la del código.
+4. Redeploy para que tome las variables.
 
 ### 2. Reconectar el proyecto Vercel al repo nuevo
 
@@ -51,11 +54,17 @@ Ambos deben responder `{"ok":true,...}`. Si responde
 - **Borrar documento** desde la web = eliminarlo del HEAD del repo; el
   historial git lo conserva (recuperable con `git checkout <sha> -- "ruta"`).
 
-## Límites
+## Límites y seguridad
 
 - Subidas vía web: **máx ~3 MB por archivo** (límite del body de las funciones
   Vercel). Archivos más grandes: dejarlos en la carpeta local (el auto-sync
   los lleva al repo) — la web los lista y descarga igual.
-- La KEY del API viaja en el frontend (público). Protege de curiosos, no de
-  un atacante dirigido — mismo nivel que la clave de la portada. El token de
-  GitHub, en cambio, NUNCA sale de Vercel.
+- **Dos claves con alcances distintos:**
+  - `BD_KEY` (pública, viaja en `bd-config.js`): da **solo LECTURA** — lo mismo
+    que ya muestra la web a quien pase la portada. Nivel disuasivo.
+  - `BD_WRITE_KEY` (solo en Vercel + en el navegador del editor): exigida para
+    **toda escritura/borrado** (subir bases, subir/eliminar documentos,
+    saveData). No está en ningún archivo servido al público.
+  - El token de GitHub NUNCA sale de Vercel.
+- Si crees que la clave de edición se filtró: cámbiala en Vercel (env
+  `BD_WRITE_KEY`) + redeploy; en el navegador se vuelve a pedir sola.
