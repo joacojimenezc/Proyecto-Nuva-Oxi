@@ -38,12 +38,16 @@ const BASE_PATHS = {
   consolidado: '8 reporteria/CONSOLIDADO_COMERCIAL_NUVA.xlsx'
 };
 
-/* categoría de documento -> carpeta del repo */
+/* categoría de documento -> carpeta del repo.
+   Las cargas de sell-out van a las MISMAS carpetas que lee el Power Query
+   local de BD_SELL_OUT_NUVA.xlsx (qCargasCencosud / qReportesClientes). */
 const DOC_DIRS = {
-  fac_sellin:  '4 finanzas/contabilidad/1 facturas sell in',
-  fac_compras: '4 finanzas/contabilidad/2 facturas compras',
-  oc:          '4 finanzas/contabilidad/3 ordenes de compra',
-  otros:       '4 finanzas/contabilidad/4 otros'
+  fac_sellin:     '4 finanzas/contabilidad/1 facturas sell in',
+  fac_compras:    '4 finanzas/contabilidad/2 facturas compras',
+  oc:             '4 finanzas/contabilidad/3 ordenes de compra',
+  otros:          '4 finanzas/contabilidad/4 otros',
+  carga_cencosud: '2 venta sell out/cargas cencosud',
+  carga_clientes: '2 venta sell out/reportes clientes'
 };
 
 /* límite de subida: el body de una función Vercel admite ~4.5 MB;

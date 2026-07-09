@@ -364,10 +364,12 @@ var bdPendiente = null;   // subida de base esperando confirmación
 var bdCat = 'fac_sellin'; // sub-pestaña de documentos activa
 
 var DOC_CATS = [
-  { k:'fac_sellin',  t:'🧾 Facturas Sell-In' },
-  { k:'fac_compras', t:'📥 Facturas de Compra' },
-  { k:'oc',          t:'📦 Órdenes de Compra' },
-  { k:'otros',       t:'📎 Otros' }
+  { k:'fac_sellin',     t:'🧾 Facturas Sell-In' },
+  { k:'fac_compras',    t:'📥 Facturas de Compra' },
+  { k:'oc',             t:'📦 Órdenes de Compra' },
+  { k:'otros',          t:'📎 Otros' },
+  { k:'carga_cencosud', t:'🛒 Cargas Cencosud' },
+  { k:'carga_clientes', t:'📊 Reportes clientes' }
 ];
 
 function bdAviso(cls, txt){ bdMsg = { cls: cls, txt: txt }; }
@@ -581,6 +583,175 @@ async function bdGuardarTabla(){
   }
 }
 
+/* ============================================================
+   Cargas de SELL-OUT (portal Cencosud / reportes de clientes)
+   Al subir: el archivo crudo queda en la carpeta del repo que lee el
+   Power Query local, y las filas nuevas se agregan al sellout de la web.
+   ============================================================ */
+var bdCarga = null;   // { tipo, filename, b64, nuevas, dupes, malas }
+
+var BD_CARGAS = {
+  cencosud: { cat:'carga_cencosud', fuente:'Portal Cencosud', t:'🛒 Carga Cencosud' },
+  clientes: { cat:'carga_clientes', fuente:'Reporte Cliente', t:'📊 Reporte de cliente' }
+};
+
+/* semana ISO 8601 de una fecha 'yyyy-mm-dd' */
+function bdSemanaISO(iso){
+  var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || ''));
+  if (!m) return '';
+  var d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));           // jueves de esa semana
+  var y0 = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil(((d - y0) / 864e5 + 1) / 7);
+}
+
+/* encabezados tolerantes: 'Uds_Vendidas', 'Unidades', 'Cantidad', 'Local', 'Código'… */
+var BD_CARGA_SINONIMOS = {
+  Fecha:        ['fecha','dia','date','fechaventa'],
+  ID_PDV:       ['idpdv','pdv','local','tienda','sucursal','idlocal','puntodeventa'],
+  SKU:          ['sku','codigo','codigoproducto','producto','ean','idproducto'],
+  Uds_Vendidas: ['udsvendidas','uds','unidades','cantidad','qty','unidadesvendidas','ventaunidades','ventauds'],
+  PVP_Salida:   ['pvpsalida','pvp','precio','preciounitario','preciosalida','precioventa']
+};
+function bdNormHeader(h){
+  return String(h == null ? '' : h).toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
+}
+
+/* parsea un Excel de carga -> { nuevas, dupes, malas, warnings } (D inyectable para tests) */
+function parseCargaSellOut(wb, tipo, D){
+  var XL = xlsxLib();
+  var cfg = BD_CARGAS[tipo] || BD_CARGAS.clientes;
+  D = bdDatos(D);
+  var res = { nuevas: [], dupes: 0, malas: 0, warnings: [] };
+
+  /* buscar la primera hoja con encabezados reconocibles */
+  var hoja = null, mapa = null;
+  (wb.SheetNames || []).some(function(n){
+    var filas = XL.utils.sheet_to_json(wb.Sheets[n], { header: 1, blankrows: false });
+    for (var i = 0; i < Math.min(filas.length, 8); i++){
+      var m = {};
+      (filas[i] || []).forEach(function(h, col){
+        var nh = bdNormHeader(h);
+        for (var campo in BD_CARGA_SINONIMOS){
+          if (m[campo] === undefined && BD_CARGA_SINONIMOS[campo].indexOf(nh) >= 0) m[campo] = col;
+        }
+      });
+      if (m.ID_PDV !== undefined && m.SKU !== undefined && m.Uds_Vendidas !== undefined){
+        hoja = { nombre: n, filas: filas, headerFila: i }; mapa = m; return true;
+      }
+    }
+    return false;
+  });
+  if (!hoja){
+    res.warnings.push('No se encontró ninguna hoja con columnas reconocibles (se esperan al menos PDV/Local, SKU/Código y Unidades).');
+    return res;
+  }
+
+  /* claves ya existentes en el sellout actual (para no importar dos veces) */
+  var existentes = {};
+  (D.sellout || []).forEach(function(s){
+    existentes[[s.Fecha, s.ID_PDV, s.SKU, s.Uds_Vendidas !== undefined ? s.Uds_Vendidas : s.Uds, s.PVP_Salida].join('|')] = true;
+  });
+
+  var hoy = new Date().toISOString().slice(0, 10);
+  for (var r = hoja.headerFila + 1; r < hoja.filas.length; r++){
+    var f = hoja.filas[r] || [];
+    var pdv = String(f[mapa.ID_PDV] == null ? '' : f[mapa.ID_PDV]).trim();
+    var sku = String(f[mapa.SKU] == null ? '' : f[mapa.SKU]).trim();
+    var uds = Number(f[mapa.Uds_Vendidas]);
+    if (!pdv || !sku || !isFinite(uds) || uds <= 0){ res.malas++; continue; }
+    var fecha = mapa.Fecha !== undefined ? oa2iso(f[mapa.Fecha]) : '';
+    var pvp = mapa.PVP_Salida !== undefined ? Number(f[mapa.PVP_Salida]) : NaN;
+    var fila = {
+      Fecha: fecha, Semana_ISO: bdSemanaISO(fecha),
+      ID_Cliente: (((D.pdv || []).filter(function(p){ return p.ID_PDV === pdv; })[0]) || {}).ID_Cliente || '',
+      ID_PDV: pdv, SKU: sku,
+      Uds_Vendidas: uds, PVP_Salida: isFinite(pvp) ? pvp : '',
+      Fuente: cfg.fuente, Stock_Observado: '', Resp: '',
+      Notas: 'carga web ' + hoy,
+      Uds: uds
+    };
+    var clave = [fila.Fecha, fila.ID_PDV, fila.SKU, fila.Uds_Vendidas, fila.PVP_Salida].join('|');
+    if (existentes[clave]){ res.dupes++; continue; }
+    existentes[clave] = true;   // también dedup dentro del mismo archivo
+    res.nuevas.push(fila);
+  }
+  if (res.nuevas.length && res.nuevas.some(function(x){ return !x.ID_Cliente; }))
+    res.warnings.push('Algunas filas tienen un PDV que no está en el maestro (quedan sin ID_Cliente).');
+  res.warnings.push('Hoja usada: "' + hoja.nombre + '".');
+  return res;
+}
+
+function bdSubirCarga(tipo){
+  if (!bdConectado()) return;
+  var cfg = BD_CARGAS[tipo]; if (!cfg) return;
+  var inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = '.xlsx,.xls,.csv';
+  inp.onchange = async function(){
+    var f = inp.files[0]; if (!f) return;
+    if (f.size > 3 * 1024 * 1024){
+      bdAviso('bad', 'El archivo supera 3 MB (límite de subida web).'); render(); return;
+    }
+    try{
+      var buf = await f.arrayBuffer();
+      var wb  = xlsxLib().read(new Uint8Array(buf), { type: 'array' });
+      var res = parseCargaSellOut(wb, tipo);
+      bdCarga = { tipo: tipo, filename: f.name, b64: ab2b64(buf),
+                  nuevas: res.nuevas, dupes: res.dupes, malas: res.malas, warnings: res.warnings };
+      bdMsg = null; bdPendiente = null;
+    }catch(e){
+      bdAviso('bad', 'No se pudo leer el archivo: ' + e.message);
+      bdCarga = null;
+    }
+    render();
+  };
+  inp.click();
+}
+function bdCancelarCarga(){ bdCarga = null; bdMsg = null; render(); }
+
+async function bdConfirmarCarga(){
+  if (!bdCarga || !bdCarga.nuevas.length) return;
+  var c = bdCarga, cfg = BD_CARGAS[c.tipo];
+  try{
+    bdAviso('warn', 'Guardando archivo y actualizando sell-out…'); render();
+    /* 1) archivo crudo a la carpeta del repo (la misma que lee el PQ local) */
+    await bdPost({ action:'uploadDoc', cat: cfg.cat, filename: c.filename, b64: c.b64 });
+    /* 2) filas nuevas al sellout de la web */
+    var sellout = bdCopiaSeccion('sellout').concat(c.nuevas);
+    await bdPost({ action:'saveData', sections: { sellout: sellout } });
+    try { sessionStorage.setItem('nuva_bd_pendiente', JSON.stringify({ sellout: sellout })); } catch (e) {}
+    bdCarga = null;
+    bdAviso('ok', 'Sell-out actualizado ✔ (' + c.nuevas.length + ' fila(s) nuevas) — recargando…'); render();
+    setTimeout(function(){ location.reload(); }, 900);
+  }catch(e){
+    bdAviso('bad', 'Error en la carga: ' + e.message); render();
+  }
+}
+
+function bdPanelCarga(){
+  if (!bdCarga) return '';
+  var cfg = BD_CARGAS[bdCarga.tipo] || {};
+  var tot = bdCarga.nuevas.reduce(function(a, x){ return a + (Number(x.Uds_Vendidas) || 0); }, 0);
+  var porPdv = {};
+  bdCarga.nuevas.forEach(function(x){ porPdv[x.ID_PDV] = (porPdv[x.ID_PDV] || 0) + (Number(x.Uds_Vendidas) || 0); });
+  var det = Object.keys(porPdv).map(function(p){ return '<li><b>' + esc(p) + '</b>: ' + porPdv[p] + ' uds</li>'; }).join('');
+  var warns = (bdCarga.warnings || []).map(function(w){ return '<div class="alert warn">⚠️ ' + esc(w) + '</div>'; }).join('');
+  return '<div class="panel" style="border-left:4px solid var(--amber)">'
+    + '<h2>📋 Confirmar carga · ' + esc(cfg.t || '') + '</h2>'
+    + '<p class="hint">Archivo: <b>' + esc(bdCarga.filename) + '</b> · <b>' + bdCarga.nuevas.length + '</b> fila(s) nuevas (' + tot + ' uds)'
+    + (bdCarga.dupes ? ' · ' + bdCarga.dupes + ' duplicada(s) omitida(s)' : '')
+    + (bdCarga.malas ? ' · ' + bdCarga.malas + ' fila(s) inválida(s) descartada(s)' : '')
+    + '. Al confirmar: el archivo se guarda en el repo (misma carpeta que lee tu Excel local) y el sell-out de la web se actualiza.</p>'
+    + (det ? '<ul class="dims">' + det + '</ul>' : '')
+    + warns
+    + (bdCarga.nuevas.length ? '' : '<div class="alert bad">No hay filas nuevas que importar (todo duplicado o inválido).</div>')
+    + '<div class="repbtns" style="margin-top:12px">'
+    + (bdCarga.nuevas.length ? '<button class="btnrep xls" onclick="bdConfirmarCarga()">✔ Confirmar carga</button>' : '')
+    + '<button class="btnrep pdf" onclick="bdCancelarCarga()">✖ Cancelar</button>'
+    + '</div></div>';
+}
+
 /* Ver documento en el navegador (PDF/imagen) sin descargarlo */
 function bdDocEsVisible(nombre){ return /\.(pdf|jpe?g|png)$/i.test(String(nombre || '')); }
 async function bdDocVer(id, nombre){
@@ -667,7 +838,15 @@ function bdVistaArchivos(){
     + '3) <b>Sube</b> el archivo: la web lo valida, muestra un resumen y al confirmar reemplaza la base en el repo GitHub y refresca los datos. '
     + 'Para cambios rápidos sin Excel, usa la sub-pestaña <b>📝 Datos</b>.</p></div>'
     + '<div class="panel"><h2>🗄️ Bases de datos (Excel)</h2>' + table(cols, rows) + '</div>'
-    + '<div class="panel"><h2>📁 Documentos (facturas, OC y otros)</h2>'
+    + '<div class="panel" style="border-left:4px solid var(--green,#2e7d52)"><h2>📥 Cargas de Sell-Out</h2>'
+    + '<p class="hint" style="margin:0 0 10px">Sube aquí los Excel de ventas de tu producto que te llegan de afuera: el portal B2B de Cencosud o los reportes de tus clientes. '
+    + 'La web valida el archivo, agrega las filas nuevas al <b>Sell-Out</b> (rotación, inventario y dashboard se actualizan) y guarda el archivo crudo en el repo, '
+    + 'en la misma carpeta que lee tu Excel local (<i>cargas cencosud</i> / <i>reportes clientes</i>). Las filas repetidas se omiten solas.</p>'
+    + '<div class="repbtns">'
+    + '<button class="btnrep xls" onclick="bdSubirCarga(\'cencosud\')"' + disAttr + '>🛒 Subir carga Cencosud</button> '
+    + '<button class="btnrep xls" onclick="bdSubirCarga(\'clientes\')"' + disAttr + '>📊 Subir reporte de cliente</button>'
+    + '</div></div>'
+    + '<div class="panel"><h2>📁 Documentos (facturas, OC, cargas y otros)</h2>'
     + '<div class="subtabs">' + tabs + '</div>'
     + '<div class="filterbar"><p class="hint" style="margin:0">' + dRows.length + ' documento(s) en <b>' + esc(catAct.t) + '</b>.</p>'
     + '<div class="repbtns"><button class="btnrep xls" onclick="bdSubirDoc(\'' + bdCat + '\')"' + disAttr + '>⬆ Subir documento</button></div></div>'
@@ -735,6 +914,7 @@ function bdVista(){
     + (conectado ? '' : '<p class="hint">Para habilitar subidas y edición se necesita el backend <b>/api/bd</b> (GITHUB_TOKEN y BD_WRITE_KEY en Vercel). En modo local solo funciona la descarga generada.</p>')
     + msg
     + bdPanelConfirmar()
+    + bdPanelCarga()
     + subtabs
     + (bdSub === 'datos' ? bdVistaDatos() : bdVistaArchivos());
 }
@@ -776,6 +956,7 @@ if (typeof window === 'undefined' && typeof module !== 'undefined'){
     parseCRM: parseCRM, parseSellIn: parseSellIn, parseSellOut: parseSellOut,
     buildCRM: buildCRM, buildSellIn: buildSellIn, buildSellOut: buildSellOut,
     buildInventario: buildInventario, buildFinanzas: buildFinanzas, buildConsolidado: buildConsolidado,
+    parseCargaSellOut: parseCargaSellOut, bdSemanaISO: bdSemanaISO, bdNormHeader: bdNormHeader,
     BASES: BASES
   };
 }
