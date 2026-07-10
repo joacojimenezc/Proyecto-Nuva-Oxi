@@ -490,14 +490,19 @@ async function loadWorkbook(){
   $("#statusLine").textContent = `Base: ${EXCEL_FILE} · ${state.workbook.SheetNames.length} hojas`;
   render();
 }
+async function sha256hex(s){
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(String(s)));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
 function setupGate(){
   const g = $("#gate");
-  const enc = s => btoa(unescape(encodeURIComponent(String(s))));
-  const FULL = "MDIwNzI1";
+  // Solo se guarda el hash SHA-256 de la clave, no la clave. No es seguridad
+  // fuerte (el gate corre en el navegador) pero evita leer la clave en el codigo.
+  const HASH = "de3048f1ee2e9d1b9ea71d1bd92caad8b8669f8888a9dda867c74e6b0e9b73ea";
   if (sessionStorage.getItem("nuvaoxi_role")) { g.style.display = "none"; return; }
   const inp = $("#gateInput"), err = $("#gateErr");
-  const attempt = () => {
-    if (enc((inp.value || "").trim()) === FULL) {
+  const attempt = async () => {
+    if (await sha256hex((inp.value || "").trim()) === HASH) {
       sessionStorage.setItem("nuvaoxi_role", "full");
       g.style.display = "none";
     } else {
