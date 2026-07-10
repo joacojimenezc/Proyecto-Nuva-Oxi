@@ -171,7 +171,7 @@ function coverageRows(){
     const payState = pending > 0 ? "Pendiente" : "OK";
     const latestStock = stocks.filter(s => s.pdv === pdv).sort((a,b)=>String(b.date).localeCompare(String(a.date)))[0];
     const stockBars = latestStock ? latestStock.bars : 0;
-    const stockState = latestStock?.state || (stockBars <= cfg.stockCritical ? "Critico" : (stockBars <= cfg.stockWatch ? "Observar" : "OK"));
+    const stockState = !latestStock ? "Sin dato" : (latestStock.state || (stockBars <= cfg.stockCritical ? "Critico" : (stockBars <= cfg.stockWatch ? "Observar" : "OK")));
     const so = sellouts.filter(s => s.pdv === first(c, ["Punto de venta"]) && (!s.date || s.date >= cutoff)).reduce((a,x)=>a+x.qty,0);
     const priority = visitState !== "Vigente" || saleState !== "Venta OK" || payState !== "OK" || /crit/.test(norm(stockState)) ? "Alta" : "Media";
     return {
