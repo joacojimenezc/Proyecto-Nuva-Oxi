@@ -13,17 +13,17 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Segoe UI,system-ui,Arial,sans-serif}
-.sidebar{position:fixed;inset:0 auto 0 0;width:248px;background:#10251e;color:#fff;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.sidebar{position:fixed;inset:0 auto 0 0;width:198px;background:#383c40;color:#fff;padding:12px 12px;display:flex;flex-direction:column;gap:10px}
 .brand{display:flex;flex-direction:column;gap:4px;flex-shrink:0}
-.brand-logo-img{width:78px;height:auto;border-radius:6px;background:#fff}
-.brand small,.side-foot{color:#b9cbc4}
+.brand-logo-img{width:72px;height:auto;border-radius:6px;background:#fff}
+.brand small,.side-foot{color:#c4c8cc}
 nav{display:flex;flex-direction:column;gap:3px;flex-shrink:0}
-nav button{border:0;background:transparent;color:#dce8e3;text-align:left;padding:8px 12px;border-radius:6px;font:inherit;cursor:pointer}
-nav button:hover,nav button.active{background:#23473a;color:#fff}
+nav button{border:0;background:transparent;color:#dfe2e5;text-align:left;padding:8px 11px;border-radius:6px;font:inherit;cursor:pointer}
+nav button:hover,nav button.active{background:#4e535a;color:#fff}
 .side-foot{margin-top:auto;flex-shrink:0;font-size:12px;display:flex;flex-direction:column;gap:6px;padding-top:8px}
 .download-link{display:block;width:100%;background:transparent;color:#fff;font:inherit;text-decoration:none;border:1px solid rgba(255,255,255,.24);border-radius:6px;padding:8px 10px;text-align:center;cursor:pointer}
-.download-link:hover{background:#23473a}
-.content{margin-left:252px;min-height:100vh;padding:22px}
+.download-link:hover{background:#4e535a}
+.content{margin-left:198px;min-height:100vh;padding:22px}
 .topbar{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:18px}
 h1{margin:0 0 4px;font-size:26px;letter-spacing:0}
 h2{margin:0 0 12px;font-size:18px}
