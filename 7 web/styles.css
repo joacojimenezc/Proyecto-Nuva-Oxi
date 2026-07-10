@@ -41,6 +41,7 @@ input,select{border:1px solid var(--line);border-radius:6px;padding:9px 10px;bac
 .kpi .sub{color:var(--muted);font-size:12px;margin-top:7px}
 .panels{grid-template-columns:minmax(0,1fr) 236px}
 .panels .cond-grid{grid-template-columns:1fr}
+.panels table th,.panels table td{white-space:nowrap;overflow-wrap:normal}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px;box-shadow:var(--shadow)}
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin-bottom:12px}
 .field{display:flex;flex-direction:column;gap:4px;min-width:160px}
