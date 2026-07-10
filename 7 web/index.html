@@ -29,15 +29,17 @@
     <nav id="nav">
       <button class="active" data-view="dashboard" type="button">Dashboard</button>
       <button data-view="cobertura" type="button">Cobertura</button>
-      <button data-view="ventas" type="button">Ventas</button>
+      <button data-view="ventas" type="button">Ventas Sell In</button>
+      <button data-view="sellout" type="button">Ventas Sell Out</button>
       <button data-view="inventario" type="button">Inventario</button>
       <button data-view="clientes" type="button">Clientes / PDV</button>
       <button data-view="productos" type="button">Productos</button>
-      <button data-view="registro" type="button">Registro</button>
     </nav>
     <div class="side-foot">
       <span id="sourceName">Excel unico</span>
       <a class="download-link" href="data/NUVA_OXI_Control_Comercial_FINAL_v2.xlsx" download>Descargar Excel</a>
+      <button class="download-link" id="uploadBtn" type="button">Subir Excel</button>
+      <input id="uploadInput" type="file" accept=".xlsx,.xls" style="display:none">
     </div>
   </aside>
 
@@ -55,6 +57,8 @@
   </main>
 
   <script src="vendor/xlsx-style.bundle.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="app.js"></script>
 </body>
 </html>
