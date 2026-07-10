@@ -50,9 +50,11 @@ input,select{border:1px solid var(--line);border-radius:6px;padding:9px 10px;bac
 table{width:100%;border-collapse:collapse;font-size:12px}
 th,td{border-bottom:1px solid var(--line);padding:6px 7px;text-align:left;vertical-align:top}
 td{white-space:nowrap}
-th{white-space:normal;overflow-wrap:anywhere}
-th{position:sticky;top:0;background:#eef4f0;color:#163b2d;font-size:12px;z-index:1}
-td.num,th.num{text-align:right}
+td.num{text-align:right}
+/* Encabezados en diagonal (45deg) para leer bien columnas angostas */
+table.diag thead th.rot{height:150px;padding:0;vertical-align:bottom;white-space:nowrap;background:#eef4f0;border-bottom:1px solid var(--line)}
+table.diag thead th.rot > div{width:30px;transform:translate(21px,60px) rotate(315deg)}
+table.diag thead th.rot > div > span{display:inline-block;padding:3px 7px;border-bottom:1px solid var(--line);font-size:11px;font-weight:700;color:#163b2d;line-height:1}
 tr:hover td{background:#fafcfb}
 .badge{display:inline-flex;align-items:center;border-radius:999px;padding:3px 8px;font-size:12px;font-weight:650}
 .b-green{background:#e7f5ee;color:#176247}
