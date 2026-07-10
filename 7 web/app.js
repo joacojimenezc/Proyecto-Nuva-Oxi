@@ -1,4 +1,6 @@
-const EXCEL_FILE = "data/NUVA_OXI_Control_Comercial_FINAL_v2.xlsx";
+// Los datos ya no se leen de un archivo publico: se piden a /api/data con la
+// clave, que el servidor valida (el Excel vive en el repo privado, no se publica).
+const DATA_API = "/api/data";
 
 const state = {
   workbook: null,
