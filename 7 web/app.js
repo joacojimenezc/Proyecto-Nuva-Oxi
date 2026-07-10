@@ -355,6 +355,7 @@ function getConditions(){
   for (const r of [13,14,15,16,17,18,19,24,25,26]) {
     const label = cell("A" + r), val = cell("B" + r), how = cell("C" + r);
     if (isBlank(label) || isBlank(val) || norm(label) === "condicion") continue;
+    if (norm(label).includes("iva")) continue; // el IVA no se muestra
     out.push({ label: String(label), value: val, how: String(how) });
   }
   return out;
