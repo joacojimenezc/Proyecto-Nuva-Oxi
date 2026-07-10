@@ -294,8 +294,8 @@ function ventasView(){
     Canal:first(v.raw, ["Canal"]), "Punto de venta":first(v.raw, ["Punto de venta"]), SKU:v.sku,
     Cantidad:v.qty, "Precio neto":v.price, "Venta neta":v.sale, "Monto pendiente":v.pending, "Status pago":v.status
   }));
-  return conditionsPanel(["IVA","Venta reciente","Venta baja","pendiente","vencer"],
-      "Venta neta = cantidad facturada x precio neto. Venta bruta aplica IVA. Monto pendiente = venta no pagada.")
+  return conditionsPanel(["Venta reciente","Venta baja","pendiente","vencer"],
+      "Venta neta = cantidad facturada x precio neto. Monto pendiente = venta no pagada.")
     + filteredView("Ventas Sell In", Object.keys(rows[0] || {}), rows, ["Cliente","Canal","Punto de venta","SKU","Status pago"]);
 }
 function inventarioView(){
@@ -322,8 +322,7 @@ function clientesView(){
 }
 function productosView(){
   const rows = getRows("Maestro_SKU").filter(r => first(r, ["SKU"]));
-  return conditionsPanel(["IVA"],
-      "Maestro de productos (catalogo). No aplica umbrales de gestion; el IVA se usa al convertir precios neto/bruto en ventas.")
+  return `<div class="panel cond-panel"><h2>Condiciones activas y como se calculan</h2><p class="muted">Maestro de productos (catalogo). No aplica umbrales de gestion.</p></div>`
     + filteredView("Maestro de productos", getHeaders("Maestro_SKU"), rows, ["Marca","Categoria","Categoría","Sabor","Formato","Estado"]);
 }
 
