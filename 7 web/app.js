@@ -173,7 +173,7 @@ function coverageRows(){
     const stockBars = latestStock ? latestStock.bars : 0;
     const stockState = latestStock?.state || (stockBars <= cfg.stockCritical ? "Critico" : (stockBars <= cfg.stockWatch ? "Observar" : "OK"));
     const so = sellouts.filter(s => s.pdv === first(c, ["Punto de venta"]) && (!s.date || s.date >= cutoff)).reduce((a,x)=>a+x.qty,0);
-    const priority = visitState !== "Vigente" || saleState !== "Venta OK" || payState !== "OK" || /crit/i.test(stockState) ? "Alta" : "Media";
+    const priority = visitState !== "Vigente" || saleState !== "Venta OK" || payState !== "OK" || /crit/.test(norm(stockState)) ? "Alta" : "Media";
     return {
       PDV_ID: pdv,
       Cliente: first(c, ["Cliente"]),
@@ -208,7 +208,7 @@ function dashboardData(){
     prioridadAlta: cov.filter(r => r.Prioridad === "Alta").length,
     venta30: recentSales.reduce((a,x)=>a+x.sale,0),
     pendiente: recentSales.reduce((a,x)=>a+x.pending,0),
-    stockCritico: cov.filter(r => /crit/i.test(r["Estado stock"])).length,
+    stockCritico: cov.filter(r => /crit/.test(norm(r["Estado stock"]))).length,
     unidades30: recentSales.reduce((a,x)=>a+x.qty,0),
     cov
   };
