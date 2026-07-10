@@ -58,6 +58,15 @@ tr:hover td{background:#fafcfb}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .tabs button{border:1px solid var(--line);background:#fff;border-radius:6px;padding:8px 10px;cursor:pointer}
 .tabs button.active{background:var(--green);border-color:var(--green);color:#fff}
+.cond-panel{margin-bottom:14px}
+.cond-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.cond-item{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#fafcfb}
+.cond-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.cond-top span{color:var(--muted);font-size:12px}
+.cond-top b{font-size:16px;white-space:nowrap}
+.cond-how{color:var(--muted);font-size:12px;margin-top:5px;line-height:1.35}
+.pdv-map{height:420px;border-radius:8px;border:1px solid var(--line);overflow:hidden}
+.pdv-map .leaflet-container{height:100%;width:100%}
 .summary-list{display:grid;gap:8px}
 .summary-item{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:8px 0}
 .summary-item b{text-align:right}

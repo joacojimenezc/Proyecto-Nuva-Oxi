@@ -327,35 +327,6 @@ function productosView(){
     + filteredView("Maestro de productos", getHeaders("Maestro_SKU"), rows, ["Marca","Categoria","Categoría","Sabor","Formato","Estado"]);
 }
 
-function registryRows(sheetName){
-  if (sheetName === "Cobertura") return coverageRows();
-  return getRows(sheetName);
-}
-function registryHeaders(sheetName){
-  if (sheetName === "Cobertura") return Object.keys(coverageRows()[0] || {});
-  return getHeaders(sheetName);
-}
-function registryView(){
-  const names = Object.keys(state.sheets).filter(n => getRows(n).length);
-  const rows = registryRows(state.registrySheet);
-  const headers = registryHeaders(state.registrySheet);
-  const filterCandidates = headers.filter(h => /fecha|cliente|canal|pdv|punto|sku|estado|status|prioridad|comuna|region/i.test(h)).slice(0,8);
-  setTimeout(() => {
-    const sel = $("#sheetSelect");
-    if (sel) sel.onchange = () => { state.registrySheet = sel.value; state.filters = {}; state.dateFrom = ""; state.dateTo = ""; render(); };
-    wireFilters();
-  }, 0);
-  return `<div class="panel">
-    <h2>Registro</h2>
-    <div class="toolbar">
-      <div class="field"><label>Tabla del Excel</label><select id="sheetSelect">${names.map(n => `<option value="${esc(n)}" ${n===state.registrySheet?"selected":""}>${esc(n)}</option>`).join("")}</select></div>
-    </div>
-    ${headers.some(h => /fecha/i.test(h)) ? dateRangeControls() : ""}
-    ${filtersFor(rows, filterCandidates)}
-    ${table(headers, filtered(rows))}
-  </div>`;
-}
-
 function dateRangeControls(){
   return `<div class="toolbar">
     <div class="field"><label>Fecha desde</label><input type="date" id="dateFrom" value="${esc(state.dateFrom)}"></div>
@@ -540,8 +511,33 @@ function setupGate(){
   inp.focus();
 }
 
+function handleUpload(file){
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const wb = XLSX.read(new Uint8Array(e.target.result), { type: "array", cellDates: true });
+      if (state.map) { try { state.map.remove(); } catch(_){} state.map = null; }
+      state.workbook = wb;
+      state.sheets = {};
+      wb.SheetNames.forEach(nm => state.sheets[nm] = rowsFromSheet(wb.Sheets[nm]));
+      state.filters = {}; state.dateFrom = ""; state.dateTo = "";
+      $("#sourceName").textContent = file.name + " (subido)";
+      $("#statusLine").textContent = `Base subida: ${file.name} · ${wb.SheetNames.length} hojas · cambios visibles en esta sesion`;
+      render();
+    } catch (err) {
+      $("#statusLine").textContent = "No se pudo leer el Excel subido: " + err.message;
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
 document.querySelectorAll("#nav button").forEach(b => b.onclick = () => setView(b.dataset.view));
 $("#globalSearch").addEventListener("input", e => { state.search = e.target.value; render(); });
+const upBtn = $("#uploadBtn"), upInput = $("#uploadInput");
+if (upBtn && upInput) {
+  upBtn.onclick = () => upInput.click();
+  upInput.onchange = e => { const f = e.target.files[0]; if (f) handleUpload(f); e.target.value = ""; };
+}
 setupGate();
 loadWorkbook().catch(err => {
   app.innerHTML = `<div class="error"><b>Error al cargar la base.</b><br>${esc(err.message)}</div>`;
