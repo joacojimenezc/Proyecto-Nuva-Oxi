@@ -405,7 +405,7 @@ function selloutView(){
   const kpis = `<div class="grid kpis" style="grid-template-columns:repeat(3,minmax(140px,1fr))">
     <div class="kpi"><div class="label">Registros sell-out</div><div class="value">${num(rows.length)}</div><div class="sub">venta al consumidor final</div></div>
     <div class="kpi"><div class="label">Unidades sell-out</div><div class="value">${num(totU)}</div><div class="sub">total del periodo cargado</div></div>
-    <div class="kpi"><div class="label">Venta publica bruta</div><div class="value">${money(totV)}</div><div class="sub">precio de gondola con IVA</div></div>
+    <div class="kpi"><div class="label">Venta publica bruta</div><div class="value">${money(totV)}</div><div class="sub">precio de gondola</div></div>
   </div>`;
   const cfg = getConfig();
   return kpis + conditionsPanel(["Venta reciente"],
