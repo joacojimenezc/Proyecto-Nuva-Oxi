@@ -248,15 +248,8 @@ function dashboardView(){
         ${table(headers, priority)}
       </div>
       <div class="panel">
-        <h2>Condiciones activas</h2>
-        <div class="summary-list">
-          <div class="summary-item"><span>Venta reciente dias</span><b>${cfg.recentDays}</b></div>
-          <div class="summary-item"><span>Venta baja menor a</span><b>${money(cfg.lowSale)}</b></div>
-          <div class="summary-item"><span>Semanal dias</span><b>${cfg.weekly}</b></div>
-          <div class="summary-item"><span>Quincenal dias</span><b>${cfg.biweekly}</b></div>
-          <div class="summary-item"><span>Mensual dias</span><b>${cfg.monthly}</b></div>
-          <div class="summary-item"><span>Stock critico hasta</span><b>${num(cfg.stockCritical)}</b></div>
-        </div>
+        <h2>Condiciones activas y como se calculan</h2>
+        ${conditionsInner()}
       </div>
     </div>`;
 }
@@ -299,7 +292,9 @@ function ventasView(){
     Canal:first(v.raw, ["Canal"]), "Punto de venta":first(v.raw, ["Punto de venta"]), SKU:v.sku,
     Cantidad:v.qty, "Precio neto":v.price, "Venta neta":v.sale, "Monto pendiente":v.pending, "Status pago":v.status
   }));
-  return filteredView("Ventas Sell-In", Object.keys(rows[0] || {}), rows, ["Cliente","Canal","Punto de venta","SKU","Status pago"]);
+  return conditionsPanel(["IVA","Venta reciente","Venta baja","pendiente","vencer"],
+      "Venta neta = cantidad facturada x precio neto. Venta bruta aplica IVA. Monto pendiente = venta no pagada.")
+    + filteredView("Ventas Sell In", Object.keys(rows[0] || {}), rows, ["Cliente","Canal","Punto de venta","SKU","Status pago"]);
 }
 function inventarioView(){
   const rows = stockRows().map(s => ({
@@ -366,14 +361,122 @@ function wireFilters(){
   });
 }
 
+// ---- Condiciones activas y como se calculan (hoja Inicio, cols A/B/C) ----
+function getConditions(){
+  const ini = state.workbook && state.workbook.Sheets.Inicio;
+  const cell = addr => { const c = ini && ini[addr]; return c && c.v != null ? c.v : ""; };
+  const out = [];
+  for (const r of [13,14,15,16,17,18,19,24,25,26]) {
+    const label = cell("A" + r), val = cell("B" + r), how = cell("C" + r);
+    if (isBlank(label) || isBlank(val) || norm(label) === "condicion") continue;
+    out.push({ label: String(label), value: val, how: String(how) });
+  }
+  return out;
+}
+function fmtCond(label, val){
+  const L = norm(label);
+  if (L.includes("iva")) return pct(val);
+  if (/menor a|pendiente|relevante|monto/.test(L)) return money(val);
+  if (/barras|stock/.test(L)) return num(val) + " barras";
+  if (/dias|semanal|quincenal|mensual/.test(L)) return num(val) + " dias";
+  return num(val);
+}
+function conditionsInner(keys){
+  let conds = getConditions();
+  if (keys && keys.length) {
+    conds = conds.filter(c => keys.some(k => norm(c.label).includes(norm(k))));
+  }
+  if (!conds.length) return `<p class="muted">Sin condiciones configuradas en la hoja Inicio.</p>`;
+  return `<div class="cond-grid">${conds.map(c => `
+    <div class="cond-item">
+      <div class="cond-top"><span>${esc(c.label)}</span><b>${esc(fmtCond(c.label, c.value))}</b></div>
+      <div class="cond-how">${esc(c.how)}</div>
+    </div>`).join("")}</div>`;
+}
+function conditionsPanel(keys, note){
+  return `<div class="panel cond-panel">
+    <h2>Condiciones activas y como se calculan</h2>
+    ${note ? `<p class="muted" style="margin:-4px 0 10px">${esc(note)}</p>` : ""}
+    ${conditionsInner(keys)}
+  </div>`;
+}
+
+// ---- Ventas Sell Out (hoja SellOut_Jumbo) ----
+function selloutView(){
+  const rows = selloutRows().map(s => ({
+    Fecha: s.date,
+    Cliente: first(s.raw, ["Cliente"]),
+    PDV: s.pdv,
+    SKU: s.sku,
+    "Descripcion SKU": first(s.raw, ["Descripción SKU","Descripcion SKU"]),
+    "Unidades sell-out": s.qty,
+    "Venta publica bruta": s.sale,
+    "Stock informado": n(first(s.raw, ["Stock informado"])),
+    Fuente: first(s.raw, ["Fuente/archivo","Fuente"])
+  }));
+  const totU = rows.reduce((a,r)=>a+n(r["Unidades sell-out"]),0);
+  const totV = rows.reduce((a,r)=>a+n(r["Venta publica bruta"]),0);
+  const kpis = `<div class="grid kpis" style="grid-template-columns:repeat(3,minmax(140px,1fr))">
+    <div class="kpi"><div class="label">Registros sell-out</div><div class="value">${num(rows.length)}</div><div class="sub">venta al consumidor final</div></div>
+    <div class="kpi"><div class="label">Unidades sell-out</div><div class="value">${num(totU)}</div><div class="sub">total del periodo cargado</div></div>
+    <div class="kpi"><div class="label">Venta publica bruta</div><div class="value">${money(totV)}</div><div class="sub">precio de gondola con IVA</div></div>
+  </div>`;
+  const cfg = getConfig();
+  return kpis + conditionsPanel(["Venta reciente"],
+      "El sell-out es informativo (lo que el retail vende al consumidor). No cambia estados de pago ni stock; se compara con el sell-in de los ultimos " + cfg.recentDays + " dias para leer rotacion.")
+    + filteredView("Ventas Sell Out", Object.keys(rows[0] || {}), rows, ["Cliente","PDV","SKU","Fuente"]);
+}
+
+// ---- Mapa de puntos de venta (por comuna; el Excel no trae coordenadas) ----
+const COMUNA_LL = {
+  "las condes":[-33.4085,-70.5680], "vitacura":[-33.3800,-70.5760],
+  "la reina":[-33.4450,-70.5400], "providencia":[-33.4260,-70.6100],
+  "nunoa":[-33.4560,-70.5970], "santiago":[-33.4470,-70.6520],
+  "penalolen":[-33.4770,-70.5420], "macul":[-33.4900,-70.5980],
+  "san miguel":[-33.4970,-70.6510], "maipu":[-33.5110,-70.7580],
+  "la florida":[-33.5220,-70.5990], "puente alto":[-33.6110,-70.5760],
+  "recoleta":[-33.4110,-70.6400], "independencia":[-33.4180,-70.6640],
+  "estacion central":[-33.4600,-70.6800], "quilicura":[-33.3600,-70.7290]
+};
+function initPdvMap(){
+  const el = document.getElementById("pdvMap");
+  if (!el) return;
+  if (typeof L === "undefined") { el.innerHTML = `<div class="muted" style="padding:16px">No se pudo cargar el mapa (sin conexion a internet).</div>`; return; }
+  if (state.map) { state.map.remove(); state.map = null; }
+  const map = L.map(el).setView([-33.42,-70.60], 11);
+  state.map = map;
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom:19, attribution:"&copy; OpenStreetMap" }).addTo(map);
+  const cov = {}; coverageRows().forEach(c => { cov[c.PDV_ID] = c; });
+  const perComuna = {}; const pts = []; let sinGeo = 0;
+  activeClients().forEach(c => {
+    const comuna = norm(first(c, ["Comuna"]));
+    const base = COMUNA_LL[comuna];
+    if (!base) { sinGeo++; return; }
+    const idx = (perComuna[comuna] = (perComuna[comuna] || 0), perComuna[comuna]++);
+    const ang = idx * 2.39996, rad = idx === 0 ? 0 : 0.006 + 0.0016 * idx;
+    const lat = base[0] + Math.sin(ang) * rad, lng = base[1] + Math.cos(ang) * rad;
+    const cv = cov[first(c, ["PDV_ID"])] || {};
+    const pri = cv.Prioridad || "";
+    const color = /alta/i.test(pri) ? "#b42318" : (/media/i.test(pri) ? "#a56700" : "#176247");
+    L.circleMarker([lat,lng], { radius:9, color:"#fff", weight:2, fillColor:color, fillOpacity:.95 })
+      .addTo(map)
+      .bindPopup(`<b>${esc(first(c,["Punto de venta"]))}</b><br>${esc(first(c,["Cliente"]))} &middot; ${esc(first(c,["Canal"]))}<br>${esc(first(c,["Comuna"]))}, ${esc(first(c,["Región","Region"]))}<br>Prioridad: ${esc(pri || "—")}<br>Visita: ${esc(cv["Estado visita"] || "—")} &middot; Venta: ${esc(cv["Estado venta"] || "—")}<br>Stock: ${esc(cv["Estado stock"] || "—")}`);
+    pts.push([lat,lng]);
+  });
+  if (pts.length) map.fitBounds(pts, { padding:[40,40], maxZoom:13 });
+  const info = document.getElementById("mapNote");
+  if (info) info.textContent = `${pts.length} punto(s) ubicado(s) por comuna` + (sinGeo ? ` · ${sinGeo} sin comuna reconocida` : "") + ". Ubicacion aproximada: el Excel no trae coordenadas por PDV.";
+  setTimeout(() => map.invalidateSize(), 120);
+}
+
 const views = {
   dashboard: ["Dashboard", dashboardView],
   cobertura: ["Cobertura", coberturaView],
-  ventas: ["Ventas", ventasView],
+  ventas: ["Ventas Sell In", ventasView],
+  sellout: ["Ventas Sell Out", selloutView],
   inventario: ["Inventario", inventarioView],
   clientes: ["Clientes / PDV", clientesView],
-  productos: ["Productos", productosView],
-  registro: ["Registro", registryView]
+  productos: ["Productos", productosView]
 };
 
 function render(){
