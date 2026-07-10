@@ -13,7 +13,7 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Segoe UI,system-ui,Arial,sans-serif}
-.sidebar{position:fixed;inset:0 auto 0 0;width:198px;background:#474c51;color:#fff;padding:12px 12px;display:flex;flex-direction:column;gap:10px}
+.sidebar{position:fixed;inset:0 auto 0 0;width:172px;background:#474c51;color:#fff;padding:12px 10px;display:flex;flex-direction:column;gap:10px}
 .brand{display:flex;flex-direction:column;gap:4px;flex-shrink:0}
 .brand-logo-img{width:72px;height:auto;border-radius:6px;background:#fff}
 .brand small,.side-foot{color:#c4c8cc}
