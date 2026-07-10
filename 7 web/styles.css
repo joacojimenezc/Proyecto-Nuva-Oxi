@@ -46,9 +46,11 @@ input,select{border:1px solid var(--line);border-radius:6px;padding:9px 10px;bac
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin-bottom:12px}
 .field{display:flex;flex-direction:column;gap:4px;min-width:160px}
 .field label{font-size:12px;color:var(--muted)}
-.table-wrap{overflow:visible;border:1px solid var(--line);border-radius:8px;background:#fff}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:#fff}
 table{width:100%;border-collapse:collapse;font-size:12.5px}
-th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top;white-space:normal;overflow-wrap:anywhere}
+th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+td{white-space:nowrap}
+th{white-space:normal;overflow-wrap:anywhere}
 th{position:sticky;top:0;background:#eef4f0;color:#163b2d;font-size:12px;z-index:1}
 td.num,th.num{text-align:right}
 tr:hover td{background:#fafcfb}
