@@ -25,7 +25,8 @@ function norm(v){
 function n(v){
   if (v == null || v === "") return 0;
   if (typeof v === "number") return Number.isFinite(v) ? v : 0;
-  const s = String(v).replace(/\$/g,"").replace(/\./g,"").replace(",",".").trim();
+  // el Excel usa coma como separador de miles ($18,220) y punto como decimal (0.19)
+  const s = String(v).replace(/[$\s]/g,"").replace(/,/g,"").trim();
   const x = Number(s);
   return Number.isFinite(x) ? x : 0;
 }
