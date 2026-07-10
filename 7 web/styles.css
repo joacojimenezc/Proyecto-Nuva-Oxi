@@ -39,7 +39,8 @@ input,select{border:1px solid var(--line);border-radius:6px;padding:9px 10px;bac
 .kpi .label{color:var(--muted);font-size:12px;margin-bottom:8px}
 .kpi .value{font-size:23px;font-weight:750;line-height:1.1}
 .kpi .sub{color:var(--muted);font-size:12px;margin-top:7px}
-.panels{grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr)}
+.panels{grid-template-columns:minmax(0,1fr) 236px}
+.panels .cond-grid{grid-template-columns:1fr}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px;box-shadow:var(--shadow)}
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin-bottom:12px}
 .field{display:flex;flex-direction:column;gap:4px;min-width:160px}
