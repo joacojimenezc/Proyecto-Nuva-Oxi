@@ -511,22 +511,55 @@ function setupGate(){
   inp.focus();
 }
 
+function ab2b64(buf){
+  const bytes = new Uint8Array(buf); let bin = ""; const CH = 0x8000;
+  for (let i = 0; i < bytes.length; i += CH) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CH));
+  return btoa(bin);
+}
+function getUploadKey(force){
+  let k = localStorage.getItem("nuva_upload_key") || "";
+  if (force || !k) {
+    k = (prompt("Clave para guardar el Excel para todos\n(dejar vacia si tu Vercel no pide clave):") || "").trim();
+    localStorage.setItem("nuva_upload_key", k);
+  }
+  return k;
+}
+async function persistUpload(file, b64){
+  $("#statusLine").textContent = `Guardando ${file.name} para todos...`;
+  try {
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ key: getUploadKey(false), filename: file.name, b64 })
+    });
+    const j = await res.json().catch(() => ({ ok: false, error: "respuesta invalida del servidor" }));
+    if (!j.ok) {
+      if (/clave/i.test(j.error || "")) localStorage.removeItem("nuva_upload_key");
+      throw new Error(j.error || "error");
+    }
+    $("#statusLine").textContent = `Guardado para todos ✔ · ${file.name} · se publica para todos en ~1 minuto (recarga para verlo).`;
+  } catch (err) {
+    $("#statusLine").textContent = "Se actualizo en tu navegador, pero NO se guardo para todos: " + err.message;
+  }
+}
 function handleUpload(file){
   const reader = new FileReader();
   reader.onload = e => {
+    const buf = e.target.result;
     try {
-      const wb = XLSX.read(new Uint8Array(e.target.result), { type: "array", cellDates: true });
+      const wb = XLSX.read(new Uint8Array(buf), { type: "array", cellDates: true });
       if (state.map) { try { state.map.remove(); } catch(_){} state.map = null; }
       state.workbook = wb;
       state.sheets = {};
       wb.SheetNames.forEach(nm => state.sheets[nm] = rowsFromSheet(wb.Sheets[nm]));
       state.filters = {}; state.dateFrom = ""; state.dateTo = "";
       $("#sourceName").textContent = file.name + " (subido)";
-      $("#statusLine").textContent = `Base subida: ${file.name} · ${wb.SheetNames.length} hojas · cambios visibles en esta sesion`;
       render();
     } catch (err) {
       $("#statusLine").textContent = "No se pudo leer el Excel subido: " + err.message;
+      return;
     }
+    persistUpload(file, ab2b64(buf)); // guardar en el repo para que lo vea todo el mundo
   };
   reader.readAsArrayBuffer(file);
 }
