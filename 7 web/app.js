@@ -557,7 +557,7 @@ async function persistUpload(file, b64){
       if (/clave/i.test(j.error || "")) localStorage.removeItem("nuva_upload_key");
       throw new Error(j.error || "error");
     }
-    $("#statusLine").textContent = `Guardado para todos ✔ · ${file.name} · se publica para todos en ~1 minuto (recarga para verlo).`;
+    $("#statusLine").textContent = `Guardado para todos ✔ · ${file.name} · los demas lo veran al recargar la pagina.`;
   } catch (err) {
     $("#statusLine").textContent = "Se actualizo en tu navegador, pero NO se guardo para todos: " + err.message;
   }
@@ -590,8 +590,14 @@ if (upBtn && upInput) {
   upBtn.onclick = () => upInput.click();
   upInput.onchange = e => { const f = e.target.files[0]; if (f) handleUpload(f); e.target.value = ""; };
 }
+const dlBtn = $("#downloadBtn");
+if (dlBtn) dlBtn.onclick = descargarExcel;
+
 setupGate();
-loadWorkbook().catch(err => {
-  app.innerHTML = `<div class="error"><b>Error al cargar la base.</b><br>${esc(err.message)}</div>`;
-  $("#statusLine").textContent = "No se pudo cargar el Excel.";
-});
+// Si ya se ingreso la clave en esta sesion, intenta cargar y esconder el gate.
+(async () => {
+  if (gateKey()) {
+    try { await loadWorkbook(); $("#gate").style.display = "none"; }
+    catch (e) { sessionStorage.removeItem("nuva_gate"); } // el gate queda visible para reintentar
+  }
+})();
