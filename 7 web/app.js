@@ -241,7 +241,7 @@ function dashboardView(){
     ["PDV stock critico", d.stockCritico, "Segun Stock_PDV"],
     ["Ventana control", `${cfg.recentDays} dias`, `Venta baja < ${money(cfg.lowSale)}`]
   ].map(x => `<div class="kpi"><div class="label">${esc(x[0])}</div><div class="value">${esc(x[1])}</div><div class="sub">${esc(x[2])}</div></div>`).join("");
-  const headers = ["Punto de venta","Cliente","Canal","Estado visita","Estado venta","Estado pago","Estado stock","Prioridad"];
+  const headers = ["Punto de venta","Prioridad","Estado visita","Estado venta","Estado stock"];
   const priority = d.cov.slice().sort((a,b)=>String(a.Prioridad).localeCompare(String(b.Prioridad))).slice(0,60);
   return `<div class="grid kpis">${kpis}</div>
     <div class="grid panels">
