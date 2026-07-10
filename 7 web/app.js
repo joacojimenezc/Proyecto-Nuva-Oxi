@@ -122,11 +122,11 @@ function recentCutoff(days){
 function salesRows(){
   return getRows("Ventas_SellIn").map(r => {
     const qty = n(first(r, ["Cantidad facturada","Cantidad","Unidades"]));
-    const price = n(first(r, ["Precio neto unit. facturado","Precio neto","Precio"]));
-    const sale = n(first(r, ["Venta neta"])) || qty * price;
+    const price = n(first(r, ["Precio unit. NETO (sin IVA)","Precio neto unit. facturado","Precio neto","Precio"]));
+    const sale = n(first(r, ["Venta NETA (sin IVA)","Venta neta"])) || qty * price;
     const status = first(r, ["Status pago","Estado pago"]);
-    const pending = n(first(r, ["Monto pendiente"])) || (/pagad/i.test(String(status)) ? 0 : sale);
-    return { raw:r, qty, price, sale, pending, status, date:excelDate(first(r, ["Fecha factura","Fecha"])), pdv:first(r, ["PDV_ID"]), sku:first(r, ["SKU"]) };
+    const pending = n(first(r, ["Pendiente (con IVA)","Monto pendiente"])) || (/pagad/i.test(String(status)) ? 0 : sale);
+    return { raw:r, qty, price, sale, pending, status, date:excelDate(first(r, ["Fecha emisión (factura)","Fecha factura","Fecha"])), pdv:first(r, ["PDV_ID"]), sku:first(r, ["SKU"]) };
   }).filter(r => r.pdv);
 }
 function selloutRows(){
@@ -217,9 +217,11 @@ function table(headers, rows, opts={}){
   const visible = applyTableSearch(rows);
   const body = visible.length ? visible.map(r => `<tr>${headers.map(h => {
     const v = r[h];
-    const isNum = typeof v === "number" || /monto|venta|precio|cantidad|stock|unid|dias|facturas|iva|bruta|neta/i.test(h);
-    const html = /estado|prioridad|status/i.test(h) ? badge(v) : (isNum ? num(v) : esc(v));
-    return `<td class="${isNum ? "num" : ""}">${html}</td>`;
+    // numérico se decide por el VALOR, no por el nombre (asi "Punto de venta" no se toma como número)
+    const isBadge = /estado|prioridad|status/i.test(h);
+    const numeric = typeof v === "number" || (typeof v === "string" && v.trim() !== "" && /^[-$]?\d[\d.,\s]*%?$/.test(v.trim()));
+    const html = isBadge ? badge(v) : (numeric ? num(v) : esc(v));
+    return `<td class="${numeric && !isBadge ? "num" : ""}">${html}</td>`;
   }).join("")}</tr>`).join("") : `<tr><td colspan="${headers.length}" class="empty-cell">Sin registros</td></tr>`;
   return `<div class="table-wrap"><table><thead><tr>${headers.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${body}</tbody></table></div>
     <div class="muted" style="margin-top:8px">${visible.length} de ${rows.length} registros</div>`;
