@@ -488,7 +488,6 @@ async function loadWorkbook(){
     state.sheets[name] = rowsFromSheet(state.workbook.Sheets[name]);
   });
   $("#statusLine").textContent = `Base: ${EXCEL_FILE} · ${state.workbook.SheetNames.length} hojas`;
-  $("#sourceName").textContent = "NUVA_OXI_Control_Comercial_FINAL_v2.xlsx";
   render();
 }
 function setupGate(){
