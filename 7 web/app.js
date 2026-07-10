@@ -517,8 +517,8 @@ function ab2b64(buf){
   return btoa(bin);
 }
 function getUploadKey(force){
-  let k = localStorage.getItem("nuva_upload_key") || "";
-  if (force || !k) {
+  let k = localStorage.getItem("nuva_upload_key"); // null = nunca respondio; "" = respondio vacio
+  if (force || k === null) {
     k = (prompt("Clave para guardar el Excel para todos\n(dejar vacia si tu Vercel no pide clave):") || "").trim();
     localStorage.setItem("nuva_upload_key", k);
   }
