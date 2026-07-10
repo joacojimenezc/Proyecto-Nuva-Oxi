@@ -480,35 +480,49 @@ function setView(view){
   document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("active", b.dataset.view === view));
   render();
 }
+function gateKey(){ return sessionStorage.getItem("nuva_gate") || ""; }
+// Pide la base a /api/data con la clave; el SERVIDOR valida el acceso.
+async function fetchBaseBuffer(download){
+  const res = await fetch(DATA_API + (download ? "?download=1" : ""), { headers: { "x-gate": gateKey() }, cache: "no-store" });
+  if (res.status === 401) { const e = new Error("Clave incorrecta o no ingresada."); e.unauth = true; throw e; }
+  if (!res.ok) throw new Error("No se pudo leer la base (HTTP " + res.status + ")");
+  return res.arrayBuffer();
+}
 async function loadWorkbook(){
   if (!window.XLSX) throw new Error("No se pudo cargar SheetJS.");
-  const res = await fetch(EXCEL_FILE, { cache: "no-store" });
-  if (!res.ok) throw new Error(`No se pudo leer ${EXCEL_FILE}`);
-  const buf = await res.arrayBuffer();
+  const buf = await fetchBaseBuffer(false);
   state.workbook = XLSX.read(buf, { type: "array", cellDates: true });
-  state.workbook.SheetNames.forEach(name => {
-    state.sheets[name] = rowsFromSheet(state.workbook.Sheets[name]);
-  });
-  $("#statusLine").textContent = `Base: ${EXCEL_FILE} · ${state.workbook.SheetNames.length} hojas`;
+  state.sheets = {};
+  state.workbook.SheetNames.forEach(name => { state.sheets[name] = rowsFromSheet(state.workbook.Sheets[name]); });
+  $("#statusLine").textContent = `Base comercial cargada · ${state.workbook.SheetNames.length} hojas`;
   render();
 }
-async function sha256hex(s){
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(String(s)));
-  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+async function descargarExcel(){
+  try {
+    const buf = await fetchBaseBuffer(true);
+    const blob = new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href = url; a.download = "NUVA_OXI_Control_Comercial.xlsx";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+  } catch (e) {
+    $("#statusLine").textContent = "No se pudo descargar: " + e.message;
+  }
 }
 function setupGate(){
   const g = $("#gate");
-  // Solo se guarda el hash SHA-256 de la clave, no la clave. No es seguridad
-  // fuerte (el gate corre en el navegador) pero evita leer la clave en el codigo.
-  const HASH = "de3048f1ee2e9d1b9ea71d1bd92caad8b8669f8888a9dda867c74e6b0e9b73ea";
-  if (sessionStorage.getItem("nuvaoxi_role")) { g.style.display = "none"; return; }
   const inp = $("#gateInput"), err = $("#gateErr");
   const attempt = async () => {
-    if (await sha256hex((inp.value || "").trim()) === HASH) {
-      sessionStorage.setItem("nuvaoxi_role", "full");
+    const pass = (inp.value || "").trim();
+    err.textContent = "Verificando...";
+    sessionStorage.setItem("nuva_gate", pass);
+    try {
+      await loadWorkbook();          // el servidor valida la clave (401 si es incorrecta)
       g.style.display = "none";
-    } else {
-      err.textContent = "Clave incorrecta.";
+      err.textContent = "";
+    } catch (e) {
+      sessionStorage.removeItem("nuva_gate");
+      err.textContent = e.unauth ? "Clave incorrecta." : ("Error al cargar: " + e.message);
       inp.select();
     }
   };
