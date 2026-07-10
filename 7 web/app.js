@@ -552,7 +552,6 @@ function handleUpload(file){
       state.sheets = {};
       wb.SheetNames.forEach(nm => state.sheets[nm] = rowsFromSheet(wb.Sheets[nm]));
       state.filters = {}; state.dateFrom = ""; state.dateTo = "";
-      $("#sourceName").textContent = file.name + " (subido)";
       render();
     } catch (err) {
       $("#statusLine").textContent = "No se pudo leer el Excel subido: " + err.message;
