@@ -285,7 +285,8 @@ function filteredView(title, headers, rows, filterFields){
     ${filtersFor(rows, filterFields)}${table(headers, fr)}</div>`;
 }
 function coberturaView(){
-  const headers = ["PDV_ID","Cliente","Canal","Punto de venta","Frecuencia","Ultima visita","Dias sin visita","Estado visita","Venta sell-in 30d neta","Estado venta","Facturas pendientes","Monto pendiente","Estado pago","Stock PDV barras","Estado stock","Prioridad"];
+  // columnas curadas (se quitan PDV_ID, facturas y barras crudas: los estados ya lo resumen)
+  const headers = ["Punto de venta","Cliente","Canal","Frecuencia","Dias sin visita","Estado visita","Venta sell-in 30d neta","Estado venta","Monto pendiente","Estado pago","Estado stock","Prioridad"];
   return conditionsPanel(null,
       "Cada PDV cruza cuatro reglas: visita (dias vs frecuencia), venta 30d (baja/sin venta), pago (monto pendiente) y stock (barras). Prioridad Alta si cualquiera esta en rojo.")
     + filteredView("Cobertura comercial", headers, coverageRows(), ["Canal","Cliente","Estado visita","Estado venta","Estado pago","Estado stock","Prioridad"]);
@@ -324,8 +325,10 @@ function clientesView(){
 }
 function productosView(){
   const rows = getRows("Maestro_SKU").filter(r => first(r, ["SKU"]));
+  // columnas curadas: se dejan las descriptivas; fuera los codigos internos (barra, categoria, sabor, logistico...)
+  const headers = ["SKU","Descripción SKU","Marca","Categoría","Subcategoría","Sabor","Formato","Estado"];
   return `<div class="panel cond-panel"><h2>Condiciones activas y como se calculan</h2><p class="muted">Maestro de productos (catalogo). No aplica umbrales de gestion.</p></div>`
-    + filteredView("Maestro de productos", getHeaders("Maestro_SKU"), rows, ["Marca","Categoria","Categoría","Sabor","Formato","Estado"]);
+    + filteredView("Maestro de productos", headers, rows, ["Marca","Categoría","Sabor","Formato","Estado"]);
 }
 
 function dateRangeControls(){
