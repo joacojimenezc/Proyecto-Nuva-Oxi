@@ -13,14 +13,14 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Segoe UI,system-ui,Arial,sans-serif}
-.sidebar{position:fixed;inset:0 auto 0 0;width:252px;background:#10251e;color:#fff;padding:18px 16px;display:flex;flex-direction:column;gap:16px}
-.brand{display:flex;flex-direction:column;gap:8px;flex-shrink:0}
-.brand-logo-img{width:110px;height:auto;border-radius:6px;background:#fff}
+.sidebar{position:fixed;inset:0 auto 0 0;width:248px;background:#10251e;color:#fff;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.brand{display:flex;flex-direction:column;gap:4px;flex-shrink:0}
+.brand-logo-img{width:78px;height:auto;border-radius:6px;background:#fff}
 .brand small,.side-foot{color:#b9cbc4}
-nav{display:flex;flex-direction:column;gap:5px;flex:1 1 auto;min-height:0;overflow-y:auto}
-nav button{border:0;background:transparent;color:#dce8e3;text-align:left;padding:10px 12px;border-radius:6px;font:inherit;cursor:pointer}
+nav{display:flex;flex-direction:column;gap:3px;flex-shrink:0}
+nav button{border:0;background:transparent;color:#dce8e3;text-align:left;padding:8px 12px;border-radius:6px;font:inherit;cursor:pointer}
 nav button:hover,nav button.active{background:#23473a;color:#fff}
-.side-foot{flex-shrink:0;font-size:12px;display:flex;flex-direction:column;gap:8px}
+.side-foot{margin-top:auto;flex-shrink:0;font-size:12px;display:flex;flex-direction:column;gap:6px;padding-top:8px}
 .download-link{display:block;width:100%;background:transparent;color:#fff;font:inherit;text-decoration:none;border:1px solid rgba(255,255,255,.24);border-radius:6px;padding:8px 10px;text-align:center;cursor:pointer}
 .download-link:hover{background:#23473a}
 .content{margin-left:252px;min-height:100vh;padding:22px}
