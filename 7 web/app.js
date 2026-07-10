@@ -284,7 +284,9 @@ function filteredView(title, headers, rows, filterFields){
 }
 function coberturaView(){
   const headers = ["PDV_ID","Cliente","Canal","Punto de venta","Frecuencia","Ultima visita","Dias sin visita","Estado visita","Venta sell-in 30d neta","Estado venta","Facturas pendientes","Monto pendiente","Estado pago","Stock PDV barras","Estado stock","Prioridad"];
-  return filteredView("Cobertura comercial", headers, coverageRows(), ["Canal","Cliente","Estado visita","Estado venta","Estado pago","Estado stock","Prioridad"]);
+  return conditionsPanel(null,
+      "Cada PDV cruza cuatro reglas: visita (dias vs frecuencia), venta 30d (baja/sin venta), pago (monto pendiente) y stock (barras). Prioridad Alta si cualquiera esta en rojo.")
+    + filteredView("Cobertura comercial", headers, coverageRows(), ["Canal","Cliente","Estado visita","Estado venta","Estado pago","Estado stock","Prioridad"]);
 }
 function ventasView(){
   const rows = salesRows().map(v => ({
@@ -301,15 +303,28 @@ function inventarioView(){
     Fecha:s.date, PDV_ID:s.pdv, Cliente:first(s.raw, ["Cliente"]), Canal:first(s.raw, ["Canal"]), "Punto de venta":first(s.raw, ["Punto de venta"]),
     SKU:s.sku, "Stock unidades":s.units, "Barras equivalentes":s.bars, "Estado stock":s.state
   }));
-  return filteredView("Inventario por PDV", Object.keys(rows[0] || {}), rows, ["Cliente","Canal","Punto de venta","SKU","Estado stock"]);
+  return conditionsPanel(["Stock"],
+      "El estado de stock usa las barras equivalentes en sala: critico si esta en o bajo el minimo, observar bajo el segundo umbral, si no OK.")
+    + filteredView("Inventario por PDV", Object.keys(rows[0] || {}), rows, ["Cliente","Canal","Punto de venta","SKU","Estado stock"]);
 }
 function clientesView(){
   const rows = activeClients();
-  return filteredView("Clientes / puntos de venta", getHeaders("Clientes_PDV").slice(0,10), rows, ["Canal","Cliente","Comuna","Estado cliente"]);
+  setTimeout(initPdvMap, 0);
+  const mapPanel = `<div class="panel">
+    <h2>Mapa de puntos de venta</h2>
+    <div id="pdvMap" class="pdv-map"></div>
+    <p id="mapNote" class="muted" style="margin-top:8px">Cargando mapa...</p>
+  </div>`;
+  return conditionsPanel(["Semanal","Quincenal","Mensual","Venta reciente"],
+      "El color del punto usa la prioridad de Cobertura: rojo alta, ambar media, verde vigente.")
+    + mapPanel
+    + filteredView("Clientes / puntos de venta", getHeaders("Clientes_PDV").slice(0,10), rows, ["Canal","Cliente","Comuna","Estado cliente"]);
 }
 function productosView(){
   const rows = getRows("Maestro_SKU").filter(r => first(r, ["SKU"]));
-  return filteredView("Maestro de productos", getHeaders("Maestro_SKU"), rows, ["Marca","Categoria","Categoría","Sabor","Formato","Estado"]);
+  return conditionsPanel(["IVA"],
+      "Maestro de productos (catalogo). No aplica umbrales de gestion; el IVA se usa al convertir precios neto/bruto en ventas.")
+    + filteredView("Maestro de productos", getHeaders("Maestro_SKU"), rows, ["Marca","Categoria","Categoría","Sabor","Formato","Estado"]);
 }
 
 function registryRows(sheetName){
