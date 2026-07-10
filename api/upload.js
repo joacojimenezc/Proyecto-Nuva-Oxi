@@ -20,7 +20,7 @@
 const OWNER = "joacojimenezc";
 const REPO = "Proyecto-Nuva-Oxi";
 const BRANCH = "main";
-const FILE_PATH = "7 web/data/NUVA_OXI_Control_Comercial_FINAL_v2.xlsx";
+const FILE_PATH = "store/NUVA_OXI_Control_Comercial_FINAL_v2.xlsx";
 
 const TOKEN = process.env.GITHUB_TOKEN || "";
 const WRITE_KEY = process.env.BD_WRITE_KEY || "";
