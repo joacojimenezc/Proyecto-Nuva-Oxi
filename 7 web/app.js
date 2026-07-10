@@ -219,7 +219,7 @@ function table(headers, rows, opts={}){
     const html = /estado|prioridad|status/i.test(h) ? badge(v) : (isNum ? num(v) : esc(v));
     return `<td class="${isNum ? "num" : ""}">${html}</td>`;
   }).join("")}</tr>`).join("") : `<tr><td colspan="${headers.length}" class="empty-cell">Sin registros</td></tr>`;
-  return `<div class="table-wrap"><table><thead><tr>${headers.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${body}</tbody></table></div>
+  return `<div class="table-wrap"><table class="diag"><thead><tr>${headers.map(h => `<th class="rot"><div><span>${esc(h)}</span></div></th>`).join("")}</tr></thead><tbody>${body}</tbody></table></div>
     <div class="muted" style="margin-top:8px">${visible.length} de ${rows.length} registros</div>`;
 }
 function applyTableSearch(rows){
